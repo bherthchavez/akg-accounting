@@ -1,0 +1,233 @@
+
+<%- include('layout/header') %>
+
+
+      <div class="page-wrapper">
+        <div class="container-xl">
+          <div class="page-header d-print-none">
+            <div class="row g-3 align-items-center">
+              <div class="col-auto">
+                <span class="status-indicator status-green status-indicator-animated">
+                  <span class="status-indicator-circle"></span>
+                  <span class="status-indicator-circle"></span>
+                  <span class="status-indicator-circle"></span>
+                </span>
+              </div>
+              <div class="col">
+                <h2 class="page-title">
+                  Byakugan Activated
+                </h2>
+                <div class="text-muted">
+                  <ul class="list-inline list-inline-dots mb-0">
+                    <li class="list-inline-item"><span class="text-green">Up</span></li>
+                    <li class="list-inline-item">Checked every 3 minutes</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-auto ms-auto d-print-none">
+                <div class="btn-list">
+                  <a href="#" class="btn">
+                    <i class="ti ti-settings fs-h2 pe-2"></i>
+                    Configure
+                  </a>
+                  <a href="/hima-the-hokage" class="btn btn-primary">
+                    <i class="ti ti-eye fs-h2 pe-2"></i>
+                    Reactivate byakugan
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         <div class="page-body">
+          <div class="container-xl">
+            <div class="row row-cards">
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="subheader">Currently user login:  <%= userlogsFound[0].user_name %> </div>
+                    <div class="h3 m-0">
+                      <%  function timeDiffCalc(dateFuture, dateNow) {%>
+                      <%  let diffInMilliSeconds = Math.abs(dateFuture - dateNow) / 1000;%>
+                      <%  const days = Math.floor(diffInMilliSeconds / 86400);%>
+                      <%  diffInMilliSeconds -= days * 86400;%>
+                      <%  const hours = Math.floor(diffInMilliSeconds / 3600) % 24;%>
+                      <%  diffInMilliSeconds -= hours * 3600;%>
+                      <%  const minutes = Math.floor(diffInMilliSeconds / 60) % 60;%>
+                      <%  diffInMilliSeconds -= minutes * 60;%>
+                      <%  let difference = '';%>
+                      <%  if (days > 0) {%>
+                      <%  difference += (days === 1) ? `${days} day, ` : `${days} days, `;%>
+                      <% } %>
+                      <% difference += (hours === 0 || hours === 1) ? `${hours} hour, ` : `${hours} hours, `;%>
+                      <% difference += (minutes === 0 || hours === 1) ? `${minutes} minutes` : `${minutes} minutes`; %>
+                      <% return difference; %>
+                      <% } %>
+                      <% let currentUserLog = (timeDiffCalc(new Date(userlogsFound[0].login_at), new Date())) %>
+                     
+                        <%= currentUserLog %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="subheader">Attachments</div>
+                    <div class="h3 m-0"><% let attach = voucherFound.length +  billFound.length %>
+                      <%= attach %></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="subheader">User online</div>
+                    <div class="h3 m-0">3
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Voucher Attachment</h4>
+                  </div>
+                  <div class="card-table table-responsive" style="max-height: 18rem">
+                    <table class="table card-table table-vcenter">
+                      <thead>
+                        <tr>
+                          <th>File Name</th>
+                          <th>Date / Time</th>
+                          <th class="text-end">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% voucherFound.forEach(function(voucher){ %>
+                            <tr>
+                              <td> <%=voucher.documents%></td>
+                              <td class="fs-h5 text-muted fs-h5 text-nowrap"> <%=(new Date(voucher.created_at).toLocaleTimeString('en-US'))%><br> <%=(new Date(voucher.created_at).toLocaleDateString("en-US", {year: 'numeric', day: 'numeric', month: 'short' }))%> 
+                              </td>
+
+                              <td class="text-end text-nowrap">
+                                  <a href="/download-attachment/<%=voucher.documents%>" class="btn btn-icon fs-h3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Download"> 
+                                    <i class="ti ti-download"></i>
+                                  </a>
+
+                                  <span data-bs-toggle="modal" data-bs-target="#modal-deleteAttach<%=voucher._id%>">
+                                  <button  class="btn btn-icon fs-h3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Delete" > 
+                                    <i class="ti ti-trash"></i>
+                                   </button>
+                                  </span>
+                              </td>
+                            </tr>
+
+                            <div class="modal modal-blur fade" id="modal-deleteAttach<%=voucher._id%>" tabindex="-1" role="dialog" aria-hidden="true">
+                              <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  <div class="modal-status bg-danger"></div>
+                                  <div class="modal-body text-center py-4">
+                                    <i class="ti ti-alert-triangle fs--h1 text-danger"></i>
+                                    <h3><%=voucher.documents%></h3>
+                                    <div class="text-muted">Do you really want to delete this attachment?</div>
+                                  </div>
+
+                                  <div class="modal-footer">
+                                    <div class="w-100">
+                                      <div class="row">
+                                        <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                            Cancel
+                                          </a></div>
+                                        <div class="col">
+                                          <a href="/delete-attachment/<%=voucher.documents%>" class="btn btn-danger w-100" >Yes</a>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+
+                        <%  }) %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Bill Attachment</h4>
+                  </div>
+                  <div class="card-table table-responsive" style="max-height: 18rem">
+                    <table class="table card-table table-vcenter">
+                      <thead>
+                        <tr>
+                          <th>File Name</th>
+                          <th>Date / Time</th>
+                          <th class="text-end">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% billFound.forEach(function(bill){ %>
+                          <tr>
+                            <td><%=bill.documents%></td>
+                            <td class="fs-h5 text-muted fs-h5 text-nowrap"> <%=(new Date(bill.created_at).toLocaleTimeString('en-US'))%><br> <%=(new Date(bill.created_at).toLocaleDateString("en-US", {year: 'numeric', day: 'numeric', month: 'short' }))%> 
+                            </td>
+
+                            <td class="text-end text-nowrap">
+                                <a href="/download-attachment/<%=bill.documents%>"  class="btn btn-icon fs-h3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Download"> 
+                                  <i class="ti ti-download"></i>
+                                </a>
+                                <span data-bs-toggle="modal" data-bs-target="#modal-deleteAttach1<%=bill._id%>">
+                                <button  class="btn btn-icon fs-h3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Delete" > 
+                                  <i class="ti ti-trash"></i>
+                                 </button>
+                                </span>
+                            </td>
+                          </tr>
+
+                          <div class="modal modal-blur fade" id="modal-deleteAttach1<%=bill._id%>" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div class="modal-status bg-danger"></div>
+                                <div class="modal-body text-center py-4">
+                                  <i class="ti ti-alert-triangle fs--h1 text-danger"></i>
+                                  <h3><%=bill.documents%></h3>
+                                  <div class="text-muted">Do you really want to delete this attachment?</div>
+                                </div>
+
+                                <div class="modal-footer">
+                                  <div class="w-100">
+                                    <div class="row">
+                                      <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                          Cancel
+                                        </a></div>
+                                      <div class="col">
+                                        <a href="/delete-attachment/<%=bill.documents%>" class="btn btn-danger w-100" >Yes</a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                      <%  }) %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>   
+
+
+    
+        <%- include('layout/footer') %>

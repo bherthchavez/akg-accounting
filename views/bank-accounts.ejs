@@ -1,0 +1,253 @@
+
+<%- include('layout/header') %>
+
+      <div class="page-wrapper">
+        <div class="container-xl">
+          <!-- Page title -->
+          <div class="page-header d-print-none">
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                  Banking
+                </div>
+                <h2 class="page-title">
+                  Manage Bank Account
+                </h2>
+              </div>
+              <!-- Page title actions -->
+              <div class="col-12 col-md-auto ms-auto d-print-none">
+                <div class="btn-list">
+                 
+                  <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-addAccount">
+                    <i class="ti ti-plus fs-h3 fw-light me-2"> </i>
+                    Add Account
+                  </a>
+                  <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-addAccount" aria-label="Create new bank account">
+                    <i class="ti ti-plus fs-h4 fw-light"> </i>
+                  </a> 
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="page-body">
+          <div class="container-xl">
+            <div class="row row-deck row-cards">
+              
+              <div class="col-lg-12">
+                <div class="card">
+                  <div class="card-header hd-right">
+                   
+                    <div class="row align-items-center">
+                      <div class="col">
+                         <h3 class="card-title">Bank Account</h3>
+                       </div>
+                       <div class="col-auto">
+                        <div class="input-icon">
+                          <span class="input-icon-addon">
+                            <i class="ti ti-search"></i>
+                          </span>
+                          <input type="text" id="searchBA"  class="form-control" placeholder="Search…" aria-label="Search in website">
+                        </div>                        
+                      </div>
+                    </div>
+             
+                  </div>
+                  <div class="card-table table-responsive">
+                  <div class="table-responsive" style="max-height: 45rem">
+                   <% if (bankAccount != '') { %>
+                    <table class="table card-table table-vcenter text-nowrap datatable">
+                      <thead>
+                        <tr>
+                          <th class="w-1">Action</th>
+                          <th>Banks</th>
+                          <th>Account Details</th>
+                          <th>Cash Flow</th>
+                          <th>Balance Amount</th>
+                          <th></th>
+                        
+                        </tr>
+                      </thead>
+                      <tbody id="bankAcc">
+                        <%  bankAccount.forEach(function(account){ %>
+                        <tr>
+                          <td>
+                            <div class="col-auto">
+                              <div class="dropdown">
+                                <a class="btn btn-action" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  <i class="ti ti-dots-vertical fs-h3 "></i>                                
+                                </a>
+                                
+                                <div class="dropdown-menu dropdown-menu-end">
+                                  <a  class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-Edit-Account<%=account._id%>">Edit / View</button> 
+                                  <a  class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#modal-deleteAccount<%=account._id%>">Delete</a>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="text-formated-tbl"> <%=account.bank_name%> </div>
+                            <div class="text-muted"> <%=account.account_name%> </div>
+                          </td>
+                          
+                          <td>
+                            <div class="details-header"> Account Number </div>
+                            <div><%=account.account_number%> </div> 
+
+                            <div class="details-header"> Account Type </div>
+                            <div><%=account.account_type%> </div> 
+
+                          </td>
+                          <td>
+                            <div class="details-header"> Deposited </div>
+                            <div class="currency-formated">QAR</div> 
+                            <div class="number-details text-success "> <%= (account.balance_amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')%></div>
+                           
+                            <div class="details-header"> Withdrawal </div>
+                            <div class="currency-formated">QAR</div> 
+                            <div class="number-details text-danger"> <%= (account.withdrawal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')%></div>
+
+                          </td>
+                          <td>
+                            <div class="currency-formated">QAR</div> <div class="number-formated-tbl"> <%= (account.deposited).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')%></div>
+                          </td>
+                         
+                          <td class="text-end">
+                              <button type="submit" name="accountID" value="<%=account._id%>" class="btn btn-pill"> New Transaction </button>
+                          </td>
+                        </tr>
+                       
+                       
+                        <div class="modal modal-blur fade" id="modal-deleteAccount<%=account._id%>" tabindex="-1" role="dialog" aria-hidden="true">
+                          <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              <div class="modal-status bg-danger"></div>
+                              <div class="modal-body text-center py-4">
+                                <i class="ti ti-alert-triangle fs--h1 text-danger"></i>
+                                <h3> <%=account.bank_name%></h3>
+                                <div class="text-muted">Do you really want to delete this account?</div>
+                              </div>
+                              <div class="modal-footer">
+                                <div class="w-100">
+                                  <div class="row">
+                                    <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                        Cancel
+                                      </a></div>
+                                    <div class="col">
+                                     
+                                      <a href="/delete/bank-account/<%=account._id%>" class="btn btn-danger w-100" >Yes</a>
+                                   
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="modal modal-blur fade" id="modal-Edit-Account<%=account._id%>" tabindex="-1"  role="dialog" aria-hidden="true">
+                          <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                              <form action="/update/bank-accounts/<%=account._id%>" method="post">
+                                <div class="modal-header">
+                                  <h5 class="modal-title">Update Bank Account</h5>
+                                  <button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="mb-3">
+                                        <label class="form-label">Bank Full Name</label>
+                                        <div class="input-group input-group-flat">
+                                          <input type="text" name="bankName" class="form-control" value="<%=account.bank_name%>" required />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="mb-3">
+                                        <label class="form-label">Account Owner Name</label>
+                                        <input type="text" name="ownerName" class="form-control" value="<%=account.account_name%>" required/>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="mb-3">
+                                        <label class="form-label">Account Number</label>
+                                        <input type="text" name="accountNumber" class="form-control" value="<%=account.account_number%>" required/>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="mb-3">
+                                        <label class="form-label">Account Type</label>
+                                        <select class="form-select" name="accountType" required>
+                                          <option value="Current Account"<%=account.account_type==='Current Account' ? 'selected' : '' %>>Current Account</option>
+                                          <option value="Fixed Deposit"<%=account.account_type==='Fixed Deposit' ? 'selected' : '' %>>Fixed Deposit</option>
+                                          <option value="Fusion Account"<%=account.account_type==='Fusion Account' ? 'selected' : '' %>>Fusion Account</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="mb-3">
+                                        <label class="form-label">Bank Email</label>
+                                        <input type="email" name="bankEmail" class="form-control" value="<%=account.bank_email%>" required/>
+                                      </div>
+                                    </div>
+                                 
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <a href="#" class="btn btn-link link-secondary"  data-bs-dismiss="modal" > Cancel </a>
+                                  <button type="submit" class="btn btn-primary ms-auto" >
+                                    <i class="ti ti-device-floppy fs-h3 fw-light me-2"></i>
+                                    Save
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                        
+
+                        <%  }) %>
+                      </tbody>
+                    </table>
+                    <% } else { %>
+                      <div class="text-center  my-5">
+                        <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
+                        <h1 class="text-secondary">Ohh!</h1>
+                        <p class="text-secondary"> No bank account found in the database!</p>
+                      </div>
+                     <% } %> 
+                  </div>
+                    <div class="card-footer d-flex align-items-center">
+                
+                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+       
+
+        <script>
+          $(document).ready(function(){
+            $("#searchBA").on("keyup", function() {
+              var value = $(this).val().toLowerCase();
+              $("#bankAcc tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+              });
+            });
+          });
+          </script>
+
+       <%- include('layout/modals') %>     
+        <%- include('layout/footer') %>

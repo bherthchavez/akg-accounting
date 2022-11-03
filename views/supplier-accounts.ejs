@@ -1,0 +1,328 @@
+
+<%- include('layout/header') %>
+
+      <div class="page-wrapper">
+        <div class="container-xl">
+          <!-- Page title -->
+          <div class="page-header d-print-none">
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                  Suppliers
+                </div>
+                <h2 class="page-title">
+                  Manage Suppliers Account
+                </h2>
+              </div>
+              <!-- Page title actions -->
+              <div class="col-12 col-md-auto ms-auto d-print-none">
+                <div class="btn-list">
+                 
+                  <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-suppAccount">
+                    <i class="ti ti-plus fs-h3 fw-light me-2"> </i>
+                    Add Account
+                  </a>
+                  <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-addAccount" aria-label="Create new bank account">
+                    <i class="ti ti-plus fs-h4 fw-light"> </i>
+                  </a> 
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="page-body">
+          <div class="container-xl">
+            <div class="row row-deck row-cards">
+            
+             
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header hd-right">
+                   
+                    <div class="row align-items-center">
+                      <div class="col">
+                         <h3 class="card-title">Supplier Account</h3>
+                       </div>
+                       <div class="col-auto">
+                        <div class="input-icon">
+                          <span class="input-icon-addon">
+                            <i class="ti ti-search"></i>
+                          </span>
+                          <input type="text" id="searchSA"  class="form-control" placeholder="Search…" aria-label="Search in website">
+                        </div>                     
+                      </div>
+                    </div>
+             
+                  </div>
+
+                  <div class=" card-table table-responsive" >
+                    <div class="table-responsive"  style="max-height: 45rem">
+                      <% if (supplierAccount != '') { %>
+                        <table class="table card-table table-vcenter text-nowrap datatable" >
+                          <thead>
+                            <tr>
+                              <th class="w-1">Action</th>
+                              <th>Suppliers</th>
+                              <th>Billed</th>
+                              <th>Paid</th>
+                              <th></th>
+                            
+                            </tr>
+                          </thead>
+                          <tbody id="suppAcc">
+                            <%  supplierAccount.forEach(function(account){ %>
+                            <tr>
+                              <td>
+                                <div class="col-auto">
+                                  <div class="dropdown">
+                                    <a class="btn btn-action" role="button"  data-bs-toggle="dropdown" aria-expanded="false">
+                                      <i class="ti ti-dots-vertical fs-h3"></i>      
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                      <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-suppAccUp<%=account._id%>">Edit / View</a>
+                                      <a  class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#modal-deleteAccount<%=account._id%>">Delete</a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <div class="text-formated-tbl"> <%=account.supplier_name%> 
+                                  <a href="#" class="ms-1 fs-h5" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip" data-bs-title="Bill Created">
+
+                                    <% if( parseFloat(account.created_bills) > 0 ) {%>
+                                      <span class="badge bg-blue-lt ms-2"><%= parseFloat(account.created_bills) %></span>
+                                      <% } %>
+                                    </a></div>
+                                <div class="text-muted"> <%=account.a_name%> </div>
+                              </td>
+                          
+                              <td>
+                  
+                                <div class="currency-formated">QAR</div> <div class="number-formated-tbl"><%= (account.billed).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')%></div>
+
+                              </td>
+                              <td>
+                                <div class="currency-formated">QAR</div> <div class="number-formated-tbl"><%= (account.paid).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')%></div>
+                              </td>
+                            
+                              <td >
+                                <div class="btn-list flex-nowrap float-end">
+                                  <form>
+                                    <a name="accountID" value="<%=account._id%>" class="btn btn-pill btn-outline-success btn-sm"> Create LPO </a>
+                                  </form>
+                              
+
+                              
+                                  <a href="/create-bill/<%= account._id %>" id="createBill" class="btn btn-pill btn-outline-success btn-sm "> Create Bill </a>
+                            
+                                  <a href="/pay-bill/<%=account._id%>" id="payBill" class="btn btn-pill btn-outline-warning btn-sm ms-2"> Pay Bill </a> 
+                              
+                              </div>
+                              </td>
+                            </tr>
+                          
+                          
+                            <div class="modal modal-blur fade" id="modal-deleteAccount<%=account._id%>" tabindex="-1" role="dialog" aria-hidden="true">
+                              <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  <div class="modal-status bg-danger"></div>
+                                  <div class="modal-body text-center py-4">
+                                    <i class="ti ti-alert-triangle fs--h1 text-danger"></i>
+                                    <h3><%=account.supplier_name%></h3>
+                                    <div class="text-muted">Do you really want to delete this account?.</div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <div class="w-100">
+                                      <div class="row">
+                                        <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                            Cancel
+                                          </a></div>
+                                        <div class="col">
+                                          <a href="/delete/supplier-account/<%=account._id%>"class="btn btn-danger w-100" >Yes</a>
+                                      
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="modal modal-blur fade" id="modal-suppAccUp<%=account._id%>" tabindex="-1" role="dialog" aria-hidden="true">
+                              <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                  <form action="/update/supplier-accounts/<%=account._id%>" method="post">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title">Update Supplier Account</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <div class="row">
+                                        <div class="col-lg-6">
+                                          <div class="mb-3">
+                                            <label class="form-label">Supplier Name</label>
+                                            <div class="input-group input-group-flat">
+                                              <input type="text" name="supplierName" class="form-control" value="<%=account.supplier_name%>" required  />
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                          <div class="mb-3">
+                                            <label class="form-label">Arabic Supplier Name</label>
+                                            <input type="text" name="arabicName" class="form-control text-end" value="<%=account.a_name%>" required/>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                          <div class="mb-3">
+                                            <label class="form-label">Contact Peson Name</label> 
+                                            <input type="text" name="contactPerson" class="form-control" value="<%=account.contact_person%>" required/>
+                                        </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                          <div class="mb-3">
+                                            <label class="form-label">Supplier Email</label>
+                                            <input type="email" name="supplierEmail" class="form-control" value="<%=account.email%>" required/>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                          <div class="mt-3">
+                                            <label class="form-label">Opening Balance</label>
+                                            <input type="text" name="openingBalance" class="form-control form-control-rounded" value="<%= (account.opening_balance).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') %>" required/>
+                                          </div>
+                                        
+                                        </div>
+                                        <div class="col-lg-6">
+                                          <div class="mb-3">
+                                            <label class="form-label">Address</label>
+                                            <textarea name="address" class="form-control" rows="2"><%=account.address%></textarea>
+                                          </div>
+                                              <div>
+                                                <div class="form-floating">
+                                                  <select class="form-select" name="status" id="floatingSelect<%=account._id%>" aria-label="Floating label select example">
+                                                  
+                                                    <option value="1"<%=account.active_status==='1' ? 'selected' : '' %>>Active</option>
+                                                    <option value="0"<%=account.active_status==='0' ? 'selected' : '' %>>Inactive</option>
+                                                  </select>
+
+                                                  <label for="floatingSelect<%=account._id%>">Status</label>
+                                                </div>
+                                              </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  
+                              
+                                    <div class="modal-body">
+                                      <fieldset class="form-fieldset">
+                                        <label class="form-label text-muted">Beneficiary Details</label>
+                                      <div class="row">
+                                        <div class="col-lg-6">
+                                          <div class="mb-3">
+                                            <label class="form-label">Name</label>
+                                            <input type="text" name="bName" class="form-control" value="<%=account.beneficiary_name %>" required/>
+                                        </div>
+                                        <div class="mb-3">
+                                          <label class="form-label">Bank Name</label>
+                                          <input type="text" name="bBankName" class="form-control" value="<%=account.bank_name%>" required/>
+                                        </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                          <div class="mb-3">
+                                            <label class="form-label">Address</label>
+                                            <textarea name="bAddress" class="form-control" rows="5"><%=account.beneficiary_address%></textarea>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                          <!-- <div class="mb-3"> -->
+                                            <label class="form-label">IBAN NO</label>
+                                            <input type="text" name="ibanNo" class="form-control" value="<%=account.iban_no%>" required/>
+                                          <!-- </div> -->
+                                          
+                                        </div>
+                                        <div class="col-lg-6">
+                                          <!-- <div class="mb-3"> -->
+                                            <label class="form-label">Swift Code</label>
+                                            <input type="text" name="swiftCode" class="form-control" value="<%=account.swift_code%>" required/>
+                                          <!-- </div> -->
+                                        </div>
+                                      </div>
+                                    </fieldset>
+                                    </div>
+                                
+                              
+                                    <div class="modal-footer">
+                                      <a  href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal"  >
+                                        Cancel
+                                      </a>
+                                      <button type="submit" class="btn btn-primary ms-auto">Update </button>
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
+                              </div>
+
+                              <script>
+                                $(document).ready(function(){
+                              
+                      
+                                  $("#createBill<%=account._id%>").on("click", function(){
+                                    $("#createBill<%=account._id%>").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
+                      
+                                  })
+                                  $("#payBill<%=account._id%>").on("click", function(){
+                                    $("#payBill<%=account._id%>").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
+                                
+                                  })
+                                  
+                                });
+                                </script>
+                              
+
+                            <%  }) %>
+                          </tbody>
+                        </table>
+                      <% } else { %>
+                        <div class="text-center  my-5">
+                          <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
+                          <h1 class="text-secondary">Ohh!</h1>
+                          <p class="text-secondary"> No supplier account found in the database!</p>
+                        </div>
+                        <% } %> 
+                    </div>
+                    <div class="card-footer d-flex align-items-center">
+           
+                    </div>
+                  </div>
+      
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     
+      
+        <script>
+          $(document).ready(function(){
+            $("#searchSA").on("keyup", function() {
+              var value = $(this).val().toLowerCase();
+              $("#suppAcc tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+              });
+            });
+
+            $("#createBill").on("click", function(){
+              $("#createBill").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
+
+            })
+            $("#payBill").on("click", function(){
+              $("#payBill").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
+          
+            })
+          });
+          </script>
+
+<%- include('layout/modals') %>     
+<%- include('layout/footer') %>

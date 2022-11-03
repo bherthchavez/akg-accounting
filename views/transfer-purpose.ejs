@@ -1,0 +1,208 @@
+<%- include('layout/header') %>
+
+<div class="page-wrapper">
+           <div class="container-xl">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+              <div class="row g-2 align-items-center">
+                <div class="col">
+                  <!-- Page pre-title -->
+                  <div class="page-pretitle">
+                    Settings
+                  </div>
+                  <h2 class="page-title">
+                    Master
+                  </h2>
+                </div>
+                <!-- Page title actions -->
+                <div class="col-12 col-md-auto ms-auto d-print-none">
+                  <div class="btn-list">
+                      <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-addTransPurpose">
+                        <i class="ti ti-plus fs-h3 fw-light me-1"> </i>
+                        CREATE
+                      </a>
+                      <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-addAccount" aria-label="Create new bank account">
+                        <i class="ti ti-plus fs-h4 fw-light"> </i>
+                      </a>
+                  </div>
+                </div>
+      
+              </div>
+            </div>
+          </div>
+    <div class="page-body">
+  
+      <div class="container-xl">
+     
+        <div class="row">
+          <div class="col-12 col-md-4 px-4">
+            <div class="list-group list-group-transparent mb-3 ml-3">
+              <a class="list-group-item list-group-item-action d-flex align-items-center" href="/master">
+               Account Ledger
+                <small class="text-muted ms-auto"><%= chartFoundItems.length %></small>
+              </a>
+              <a class="list-group-item list-group-item-action d-flex align-items-center" href="/cost-center">
+                Cost Center
+                <small class="text-muted ms-auto"><%= costFoundItems.length %></small>
+              </a>
+              <a class="list-group-item list-group-item-action d-flex align-items-center active" href="/purpose-transfer">
+                Bank Transfer Purpose
+                <small class="text-muted ms-auto"><%= purposeFoundItems.length %></small>
+              </a>
+            
+            </div>
+          </div>
+          <div class="col-12 col-md-8">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header hd-right">
+                   
+                    <div class="row align-items-center">
+                      <div class="col">
+                         <h3 class="card-title">Purpose List</h3>
+                       </div>
+                       <div class="col-auto">
+                        <div class="input-icon">
+                          <input type="text" id="searchPurpose" class="form-control form-control-rounded btn--small" placeholder="Search…">
+                          <span class="input-icon-addon">
+                            <i class="ti ti-search"></i>
+                          </span>
+                        </div>                        
+                      </div>
+                    </div>
+             
+                  </div>
+                  <div class="card-table table-responsive" >
+
+                    <div class="table-responsive" style="max-height: 45rem">
+                      <table id="accLedger" class="table card-table table-vcenter text-nowrap datatable">
+                        <thead>
+                          <tr>
+                            <th>Purpose</th>
+                            <th>Code</th>
+                            <th class="text-end">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="tabPurpose">
+                          <%  purposeFoundItems.forEach(function(account){ %>
+                            <tr>
+                              <td><%= account.purpose %></td>
+                              <td> <%= account.code %>  </td>
+                              
+                              <td class="text-end">
+
+                                <span data-bs-toggle="modal" data-bs-target="#modal-addTransPurpose<%=account._id%>">
+                                  <button class="btn fs-h3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"> 
+                                    <i class="ti ti-pencil"></i>
+                                  </button>
+                                </span>
+                              
+                               <span data-bs-toggle="modal" data-bs-target="#modal-deleteAccount<%=account._id%>">
+                                  <button class="btn btn-icon fs-h3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Delete" > 
+                                    <i class="ti ti-trash"></i>
+                                   </button>
+                               </span>
+
+                              </td>
+                            </tr>
+     
+                            <div class="modal modal-blur fade" id="modal-deleteAccount<%=account._id%>" tabindex="-1" role="dialog" aria-hidden="true">
+                              <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  <div class="modal-status bg-danger"></div>
+                                  <div class="modal-body text-center py-4">
+                                    <i class="ti ti-alert-triangle fs--h1 text-danger"></i>
+                                    <h3><%=account.purpose%></h3>
+                                    <div class="text-muted">Do you really want to delete this purpose?</div>
+                                  </div>
+
+                                  <div class="modal-footer">
+                                    <div class="w-100">
+                                      <div class="row">
+                                        <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                            Cancel
+                                          </a></div>
+                                        <div class="col">
+                                          <a href="/delete/purpose/<%=account._id%>" class="btn btn-danger w-100" >Yes</a>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="modal modal-blur fade" id="modal-addTransPurpose<%=account._id%>" tabindex="-1" role="dialog" aria-hidden="true">
+                              <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                  <form action="/update/purpose/<%=account._id%>" method="post">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title">Update Purpose</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <div class="row">
+                                        <div class="col-lg-8">
+                                          <div class="mb-3">
+                                            <label class="form-label">Purpose</label>
+                                              <input type="text" name="purpose" class="form-control" value="<%= account.purpose %>"/>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                          <div class="mb-3">
+                                            <label class="form-label">Code</label>
+                                            <input type="text" name="purposeCode" class="form-control" value="<%= account.code %>"/>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  
+                                    <div class="modal-footer">
+                                      <a href="#"  class="btn btn-link link-secondary" data-bs-dismiss="modal">  Cancel </a>
+                                      <button type="submit" class="btn btn-primary ms-auto" name="accountID" value="<%=account._id%>" >
+                                        <i class="ti ti-device-floppy fs-h3 fw-light me-2"></i>
+                                        Save
+                                      </button>
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+
+                           <%  }) %>
+                          </tbody>
+                      </table>
+                    </div>
+                    <div class="card-footer d-flex align-items-center">
+           
+                    </div>
+                 
+                  </div>
+                </div>
+              </div>
+
+          
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $(document).ready(function(){
+          $("#searchPurpose").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tabPurpose tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
+    </script>
+
+<%- include('layout/modals') %>
+
+<%- include('layout/footer') %>

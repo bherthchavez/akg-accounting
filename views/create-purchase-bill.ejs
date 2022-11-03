@@ -1,0 +1,331 @@
+<%- include('layout/header') %>
+
+  <div class="page-wrapper">
+    <div class="container-xl">
+      <!-- Page title -->
+      <div class="page-header d-print-none">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+
+            <h2 class="page-title">
+              Create Purchase Bill
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    <form action="/supplier-bill" method="post" id="add-form" enctype="multipart/form-data">
+
+    <div class="page-body">
+      <div class="container-xl">
+        <div class="row row-cards">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                
+                      <div class="row mt-lg-2">
+                        <div class="col-lg-6">
+                         
+                          <div class="col"> 
+                            <div class="mb-3">
+                              <div class="form-label">Supplier</div>
+                              <select class="form-select" name="supplierID" required>
+                                <%  foundSupplier.forEach(function(account) { %>
+                                    <option value="<%=account._id%>" <%=supplierName===account.supplier_name ? 'selected' : '' %>><%=account.supplier_name%> </option> 
+                                <%  }) %>
+                                </select>
+
+                              <input type="text" id="numOfAcc" name="numOfItem" value="1" hidden>
+                            </div>
+                          </div>
+                          
+                          <div class="row">
+                            <div class="col-6">
+                              <div class="mb-3">
+                                <div class="form-label">Purchase Number</div>
+                                 <input type="text" name="puvNo" class="form-control" value="<%=puvno%>" readonly>
+                              
+                              </div>
+                            </div>
+                            <div class="col-6">
+                              <div class="mb-3">
+                                  <div class="form-label">Purchase Date</div>
+                                  <div class="input-icon mb-2">
+                                    <input name="date" class="form-control " placeholder="Select bill date" id="datepicker-icon" required/>
+                                    <span class="input-icon-addon">
+                                      <i class="ti ti-calendar"></i>
+                                    </span>
+                                  </div>
+                              </div>
+                            </div>
+                            <div class="col-6">
+                              <div class="mb-3"> 
+                                <div class="mb-3">
+                                <div class="form-label">Upload Documents</div>
+                                <input type="file" name="documents" class="form-control"  accept="image/*,.pdf" required>                        
+                              </div>
+                              </div>
+                            </div>
+      
+                            <div class="col-6">
+                              <div class="mb-3">
+                               
+                                <div class="form-label">Purchase Amount (QAR)</div>
+                                <input type="text" id="paymentAmount" class="form-control"  name="totalPayment"  placeholder="0.00" readonly required>
+      
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+      
+                        <div class="col-lg-6">
+                         
+                          <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" name="description" rows="9" required></textarea>
+                          </div>
+                         </div>
+                      
+                         <div class="row">
+                          <div class="col-lg-12 ">
+                            <div class="col-12 mt-lg-4">
+                                <div class="card">
+                                  <div class="tablescrolled" style="overflow-x:auto;">
+                                    <div class="table-responsive" style="width: 190%" >
+                                      <!-- <form action="/payment-voucher" method="post" id="add_form"> -->
+                                        
+                                      <table id="tableAddAcc" class="table table-vcenter table-nowrap" >
+                                        <thead>
+                                          <tr>
+                                           <th class="w-1"></th>
+                                            <th >Account</th>
+                                            <th class="w-25">Description</th>
+                                            <th >Cost Center</th>
+                                            <th >Invoice No</th>
+                                            <th >Invoice Date</th>
+                                            <th >LPO</th>
+                                            <th class="text-end">Price</th>
+                                            <th class="text-end ">Qty</th>
+                                            <th class="text-end">Total</th>
+                             
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td><button class="btn bg-red-lt rounded-pill m-0"  id ="deleteRow"><i class="ti ti-trash"></i> </button></td>
+                                            <td>
+                                              <select class="form-select" name="item" required>
+                                              <option value="" selected>--</option> 
+                                              <%  chartAccounts.forEach(function(account) { %>
+                                              <option value="<%=account.name%>"><%=account.name%> </option> 
+                                              <%  }) %>
+                                                </select>
+                                            </td>
+                                            <td class="text-muted">
+                                              <input type="text" name="itemDesc" class="form-control" required>
+                                            </td>
+                                            <td class="text-muted">
+                                              <select name="costCenter" class="form-select" required>
+                                                <option value="">--</option>
+                                                <%  costCenter.forEach(function(account) { %>
+                                                <option value="<%=account.cost_center%>"><%=account.cost_center%></option>
+                                                <%  }) %>
+                                              </select>
+                                            </td>
+                                            <td class="text-muted">
+                                              <input type="text" name="invNo" class="form-control" required>
+                                            </td>
+                                            <td class="text-muted">
+                                              <input type="date" name="invDate" class="form-control" >
+                                            </td>
+                                            <td class="text-muted">
+                                              <input type="text" name="lpo" class="form-control" required>
+                                            </td>
+                                            <td class="text-end ">
+                                              <input type="text" class="auto-calc price form-control form-control-rounded text-end me-5 " name="price" placeholder="0" required>
+                                            </td>
+                                            <td class="text-end">
+                                              <input type="text" class=" auto-calc qty form-control form-control-rounded text-end me-5 " name="qty" placeholder="0" required>
+                                            </td>
+                                            <td class="text-end">
+                                              <input type="text" class="accTotal form-control text-end me-5 " name="total" placeholder="0.00" hidden>
+                                              <div class="number-details ms-3 text-warning accTotalDiv"> 0.00 </div>
+                                            </td>
+                                            </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                  </div>
+                                    <div class="row align-items-center mt-3">
+                                      <div class="col-lg-6">
+                                        <button id="insertRowAcc" class="btn btn-secondary btn-pill">Add More</button>
+      
+                                      </div>
+                                      <div class="col-lg-6">
+                                        <div class="user-option me-3">
+                                        <div class="currency-formated-a">Total Amount (QAR)</div>
+                                        <div class="number-details ms-3 text-danger totalAmount fw-bold">0.00</div>
+                                      </div>
+                                      </div>
+                                    </div>
+                           
+                          </div>
+                        </div>
+                    </div>
+                      </div>
+
+              </div>
+                  
+                  <div class="card-footer">
+                    <div class="row align-items-center">
+                      <div class="col"></div>
+                      <div class="col-auto">
+                        <a href="/supplier-accounts" class="btn cancelBill">
+                          Cancel
+                        </a>
+                        
+                        <input type="submit" name="submit" value="Save Bill" class="btn btn-primary ms-3"/>
+                      
+                      </div>
+                    </div>
+                  </div>             
+                
+               
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    </form>
+
+    <script src="../dist/libs/nouislider/dist/nouislider.min.js" defer></script>
+    <script src="../dist/libs/litepicker/dist/litepicker.js" defer></script>
+    <script src="../dist/libs/tom-select/dist/js/tom-select.base.min.js" defer></script>
+    <script>
+    // @formatter:off
+    document.addEventListener("DOMContentLoaded", function () {
+      window.Litepicker && (new Litepicker({
+        element: document.getElementById('datepicker-icon'),
+        buttonText: {
+          previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>`,
+          nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>`,
+        },
+      }));
+    });
+    // @formatter:on
+  </script>
+    
+     <script>
+      $(document).ready(function(){
+        $(".cancelBill").on("click", function(){
+          $(".cancelBill").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
+        })
+      });
+
+      $('#datepicker-icon').val(new Date().toISOString().split('T')[0])
+      </script>
+
+     <script>
+      $(function () {
+        var count = 2;
+    
+        $("#insertRowAcc").on("click",  event => {
+    
+          event.preventDefault();
+         
+            var cols = "";
+            cols += '<tr><td><button class="btn bg-red-lt rounded-pill m-0"  id ="deleteRow"><i class="ti ti-trash"></i> </button></td>';
+            cols +=  '<td><select class="form-select" name="item" required><option value="" selected>--</option>';
+            
+                        "<%  chartAccounts.forEach(function(account) { %>"
+            cols+=   '<option value="<%=account.name%>"><%=account.name%></option>';
+                        "<%  }) %>"
+
+            cols +=  '</select> </td> <td ><input type="text" name="itemDesc" class="form-control" required /></td>';
+              
+            cols +=  '<td><select class="form-select" name="costCenter" required><option value="" selected>--</option>';
+
+                       "<%  costCenter.forEach(function(account) { %>"
+            cols+=   '<option value="<%=account.cost_center%>"><%=account.cost_center%></option> ';
+                       "<%  }) %>"
+
+            cols +=  '</select> </td> <td ><input type="text" name="invNo" class="form-control" required /></td>';
+            cols +=  '<td ><input type="date" name="invDate" class="form-control" ></td>';
+            cols +=  '<td ><input type="text" name="lpo" class="form-control" ></td>';
+            cols +=  '<td><input type="text" class="auto-calc price form-control form-control-rounded text-end me-5"  name="price" placeholder="0" required/></td>';
+            cols +=  '<td><input type="text" class="auto-calc qty form-control form-control-rounded text-end me-5"  name="qty" placeholder="0" required/></td>';
+            cols += ' <td class="text-end"><input type="text" class="accTotal form-control text-end me-5 " name="total" placeholder="0.00" hidden>  <div class="number-details ms-3 text-warning accTotalDiv"> 0.00 </div></td></tr>';
+
+          $('#numOfAcc').val($('#tableAddAcc tr').length);
+          $('#tableAddAcc').append(cols);
+              count++;
+           
+        });
+    
+          $("#tableAddAcc").on("click", "#deleteRow", function (event) {
+            $(this).closest("tr").remove();
+            $('#numOfAcc').val($('#tableAddAcc tr').length -1);
+             count -= 1;
+            
+        });
+    
+      });
+    </script>
+
+
+    <script>
+     $(document).ready(function(){ 
+
+        $(document).on("keyup change paste", "td > input.auto-calc", function() {
+
+          row = $(this).closest("tr");
+
+          price = row.find("td input.price").val();
+          qty = row.find("td input.qty").val();
+
+          row.find(".accTotal").val(price * qty);
+          
+         row.find(".accTotalDiv").html((price * qty).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+
+
+         
+           var sum = 0;
+
+          $("input.accTotal").each(function() {
+            sum += +$(this).val();
+          });
+
+          $("div .totalAmount").html((sum).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+
+          chanegPaymentAmmount();
+        });
+
+        $("#tableAddAcc").on('click','#deleteRow', function () {
+          var calculated_total_sum = 0;
+
+          $("#tableAddAcc .accTotal").each(function () {
+            var get_textbox_value = $(this).val();
+            if ($.isNumeric(get_textbox_value)) {
+                calculated_total_sum += parseFloat(get_textbox_value);
+                }                  
+              });
+              $("div .totalAmount").html((calculated_total_sum).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                chanegPaymentAmmount();
+        });
+
+        function chanegPaymentAmmount(){
+          $('#paymentAmount').val($('div .totalAmount').html()); 
+        }
+
+    });
+
+   
+    </script>
+
+
+      <%- include('layout/footer') %>

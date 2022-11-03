@@ -1,0 +1,164 @@
+<%- include('layout/header') %>
+
+<div class="page-wrapper">
+           <div class="container-xl">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+              <div class="row g-2 align-items-center">
+                <div class="col">
+                  <!-- Page pre-title -->
+                  <div class="page-pretitle">
+                    Settings
+                  </div>
+                  <h2 class="page-title">
+                    System Settings
+                  </h2>
+                </div>
+                <!-- Page title actions -->
+                <div class="col-12 col-md-auto ms-auto d-print-none">
+           
+                </div>
+      
+              </div>
+            </div>
+          </div>
+    <div class="page-body">
+  
+      <div class="container-xl">
+     
+        <div class="row">
+          <div class="col-12 col-md-4 px-4">
+            <div class="list-group list-group-transparent mb-3 ml-3">
+              <a class="list-group-item list-group-item-action d-flex align-items-center active" href="/system-settings">
+              System Setting
+                <small class="text-muted ms-auto"> <i class="ti ti-adjustments"></i></small>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-8">
+            <div class="row">
+
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header hd-right">
+                   
+                    <div class="row align-items-center">
+                      <div class="col">
+                         <h3 class="card-title">System Settings</h3>
+                       </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <form action="/update-system-settings" method="post">
+                      <div class="row">
+                      <div class="col-6">
+                          <div class="form-group mb-4">
+                            <label class="form-label">Bill Prefix</label>
+                            <small class="form-hint mb-2">Eg: PUV/2022</small>
+                            <div>
+                              <input type="text" name="billPrefix" value="<%= billSetting.prefix %>" class="form-control" required readonly/> 
+                            </div>
+                          </div>
+                          
+                          <div class="form-group">
+                            <label class="form-label">Bill Starting Number</label>
+                            <small class="form-hint mb-2">This will be the next bill number.</small>
+                            <div>
+                              <input type="number" name="billStartingNo" value="<%= billSetting.starting_no %>" class="form-control billNo" required/>
+                              <input type="number" name="actualBillStartingNo" value="<%= billSetting.starting_no %>" class="form-control actualBillNo" hidden/>
+                            </div>
+                          </div>
+                        </div>    
+                        <div class="col-6">
+                            <div class="form-group mb-4">
+                              <label class="form-label">Payment Voucher Prefix</label>
+                              <small class="form-hint mb-2">Eg: #PAV/2022</small>
+                              <div>
+                                <input type="text" name="payPrefix" value="<%= PAVSetting.prefix %>" class="form-control" required readonly/>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="form-label">Payment Voucher Starting Number </label>
+                              <small class="form-hint mb-2">This will be the next Payment Voucher number.</small>
+                              <div>
+                                <input type="number" name="payStartingNo" value="<%= PAVSetting.starting_no %>" class="form-control payID" required/>
+                                <input type="number" name="actualPayStartingNo" value="<%= PAVSetting.starting_no %>" class="form-control actualPayNo" hidden/>
+                                <input type="text" name="payID" value="<%= PAVSetting._id %>" class="form-control" hidden>
+                              </div>
+                            </div>
+                         </div>
+                    </div>
+                      <div class="form-footer">
+                        <button type="submit" name="billID" value="<%= billSetting._id %>" class="btn btn-primary">Save Changes</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+      </div>
+    </div>
+
+
+<script>
+
+  ' <% if (settingsAlert) {%>'
+
+        let getAlertBill = + "<%= settingsAlert.alertSetBill %>";
+        let getAlertPay = + "<%= settingsAlert.alertSetPay %>";
+
+        if(getAlertBill === 1){
+          $('.billNo').after('<small class="form-hint text-success billExist">Bill Number Prefix and starting number succesfully saved.</small>');
+          $('.billNo').addClass('is-valid mb-2');
+
+          setTimeout(function () {
+            $('.billExist').remove();
+            $('.billNo').removeClass('is-valid mb-2');
+            }, 10000);
+        }else if (getAlertBill === 2) {
+          $('.billNo').after('<small class="form-hint text-danger billExist">Bill Number already exist. <br> Please enter different prefix and starting number.</small>');
+            setTimeout(function () {
+              $('.billExist').remove();
+            }, 10000);
+        }else if (getAlertBill === 3) {
+          $('.billNo').addClass('is-invalid mb-2');
+
+          
+          $('.billNo').after('<small class="form-hint text-danger billExist">Bill Number should greater than current next bill no.</small>');
+            setTimeout(function () {
+              $('.billNo').removeClass('is-invalid mb-2');
+
+              $('.billExist').remove();
+            }, 10000);
+        }
+
+        if(getAlertPay === 1){
+          $('.payID').after('<small class="form-hint text-success payExist">Payment Voucher Prefix and starting number succesfully saved.</small>');
+          $('.payID').addClass('is-valid mb-2');
+          setTimeout(function () {
+            $('.payID').removeClass('is-valid mb-2');
+            $('.payExist').remove();
+            }, 10000);
+        }else if (getAlertPay === 2) {
+          $('.payID').after('<small class="form-hint text-danger payExist">Payment Voucher already exist. <br> Please enter different prefix and starting number.</small>');
+            setTimeout(function () {
+              $('.payExist').remove();
+            }, 10000);
+        }else if (getAlertPay === 3) {
+          
+          $('.payID').after('<small class="form-hint text-danger billExist">Bill Number should greater than current next bill no.</small>');
+          $('.payID').addClass('is-invalid mb-2');
+          setTimeout(function () {
+            $('.payID').removeClass('is-invalid mb-2');
+              $('.payExist').remove();
+            }, 10000);
+        }
+'  <%} %>'
+</script>
+
+<%- include('layout/modals') %>
+
+<%- include('layout/footer') %>

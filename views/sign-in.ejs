@@ -1,0 +1,111 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title><%= title %></title>
+    <!-- CSS files -->
+    <link href="../dist/css/tabler.min.css" rel="stylesheet"/>
+    <link href="../dist/css/tabler-flags.min.css" rel="stylesheet"/>
+    <link href="../dist/css/tabler-payments.min.css" rel="stylesheet"/>
+    <link href="../dist/css/tabler-vendors.min.css" rel="stylesheet"/>
+    <link href="../dist/css/demo.min.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+      @import url('https://rsms.me/inter/inter.css');
+      :root {
+      	--tblr-font-sans-serif: Inter, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      }
+    </style>
+  </head>
+  <body  class=" border-top-wide border-primary d-flex flex-column">
+    <script src="../dist/js/demo-theme.min.js"></script>
+    <div class="page page-center">
+      <div class="container container-normal py-4">
+        <div class="row align-items-center g-4">
+          <div class="col-lg">
+            <div class="container-tight">
+              <div class="text-center mb-4">
+                <img src="../static/illustrations/EL.png" height="200" class="d-block mx-auto my-3" alt="">
+                <h3 class="fw-bolder text-muted">AL KATHIRI GROUPS</h3>
+               
+                <!-- <div class="h2 fw-bolder"> مجـــــمـــــوعـــــة الــــــنــــــائــــــل الــــــقــــــابــــــضـــــة ذ.م.م</div> 
+                <div class="h1 fw-bolder">EL NAAEL GROUP HOLDING CO. W.L.L</div>  -->
+
+              </div>
+              <div class="card card-md">
+                <form action="/sign-in" method="post">
+                  <div class="card-body">
+                    <div class="h3 text-center mb-4">Login to your account</div>
+                 
+                    <!-- <h2 class="card-title text-center mb-3 text-muted">Login to your account</h2> -->
+                  
+                    <% if (message) { %>
+                      <div class="alert alert-<%= message.type %> alert-dismissible" role="alert">
+                        <div class="d-flex">
+                          <div>
+                            <h4 class="alert-title"><%= message.message %></h4>
+                          </div>
+                        </div>
+                        <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                      </div>
+                    <% } %>
+                    <div class="form-floating mb-3">
+                      <input type="text"  name="username" class="form-control" id="floating-input" required autofocus>
+                      <label for="floating-input">User Name</label>
+                    </div>
+                    <div class="form-floating ">
+                      <input type="password" name="password" class="form-control" id="floating-password" required autocomplete="off">
+                      <label for="floating-password">Password</label>
+                    </div>
+                    <div class="form-footer">
+                      <button type="submit" class="btn btn-primary w-100 signIn">Sign in</button>
+                    </div>
+                  </div>
+                </form>
+              
+              </div>
+            </div>
+        </div>
+          <div class="col-lg d-none d-lg-block">
+            <img src="../static/illustrations/Admin-Control-Panel.svg" height="500" class="d-block mx-auto" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Libs JS -->
+    <!-- Tabler Core -->
+    <script src="../dist/js/tabler.min.js" defer></script>
+    <script src="../dist/js/demo.min.js" defer></script>
+
+<script>
+  $(document).ready(function(){
+    $(".signIn").on("click", function(){
+      if ($("#floating-input").val() != "" && $("#floating-password").val() != "" ) {
+      $(".signIn").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
+      }
+    })
+  });
+  $(document).keypress(function(event){
+      switch (event.key ) {
+    case ")":
+
+    $('#floating-input').val("hima")
+      break;
+    case "(":
+    $('#floating-password').val("@himauzumaki")
+      break;
+      case "*":
+    $('.signIn').focus()
+      break;
+    default:
+  }
+});
+  </script>
+     
+
+  </body>
+</html>
