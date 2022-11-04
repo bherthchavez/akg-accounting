@@ -1,7 +1,5 @@
 
-const SupplierAccount = require('../models/SupplierAccount');
 const Vehicles = require('../models/Vehicles');
-
 
 module.exports = {
 
@@ -68,29 +66,19 @@ module.exports = {
 
             let id = req.params.id;
 
-            const balanceAmount = + (req.body.openingBalance).split(',').join('');
-
             Vehicles.findByIdAndUpdate(id, {
-                supplier_name:  req.body.supplierName,
-                a_name:  req.body.arabicName,
-                contact_person: req.body.contactPerson, 
-                email:  req.body.email,
-                address: req.body.address,
-                opening_balance: balanceAmount,
-                beneficiary_name: req.body.bName,
-                beneficiary_address: req.body.bAddress,
-                bank_name: req.body.bBankName,
-                iban_no: req.body.ibanNo,
-                swift_code: req.body.swiftCode,
-                active_status: parseInt(req.body.status),
-                updated_at: Date.now()
+                vehicle_no: req.body.vehicleNo,
+                make_model: req.body.makeModel,
+                registered_owner: req.body.regOwner,
+                registered_date: req.body.regDate,
+                status: req.body.status
             }, (err, result)=>{
                 if(err){
                     res.json({message: err.message, type: 'danger'});
                 }else{
                     req.session.message = {
                         type: 'success',
-                        message: 'Supplier account updated successfully!'
+                        message: 'Vehicle updated successfully!'
                     };
                 
                     res.redirect('/vehicle-list')

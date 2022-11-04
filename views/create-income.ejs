@@ -1,0 +1,176 @@
+<%- include('layout/header') %>
+
+  <div class="page-wrapper">
+    <div class="container-xl">
+      <!-- Page title -->
+      <div class="page-header d-print-none">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+
+            <h2 class="page-title">
+              Create Transaction Income
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form action="/transaction-income" method="post" id="add-form" enctype="multipart/form-data">
+
+      <div class="page-body">
+        <div class="container-xl">
+          <div class="row row-cards">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row mt-lg-2">
+                    <div class="col-lg-6">
+                      <div class="col">
+                        <div class="mb-3">
+                          <div class="form-label">Vehicle Model / Number</div>
+                          <select class="form-select" name="vehicleID" required>
+                            <% foundVehicles.forEach(function(vehicle) { %>
+                              <option value="<%=vehicle._id%>" <%=vehicleNo===vehicle.vehicle_no ? 'selected' : '' %>>
+                                <%=vehicle.make_model%> - <%=vehicle.vehicle_no%>
+                              </option>
+                              <% }) %>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row">
+
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                          <div class="mb-3">
+                            <div class="form-label">SL Number</div>
+                            <input type="text" name="slNo" class="form-control" required>
+                          </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                          <div class="mb-3">
+                            <div class="form-label">Voucher Number</div>
+                            <input type="text" name="vouNo" class="form-control" required>
+                          </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                          <div class="mb-3">
+                            <div class="form-label">Date</div>
+                            <div class="input-icon mb-2">
+                              <input name="date" class="form-control " placeholder="Select date"
+                                id="datepicker-icon" required/>
+                              <span class="input-icon-addon">
+                                <i class="ti ti-calendar"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                          <div class="mb-3">
+                            <div class="form-label">For the Month</div>
+                            <select class="form-select" name="forMonth" required>
+                              <% let month=new Date().toLocaleDateString("en-US", { month: 'long' }) %>
+                                <option value="January" <%-month==='January' && 'selected' %>>January</option>
+                                <option value="February" <%-month==='February' && 'selected' %>>February</option>
+                                <option value="March" <%-month==='March' && 'selected' %>>March</option>
+                                <option value="April" <%-month==='April' && 'selected' %>>April</option>
+                                <option value="May" <%-month==='May' && 'selected' %>>May</option>
+                                <option value="June" <%-month==='June' && 'selected' %>>June</option>
+                                <option value="July" <%-month==='July' && 'selected' %>>July</option>
+                                <option value="August" <%-month==='August' && 'selected' %>>August</option>
+                                <option value="September" <%-month==='September' && 'selected' %>>September</option>
+                                <option value="October" <%-month==='October' && 'selected' %>>October</option>
+                                <option value="November" <%-month==='November' && 'selected' %>>November</option>
+                                <option value="December" <%-month==='December' && 'selected' %>>December</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label">Particulars</label>
+                        <textarea class="form-control" name="particulars" rows="5" required></textarea>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                          <div class="mb-3">
+                            <label class="form-label">Total Rent</label>
+                            <div class="input-group mb-2">
+                              <span class="input-group-text fs-h5">
+                                QAR
+                              </span>
+                              <input type="text" class="form-control text-danger "
+                                name="totalRent" placeholder="0.00" required>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                          <div class="mb-3">
+                            <label class="form-label">Total Bills</label>
+                            <div class="input-group mb-2">
+                              <span class="input-group-text fs-h5">
+                                QAR
+                              </span>
+                              <input type="text" class="form-control text-danger"
+                                name="totalBills" placeholder="0.00" required>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <div class="row align-items-center">
+                    <div class="col"></div>
+                    <div class="col-auto">
+                      <a href="/vehicle-list" class="btn cancelBill">
+                        Cancel
+                      </a>
+                      <input type="submit" name="submit" value="Save Transaction" class="btn btn-primary ms-3 d-none d-sm-inline-block" />
+                      <input type="submit" name="submit" value="Save" class="btn btn-primary ms-3 d-sm-none" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+    <script src="../dist/libs/nouislider/dist/nouislider.min.js" defer></script>
+    <script src="../dist/libs/litepicker/dist/litepicker.js" defer></script>
+    <script src="../dist/libs/tom-select/dist/js/tom-select.base.min.js" defer></script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+        window.Litepicker && (new Litepicker({
+          element: document.getElementById('datepicker-icon'),
+          buttonText: {
+            previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>`,
+            nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>`,
+          },
+        }));
+      });
+    // @formatter:on
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        $(".cancelBill").on("click", function () {
+          $(".cancelBill").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
+        })
+      });
+
+      $('#datepicker-icon').val(new Date().toISOString().split('T')[0])
+    </script>
+
+
+
+
+    <%- include('layout/footer') %>

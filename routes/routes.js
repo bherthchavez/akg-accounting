@@ -42,16 +42,14 @@ router.get('/delete/bank-account/:id', bankAccController.deleteBankAcc);
 
 router.get('/vehicle-list', vehiclesController.viewVehicles);
 router.post('/add/vehicle', vehiclesController.addVehicle );
-// router.post('/update/supplier-accounts/:id', suppAccController.updateSuppAcc)
+router.post('/update/vehicle/:id', vehiclesController.updateVehicles)
 router.get('/delete/vehicle/:id', vehiclesController.deleteVehicle);
 
-router.get('/create-bill/:id', transactionController.cBillSuppAcc);
-router.get('/pay-bill/:id', transactionController.paySuppBill);
-router.post('/supplier-bill',upload, transactionController.supplierBill);
-router.post('/pay-supplier',upload, transactionController.paySupplier);
+router.get('/create-income/:id', transactionController.createIncome);
+router.get('/create-expenses/:id', transactionController.createExpenses);
 
-router.get('/print-letter/:id', transactionController.printLetter);
-router.get('/print-voucher/:id', transactionController.printVoucher);
+// router.get('/print-letter/:id', transactionController.printLetter);
+// router.get('/print-voucher/:id', transactionController.printVoucher);
 
 
 router.all('*', settings.err404);

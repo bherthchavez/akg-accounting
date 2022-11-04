@@ -9,10 +9,10 @@
               <div class="col">
                 <!-- Page pre-title -->
                 <div class="page-pretitle">
-                  Vehicles
+                  Accounts
                 </div>
                 <h2 class="page-title">
-                  Manage Vehicle List
+                  Vehicle List
                 </h2>
               </div>
               <!-- Page title actions -->
@@ -40,12 +40,10 @@
               <div class="col-12">
                 <div class="card">
                   <div class="card-header hd-right">
-                   
-                    <div class="row align-items-center">
-                      <div class="col">
-                         <h3 class="card-title">Vehicle List</h3>
-                       </div>
-                       <div class="col-auto">
+                    <div class="row row-cards">
+                    <div class="d-flex">
+                         <h3 >Manage Vehicle</h3>
+                       <div class="ms-auto text-muted">
                         <div class="input-icon">
                           <span class="input-icon-addon">
                             <i class="ti ti-search"></i>
@@ -54,6 +52,7 @@
                         </div>                     
                       </div>
                     </div>
+                  </div>
              
                   </div>
 
@@ -64,7 +63,7 @@
                           <thead>
                             <tr>
                               <th class="w-1">Action</th>
-                              <th>Mode / No.</th>
+                              <th>Model / Status / No.</th>
                               <th>Vehicle Details</th>
                               <th>Income</th>
                               <th>Expense</th>
@@ -89,42 +88,37 @@
                                 </div>
                               </td>
                               <td>
-                                <a class="text-formated-tbl" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#modal-suppAccUp<%=vehicle._id%>"> <%=vehicle.make_model%> 
-                                  </a>
-                                <div class="text-muted"> <%=vehicle.vehicle_no%> </div>
+                                <a class="fs-h3 fw-bold <%- (vehicle.status) === 'Available' ?  'text-success' : 'text-warning'  %>" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#modal-suppAccUp<%=vehicle._id%>"> <%=vehicle.make_model%> 
+                                  
+                                  <span class="fs-h6 fw-normal mb-1  <%- (vehicle.status) === 'Available' ?  'badge bg-green-lt' : 'badge bg-orange-lt'  %>">
+                                    <%=vehicle.status%>
+                                  </span>
+                                </a>
+                                <div class="text-muted mt-2"> <%=vehicle.vehicle_no%> </div>
                               </td>
                               <td>
-
                                 <div class="details-header"> Registered Owner</div>
                                 <div><%=vehicle.registered_owner%> </div> 
     
                                 <div class="details-header"> Registered Date </div>
                                 <div><%=vehicle.registered_date%> </div> 
-    
                               </td>
-                          
                               <td>
-                  
                                 <div class="currency-formated">QAR</div> <div class="number-formated-tbl text-success"><%= (vehicle.income).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')%></div>
-
                               </td>
                               <td>
                                 <div class="currency-formated">QAR</div> <div class="number-formated-tbl text-danger"><%= (vehicle.expenses).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')%></div>
                               </td>
-                            
                               <td >
-                                <!-- <div class="btn-list flex-nowrap float-end">
-                                  <form>
-                                    <a name="accountID" value="<%=vehicle._id%>" class="btn btn-pill btn-outline-success btn-sm"> Create LPO </a>
-                                  </form>
-                              
-
-                              
-                                  <a href="/create-bill/<%= vehicle._id %>" id="createBill" class="btn btn-pill btn-outline-success btn-sm "> Create Bill </a>
-                            
-                                  <a href="/pay-bill/<%=vehicle._id%>" id="payBill" class="btn btn-pill btn-outline-warning btn-sm ms-2"> Pay Bill </a> 
-                              
-                              </div> -->
+                              <div class="col-12 col-md-auto ms-auto d-print-none float-end">
+                                <div class="dropdown btn-list">
+                                    <button type="button" class="btn dropdown-toggle text-muted btn-pill" data-bs-toggle="dropdown"> New Transaction </button>
+                                    <div class="dropdown-menu">
+                                    <a  href="/create-income/<%= vehicle._id %>" class="dropdown-item text-muted mt-1"> Income  </a>
+                                    <a  href="/create-expenses/<%= vehicle._id %>" class="dropdown-item text-muted mt-1"> Expenses  </a>
+                                    </div>
+                                </div>
+                            </div>
                               </td>
                             </tr>
                           
@@ -137,7 +131,7 @@
                                   <div class="modal-body text-center py-4">
                                     <i class="ti ti-alert-triangle fs--h1 text-danger"></i>
                                     <h3><%=vehicle.vehicle_no%></h3>
-                                    <div class="text-muted">Do you really want to delete this vehicle?.</div>
+                                    <div class="text-muted">Do you really want to delete this vehicle?</div>
                                   </div>
                                   <div class="modal-footer">
                                     <div class="w-100">
@@ -160,7 +154,7 @@
                             <div class="modal modal-blur fade" id="modal-suppAccUp<%=vehicle._id%>" tabindex="-1" role="dialog" aria-hidden="true">
                               <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
-                                  <form action="/update/supplier-accounts/<%=vehicle._id%>" method="post">
+                                  <form action="/update/vehicle/<%=vehicle._id%>" method="post">
                                     <div class="modal-header">
                                       <h5 class="modal-title">Update vehicle</h5>
                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -190,16 +184,15 @@
                                         <div class="col-lg-6">
                                           <div class="mb-3">
                                             <label class="form-label">Registered Date</label>
-                                            <input type="email" name="regDate" class="form-control" value="<%=vehicle.registered_date%>" required/>
+                                            <input type="date" name="regDate" class="form-control" value="<%=vehicle.registered_date%>" required/>
                                           </div>
                                         </div>
                                         <div class="col-lg-6">
                                               <div>
                                                 <div class="form-floating">
                                                   <select class="form-select" name="status" id="floatingSelect<%=vehicle._id%>" aria-label="Floating label select example">
-                                                  
-                                                    <option value="1"<%=vehicle.active_status==='1' ? 'selected' : '' %>>Active</option>
-                                                    <option value="0"<%=vehicle.active_status==='0' ? 'selected' : '' %>>Inactive</option>
+                                                    <option value="Available"<%=vehicle.status==='Available' ? 'selected' : '' %>>Available</option>
+                                                    <option value="Rented"<%=vehicle.status==='Rented' ? 'selected' : '' %>>Rented</option>
                                                   </select>
 
                                                   <label for="floatingSelect<%=vehicle._id%>">Status</label>
@@ -268,15 +261,6 @@
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
               });
             });
-
-            $("#createBill").on("click", function(){
-              $("#createBill").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
-
-            })
-            $("#payBill").on("click", function(){
-              $("#payBill").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
-          
-            })
           });
           </script>
 

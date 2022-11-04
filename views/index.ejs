@@ -18,11 +18,11 @@
                     </button>
                     <div class="dropdown-menu">
                     <a class="dropdown-item text-muted mt-1" data-bs-toggle="offcanvas" href="#offcanvasStart" role="button" aria-controls="offcanvasStart"> <i class="ti ti-file-invoice fs-h3 me-2"></i>
-                        Create Bill 
+                        Create Expenses 
                     </a>
                     <a class="dropdown-item text-muted mt-1" data-bs-toggle="offcanvas" href="#offcanvasStart2" role="button" aria-controls="offcanvasStart"> 
                         <i class="ti ti-building-bank fs-h3 me-2"></i>
-                        Pay Supplier 
+                        Create Income  
                     </a>
                     </div>
                 </div>
@@ -32,25 +32,25 @@
         </div>
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasStart" aria-labelledby="offcanvasStartLabel">
             <div class="offcanvas-header">
-              <h2 class="offcanvas-title" id="offcanvasStartLabel">Select Supplier</h2>
+              <h2 class="offcanvas-title" id="offcanvasStartLabel">Select Vehicle</h2>
               <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
               <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
 
-              <% if (suppFound != '') { %>
+              <% if (vehicleFound != '') { %>
 
                   <form id="billForm" name="billForm">
                    
-                      <%suppFound.forEach(function(supp){%>
+                      <%vehicleFound.forEach(function(vehicle){%>
                       <label class="form-selectgroup-item flex-fill">
-                        <input type="radio" name="supplier" value="<%=supp._id%>" class="form-selectgroup-input" required/>
+                        <input type="radio" name="supplier" value="<%=vehicle._id%>" class="form-selectgroup-input" required/>
                         <div class="form-selectgroup-label d-flex align-items-center p-3">
                           <div class="me-3">
                             <span class="form-selectgroup-check"></span>
                           </div>
                           <div>
-                            <%=supp.supplier_name%>
+                            <%=vehicle.vehicle_no%>
                           </div>
                         </div>
                       </label>
@@ -68,13 +68,13 @@
                       <div class="text-center  my-5">
                         <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
                         <h1 class="text-secondary">Ohh!</h1>
-                        <p class="text-secondary"> No supplier found in the database!</p>
+                        <p class="text-secondary"> No vehicles found in the database!</p>
                       </div>
                       <div class="empty-action">
         
-                        <a  href="/supplier-accounts" class="btn btn-primary">
+                        <a  href="/vehicle-list" class="btn btn-primary">
                           <i class="ti ti-plus fs-h4 fw-light me-2"></i>
-                         Create supplier account
+                         Add new vehicle
                         </a>
                       </div>
                     </div>
@@ -379,62 +379,6 @@
       </div>
     </div>
   </div>
-
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasStart2" aria-labelledby="offcanvasStartLabel">
-    <div class="offcanvas-header">
-      <h2 class="offcanvas-title" id="offcanvasStartLabel">Select Supplier</h2>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-     
-        <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
-        
-          <%  if(suppPay.length == 0){%>
-
-            <div class="empty">
-              <div class="empty-img"><img src="./static/illustrations/emptydocument-svgrepo-com.svg" height="128" alt="">
-              </div>
-              <p class="empty-title">No Bill Created </p>
-              <p class="empty-subtitle text-muted">
-               Create suppler purchase bill first.
-              </p>
-              <div class="empty-action">
-
-                <a  class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasStart" role="button" aria-controls="offcanvasStart">
-                  <i class="ti ti-plus fs-h4 fw-light me-2"></i>
-                 Create purchase bill
-                </a>
-
-              </div>
-            </div>
-
-            <% }else{%>
-          <%suppPay.forEach(function(pay){%>
-            <form id="payForm" name="payForm">
-              <label class="form-selectgroup-item flex-fill">
-                <input type="radio" name="form-payment" value="<%=pay._id%>" class="form-selectgroup-input" required/>
-                <div class="form-selectgroup-label d-flex align-items-center p-3">
-                  <div class="me-3">
-                    <span class="form-selectgroup-check"></span>
-                  </div>
-                  <div>
-                    <%=pay.supplier_name%>
-                    <a href="#" class="ms-1 fs-h5" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip" data-bs-title="Bill Created">
-
-                    <span class="badge bg-orange ms-2"><%= parseFloat(pay.created_bills) %></span>
-                    </a>
-                  </div>
-                </div>
-              </label>
-              <%})%>
-              <div class="mt-4 text-end">
-                  <a href="" class="btn btn-primary w-50 fs-h3 payBill" > Pay Supplier <i class="ti ti-chevron-right fs-h3 ms-2"></i></a>
-              </div>
-                </form>
-              </div>
-          <%}%>
-        </div>
-    </div>
 
     <script>
         $(document).ready(function(){

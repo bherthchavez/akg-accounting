@@ -1,6 +1,6 @@
 let PaymentVoucher = require('../models/PaymentVoucher');
 const CostCenter = require('../models/CostCenter');
-const SupplierAccount = require('../models/SupplierAccount');
+const Vehicles = require('../models/Vehicles');
 
 module.exports = {
   
@@ -38,15 +38,10 @@ module.exports = {
                res.json({ message: errCc.message, type: 'danger' });
              } else {
 
-               SupplierAccount.find((errbill, suppFound) => {
+              Vehicles.find((errbill, vehicleFound) => {
                  if (err) {
                    res.json({ message: errbill.message, type: 'danger' });
                  } else {
-
-                   SupplierAccount.find({ created_bills: { $gte: 1 } }, (errpay, suppPay) => {
-                     if (errpay) {
-                       res.json({ message: errpay.message, type: 'danger' });
-                     } else {
 
                        let nav = {
                          title: "Dashboard",
@@ -55,14 +50,10 @@ module.exports = {
                        res.render('index', {
                          title: "EL - Accounting - Dashboard",
                          nav: nav,
-                         suppPay: suppPay,
-                         suppFound: suppFound,
+                         vehicleFound: vehicleFound,
                          foundcC: foundcC,
                          voucherItems: foundItem
                        });
-
-                     }
-                   });
                  }
                });
              }
