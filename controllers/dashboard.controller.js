@@ -1,13 +1,14 @@
 let PaymentVoucher = require('../models/PaymentVoucher');
 const CostCenter = require('../models/CostCenter');
 const Vehicles = require('../models/Vehicles');
+const Voucher = require('../models/Voucher');
 
 module.exports = {
   
     viewDashboard: async (req, res)=>{
      if (req.isAuthenticated()){
 
-      PaymentVoucher.find().sort({ created_at: -1 }).lean().exec((err, foundItem) => {
+      PaymentVoucher.find().sort({ createdAt: -1 }).lean().exec((err, foundItem) => {
          if (err) {
            res.json({ message: err.message, type: 'danger' });
          } else {

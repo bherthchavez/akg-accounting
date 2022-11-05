@@ -1,9 +1,17 @@
 const mongoose = require('mongoose')
 const AutoIncrement = require('mongoose-sequence')(mongoose)
 
-const incomeSchema = new mongoose.Schema(
+const voucherSchema = new mongoose.Schema(
     {
         voucher_no: {
+            type: String,
+            required: true
+        },
+        vehicle_id: {
+            type: String,
+            required: true
+        },
+        vehicle_no: {
             type: String,
             required: true
         },
@@ -20,18 +28,22 @@ const incomeSchema = new mongoose.Schema(
             required: true
         },
         total_rent: {
-            type: String,
+            type: Number,
             required: true
         },
         total_bills: {
-            type: String,
+            type: Number,
             required: true
         },
         cash_received: {
-            type: String,
+            type: Number,
             required: true
         },
         status: {
+            type: String,
+            required: true
+        },
+        created_by: {
             type: String,
             required: true
         }
@@ -41,10 +53,10 @@ const incomeSchema = new mongoose.Schema(
     }
 )
 
-incomeSchema.plugin(AutoIncrement, {
+voucherSchema.plugin(AutoIncrement, {
     inc_field: 'SL',
     id: 'slNumber',
     start_seq: 300
 })
 
-module.exports = mongoose.model('income', incomeSchema)
+module.exports = mongoose.model('voucher', voucherSchema)

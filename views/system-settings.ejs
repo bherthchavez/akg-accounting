@@ -54,16 +54,16 @@
                       <div class="row">
                       <div class="col-6">
                           <div class="form-group mb-4">
-                            <label class="form-label">Bill Prefix</label>
-                            <small class="form-hint mb-2">Eg: PUV/2022</small>
+                            <label class="form-label">Voucher Prefix</label>
+                            <small class="form-hint mb-2">Eg: #VOU/2022</small>
                             <div>
                               <input type="text" name="billPrefix" value="<%= billSetting.prefix %>" class="form-control" required readonly/> 
                             </div>
                           </div>
                           
                           <div class="form-group">
-                            <label class="form-label">Bill Starting Number</label>
-                            <small class="form-hint mb-2">This will be the next bill number.</small>
+                            <label class="form-label">Voucher Number</label>
+                            <small class="form-hint mb-2">This will be the next Voucher number.</small>
                             <div>
                               <input type="number" name="billStartingNo" value="<%= billSetting.starting_no %>" class="form-control billNo" required/>
                               <input type="number" name="actualBillStartingNo" value="<%= billSetting.starting_no %>" class="form-control actualBillNo" hidden/>
@@ -72,15 +72,15 @@
                         </div>    
                         <div class="col-6">
                             <div class="form-group mb-4">
-                              <label class="form-label">Payment Voucher Prefix</label>
-                              <small class="form-hint mb-2">Eg: #PAV/2022</small>
+                              <label class="form-label">Invoice Prefix</label>
+                              <small class="form-hint mb-2">Eg: #INV/2022</small>
                               <div>
                                 <input type="text" name="payPrefix" value="<%= PAVSetting.prefix %>" class="form-control" required readonly/>
                               </div>
                             </div>
                             <div class="form-group">
-                              <label class="form-label">Payment Voucher Starting Number </label>
-                              <small class="form-hint mb-2">This will be the next Payment Voucher number.</small>
+                              <label class="form-label">Invoice Starting Number </label>
+                              <small class="form-hint mb-2">This will be the next Invoice number.</small>
                               <div>
                                 <input type="number" name="payStartingNo" value="<%= PAVSetting.starting_no %>" class="form-control payID" required/>
                                 <input type="number" name="actualPayStartingNo" value="<%= PAVSetting.starting_no %>" class="form-control actualPayNo" hidden/>

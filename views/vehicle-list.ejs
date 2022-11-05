@@ -68,7 +68,6 @@
                               <th>Income</th>
                               <th>Expense</th>
                               <th></th>
-                            
                             </tr>
                           </thead>
                           <tbody id="suppAcc">
@@ -114,8 +113,14 @@
                                 <div class="dropdown btn-list">
                                     <button type="button" class="btn dropdown-toggle text-muted btn-pill" data-bs-toggle="dropdown"> New Transaction </button>
                                     <div class="dropdown-menu">
-                                    <a  href="/create-income/<%= vehicle._id %>" class="dropdown-item text-muted mt-1"> Income  </a>
-                                    <a  href="/create-expenses/<%= vehicle._id %>" class="dropdown-item text-muted mt-1"> Expenses  </a>
+                                      <%if (vehicle.status === 'Available') {%>
+                                        <a  href="/create-voucher/<%= vehicle._id %>" class="dropdown-item text-muted mt-1"> Rent  </a>
+                                        <% }else if (vehicle.status === 'Rented') {%>
+                                          <a  href="/create-expenses/<%= vehicle._id %>" class="dropdown-item text-muted mt-1"> Return  </a>
+                                        <%}%>
+                                       
+                                         <div class="dropdown-divider"></div>
+                                         <a  href="/create-invoice/<%= vehicle._id %>" class="dropdown-item text-muted mt-1"> Create Expenses  </a>
                                     </div>
                                 </div>
                             </div>

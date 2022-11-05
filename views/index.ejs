@@ -18,11 +18,11 @@
                     </button>
                     <div class="dropdown-menu">
                     <a class="dropdown-item text-muted mt-1" data-bs-toggle="offcanvas" href="#offcanvasStart" role="button" aria-controls="offcanvasStart"> <i class="ti ti-file-invoice fs-h3 me-2"></i>
-                        Create Expenses 
+                        Create Voucher 
                     </a>
                     <a class="dropdown-item text-muted mt-1" data-bs-toggle="offcanvas" href="#offcanvasStart2" role="button" aria-controls="offcanvasStart"> 
                         <i class="ti ti-building-bank fs-h3 me-2"></i>
-                        Create Income  
+                        Create Invoice  
                     </a>
                     </div>
                 </div>
@@ -97,10 +97,20 @@
               <div class="row align-items-center">
                 <div class="col">
                   <div class="fw-bold fs-h2">
-                    <%=  voucherItems.length %>
+                    <% if (vehicleFound != '') { %>
+                      <%  var sumOfRented = 0 %>
+                      <%  vehicleFound.forEach(function(vehicle){ %>
+                        <%  if(vehicle.status ==="Rented"){ %>
+                        <%  sumOfRented++  %>
+                        <% } %>
+                        <%  }) %>
+                        <%= sumOfRented %>
+                    <% } else { %>
+                      0
+                    <% } %> 
                   </div>
                   <div class="text-muted">
-                    Total Transactions
+                    Rented Vehicle
                   </div>
                 </div>
                 <div class="col-auto">
@@ -115,35 +125,30 @@
             
         <div class="col-sm-6 col-lg-3">
           <div class="card card-sm">
-            <!-- <div class="card-status-start bg-blue"></div> -->
+            <div class="card-status-bottom bg-green"></div>
             <div class="card-body">
-             
               <div class="row align-items-center">
-            
                 <div class="col">
                   <div class="fw-bold fs-h2">
-                    <span class="text-muted fs-h5 fw-normal">QAR</span>
-                    <% if (voucherItems != '') { %>
-
-                        <%  var sumOfCC = 0 %>
-                        <%  voucherItems.forEach(function(item){ %>
-                          <%  if(item.payment_mode !="Bank Transfer"){ %>
-                          <%  sumOfCC += + item.total_payment %>
-                          <% } %>
-                          <%  }) %>
-                        
-                          <%= (sumOfCC).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') %>
-                      <% } else { %>
-                        0.0
-                      <% } %> 
+                    <% if (vehicleFound != '') { %>
+                      <%  var sumOfRented = 0 %>
+                      <%  vehicleFound.forEach(function(vehicle){ %>
+                        <%  if(vehicle.status ==="Available"){ %>
+                        <%  sumOfRented++  %>
+                        <% } %>
+                        <%  }) %>
+                        <%= sumOfRented %>
+                    <% } else { %>
+                      0
+                    <% } %> 
                   </div>
                   <div class="text-muted">
-                    Total Cash and Cheque
+                    Available Vehicle
                   </div>
                 </div>
                 <div class="col-auto">
                   <span class="bg-green-lt avatar fs-h2 ">
-                    <i class="ti ti-cash-banknote"></i>
+                    <i class="ti ti-list-numbers"></i>
                    </span>
                 </div>
               </div>
@@ -161,26 +166,22 @@
                  
                   <div class="fw-bold fs-h2">
                     <span class="text-muted fs-h5 fw-light">QAR</span>
-                    <% if (voucherItems != '') { %>
-
-                        <%  var sumOfBT = 0 %>
-                        <%  voucherItems.forEach(function(item){ %>
-                          <%  if(item.payment_mode ==="Bank Transfer"){ %>
-                          <%  sumOfBT += + item.total_payment %>
-                          <% } %>
+                    <% if (vehicleFound != '') { %>
+                        <%  var sumOfExpenses = 0 %>
+                        <%  vehicleFound.forEach(function(vehicle){ %>
+                          <%  sumOfExpenses += + vehicle.expenses %>
                           <%  }) %>
-                          <%= (sumOfBT).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') %>
-                   
+                          <%= (sumOfExpenses).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') %>
                       <% } else { %>
                         0.0
                       <% } %> 
                   </div>
                   <div class="text-muted">
-                    Total Bank Transfer
+                    Total Expenses
                   </div>
                 </div>
                 <div class="col-auto">
-                  <span class="bg-green-lt avatar fs-h2 ">
+                  <span class="bg-red-lt avatar fs-h2 ">
                     <i class="ti ti-cash-banknote"></i>
                    </span>
                 </div>
@@ -191,31 +192,31 @@
 
         <div class="col-sm-6 col-lg-3">
           <div class="card card-sm">
-            <div class="card-status-bottom bg-green"></div>
             <div class="card-body">
+              <!-- <div class="card-status-top bg-blue"></div> -->
               <div class="row align-items-center">
+            
                 <div class="col">
+                 
                   <div class="fw-bold fs-h2">
-                    <span class="text-muted fs-h5 fw-normal">QAR</span>
-                    <% if (voucherItems != '') { %>
-                      
-                        <%  var sumOfTotal = 0 %>
-                        <%  voucherItems.forEach(function(item){ %>
-                          <%  sumOfTotal += + item.total_payment %>
-                          <%  }) %>
-                          <%=  (sumOfTotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') %>
-                  
-                     <% } else { %>
-                        0.0
-                      <% } %> 
+                    <span class="text-muted fs-h5 fw-light">QAR</span>
+                    <% if (vehicleFound != '') { %>
+                      <%  var sumOfIncome= 0 %>
+                      <%  vehicleFound.forEach(function(vehicle){ %>
+                        <%  sumOfIncome += + vehicle.income %>
+                        <%  }) %>
+                        <%= (sumOfIncome).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') %>
+                    <% } else { %>
+                      0.0
+                    <% } %> 
                   </div>
                   <div class="text-muted">
-                    Total Withdrawal
+                    Total Income
                   </div>
                 </div>
                 <div class="col-auto">
                   <span class="bg-green-lt avatar fs-h2 ">
-                    <i class="ti ti-cash"></i>
+                    <i class="ti ti-cash-banknote"></i>
                    </span>
                 </div>
               </div>

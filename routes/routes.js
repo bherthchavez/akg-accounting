@@ -45,8 +45,11 @@ router.post('/add/vehicle', vehiclesController.addVehicle );
 router.post('/update/vehicle/:id', vehiclesController.updateVehicles)
 router.get('/delete/vehicle/:id', vehiclesController.deleteVehicle);
 
-router.get('/create-income/:id', transactionController.createIncome);
-router.get('/create-expenses/:id', transactionController.createExpenses);
+router.get('/create-voucher/:id', transactionController.createVoucher);
+router.post('/transaction-voucher', transactionController.saveVoucher);
+
+router.get('/create-invoice/:id', transactionController.createExpenses);
+
 
 // router.get('/print-letter/:id', transactionController.printLetter);
 // router.get('/print-voucher/:id', transactionController.printVoucher);

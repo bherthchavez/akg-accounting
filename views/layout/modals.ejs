@@ -1,111 +1,95 @@
-
 <!-- Create Vehicle  -->
 
 <div class="modal modal-blur fade" id="modal-suppAccount" tabindex="-1" role="dialog" aria-hidden="true">
-<div class="modal-dialog modal-lg" role="document">
-  <div class="modal-content">
-    <form action="/add/vehicle" method="post">
-      <div class="modal-header">
-        <h5 class="modal-title">New Vehicle</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label class="form-label">Vehicle Number</label>
-              <div class="input-group input-group-flat">
-                <input type="text" name="vehicleNo" class="form-control" required  />
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label class="form-label">Make & Model</label>
-              <input type="text" name="makeModel" class="form-control" required/>
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label class="form-label">Registered Owner</label>
-              <input type="text" name="regOwner" class="form-control" required/>
-          </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label class="form-label">Registered Date</label>
-              <div class="input-icon mb-2">
-                <input name="date" class="form-control " placeholder="Select registered date"
-                  id="datepicker-icon" required/>
-                <span class="input-icon-addon">
-                  <i class="ti ti-calendar"></i>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6">
-              <!-- <div class="mb-3"> -->
-                <div>
-                  <div class="form-floating">
-                    <select class="form-select" name="status" id="floatingSelect" aria-label="Floating label select example">
-                      <option value="Available">Available</option>
-                      <option value="Rented">Rented</option>
-                    </select>
-                    <label for="floatingSelect">Status</label>
-                  </div>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <form action="/add/vehicle" method="post">
+        <div class="modal-header">
+          <h5 class="modal-title">New Vehicle</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="mb-3">
+                <label class="form-label">Vehicle Number</label>
+                <div class="input-group input-group-flat">
+                  <input type="text" name="vehicleNo" class="form-control" required />
                 </div>
-              <!-- </div> -->
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="mb-3">
+                <label class="form-label">Make & Model</label>
+                <input type="text" name="makeModel" class="form-control" required />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="mb-3">
+                <label class="form-label">Registered Owner</label>
+                <input type="text" name="regOwner" class="form-control" required />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="mb-3">
+                <label class="form-label">Registered Date</label>
+                <div class="input-icon mb-2">
+                  <input name="date" class="form-control " placeholder="Select registered date" id="datepicker-registered"
+                    required />
+                  <span class="input-icon-addon">
+                    <i class="ti ti-calendar"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="mb-3">
+                <label class="form-label">Istimara Expiration Date</label>
+                <div class="input-icon mb-2">
+                  <input name="date" class="form-control " placeholder="Select istimara expiration date"
+                    id="datepicker-istimara" required />
+                  <span class="input-icon-addon">
+                    <i class="ti ti-calendar"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="modal-footer">
-        <a  href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal"  >
-          Cancel
-        </a>
-        <button
-          type="submit"
-          class="btn btn-primary ms-auto"
-          >
-          <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-device-floppy"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path
-              d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"
-            ></path>
-            <circle cx="12" cy="14" r="2"></circle>
-            <polyline points="14 4 14 8 8 8 8 4"></polyline>
-          </svg> 
-          Save
-        </button>
-      </div>
-    </form>
+        <div class="modal-footer">
+          <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+            Cancel
+          </a>
+          <button type="submit" class="btn btn-primary ms-auto">
+            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="24"
+              height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
+              <circle cx="12" cy="14" r="2"></circle>
+              <polyline points="14 4 14 8 8 8 8 4"></polyline>
+            </svg>
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
 </div>
 
 
 
 <!-- Create Bank Account -->
 
- <div class="modal modal-blur fade" id="modal-addAccount" tabindex="-1"  role="dialog" aria-hidden="true">
+<div class="modal modal-blur fade" id="modal-addAccount" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <form action="/add/bank-accounts" method="post">
         <div class="modal-header">
           <h5 class="modal-title">New Bank Account</h5>
-          <button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="row">
@@ -120,13 +104,13 @@
             <div class="col-lg-6">
               <div class="mb-3">
                 <label class="form-label">Account Owner Name</label>
-                <input type="text" name="ownerName" class="form-control" required/>
+                <input type="text" name="ownerName" class="form-control" required />
               </div>
             </div>
             <div class="col-lg-6">
               <div class="mb-3">
                 <label class="form-label">Account Number</label>
-                <input type="text" name="accountNumber" class="form-control" required/>
+                <input type="text" name="accountNumber" class="form-control" required />
               </div>
             </div>
             <div class="col-lg-6">
@@ -143,33 +127,35 @@
             </div>
           </div>
         </div>
-        
+
         <div class="modal-body">
           <div class="row">
             <div class="col-lg-6">
               <div class="mb-3">
                 <label class="form-label">Bank Email</label>
-                <input type="email" name="bankEmail" class="form-control" required/>
+                <input type="email" name="bankEmail" class="form-control" required />
               </div>
             </div>
             <div class="col-lg-6">
               <div class="mb-3">
                 <label class="form-label">Opening Balance</label>
-                <input  type="text" class="form-control"  name="openingBalance" required placeholder="0.0"/>
+                <input type="text" class="form-control" name="openingBalance" required placeholder="0.0" />
               </div>
             </div>
-         
+
           </div>
         </div>
         <div class="modal-footer">
-          <a href="#" class="btn btn-link link-secondary"  data-bs-dismiss="modal" > Cancel </a>
-          <button type="submit"  class="btn btn-primary ms-auto" >
-            <svg xmlns="http://www.w3.org/2000/svg"class="icon icon-tabler icon-tabler-device-floppy"width="24"height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal"> Cancel </a>
+          <button type="submit" class="btn btn-primary ms-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="24"
+              height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path  d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
+              <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
               <circle cx="12" cy="14" r="2"></circle>
               <polyline points="14 4 14 8 8 8 8 4"></polyline>
-            </svg> 
+            </svg>
             Save
           </button>
         </div>
@@ -181,177 +167,135 @@
 
 
 <!-- Create Journal Entry -->
-<div class="modal modal-blur fade"id="modal-addJournal" tabindex="-1"role="dialog"aria-hidden="true">
+<div class="modal modal-blur fade" id="modal-addJournal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Journal Entry Create</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="mb-3">
-                <label class="form-label">Journal Number</label>
-                <div class="input-group input-group-flat">
-                  <input
-                    type="text"
-                    name="bankName"
-                    class="form-control"
-                    autocomplete="off"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="mb-3">
-                <label class="form-label">Date Transaction</label>
-                <input
-                  type="date"
-                  name="bankName"
-                  class="form-control"
-                  autocomplete="off"
-                />
+      <div class="modal-header">
+        <h5 class="modal-title">Journal Entry Create</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="mb-3">
+              <label class="form-label">Journal Number</label>
+              <div class="input-group input-group-flat">
+                <input type="text" name="bankName" class="form-control" autocomplete="off" />
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="mb-3">
-                <label class="form-label">Description</label>
-                <div class="input-group input-group-flat">
-                  <textarea
-                    class="form-control"
-                    name="example-textarea-input"
-                    rows="6"
-                    placeholder="Description"
-                  ></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="mb-3">
-                <label class="form-label">Reference</label>
-                <input type="text" name="accountNumber" class="form-control" />
-              </div>
+          <div class="col-lg-6">
+            <div class="mb-3">
+              <label class="form-label">Date Transaction</label>
+              <input type="date" name="bankName" class="form-control" autocomplete="off" />
             </div>
           </div>
         </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="col-12">
-                <div class="card">
-                  <div class="col-12 col-md-auto ms-auto d-print-none">
-                    <div class="btn-list2">
-                      <button id="insertRow" href="#" class="btn btn-primary">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="icon"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke="currentColor"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <line x1="12" y1="5" x2="12" y2="19" />
-                          <line x1="5" y1="12" x2="19" y2="12" />
-                        </svg>
-                        Add Account
-                      </button>
-                    </div>
-                  </div>
-                  <div class="table-responsive">
-                    <table id="tableAdd" class="table tableAdd table-vcenter card-table">
-                      <thead>
-                        <tr>
-                          <th>Account</th>
-                          <th>Debit</th>
-                          <th>Credit</th>
-                          <th>Description</th>
-                          <th class="text-end">Amount</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><select class="form-select" name="accountType"><option value="" selected>--</option> <option value="Current Account"> Current Account</option> <option value="Fixed Deposit"> Fixed Deposit </option><option value="Fusion Account"> Fusion Account </option></select></td>
-                          <td>
-                            <input type="text" name="accountNumber" class="form-control" placeholder="Debit" />
-                          </td>
-                          <td class="text-muted">
-                            <input type="text" name="accountNumber" class="form-control" placeholder="Credit"/>
-                          </td>
-                          <td>
-                            <input type="text" name="accountNumber" class="form-control" placeholder="Description" />
-                          </td>
-                          <td class="text-end">0.00</td>
-                        </tr>
-
-                        <tr>
-                          <td colspan="4" class="strong text-end">
-                            Total Debit (QAR)
-                          </td>
-                          <td class="text-end">0.00</td>
-                        </tr>
-
-                        <tr>
-                          <td colspan="4" class="strong text-end">
-                            Total Debit (QAR)
-                          </td>
-                          <td class="text-end">0.00</td>
-                        </tr>
-                      </tbody>
-                    </table>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              <div class="input-group input-group-flat">
+                <textarea class="form-control" name="example-textarea-input" rows="6"
+                  placeholder="Description"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="mb-3">
+              <label class="form-label">Reference</label>
+              <input type="text" name="accountNumber" class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="col-12">
+              <div class="card">
+                <div class="col-12 col-md-auto ms-auto d-print-none">
+                  <div class="btn-list2">
+                    <button id="insertRow" href="#" class="btn btn-primary">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                      </svg>
+                      Add Account
+                    </button>
                   </div>
                 </div>
+                <div class="table-responsive">
+                  <table id="tableAdd" class="table tableAdd table-vcenter card-table">
+                    <thead>
+                      <tr>
+                        <th>Account</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                        <th>Description</th>
+                        <th class="text-end">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><select class="form-select" name="accountType">
+                            <option value="" selected>--</option>
+                            <option value="Current Account"> Current Account</option>
+                            <option value="Fixed Deposit"> Fixed Deposit </option>
+                            <option value="Fusion Account"> Fusion Account </option>
+                          </select></td>
+                        <td>
+                          <input type="text" name="accountNumber" class="form-control" placeholder="Debit" />
+                        </td>
+                        <td class="text-muted">
+                          <input type="text" name="accountNumber" class="form-control" placeholder="Credit" />
+                        </td>
+                        <td>
+                          <input type="text" name="accountNumber" class="form-control" placeholder="Description" />
+                        </td>
+                        <td class="text-end">0.00</td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="4" class="strong text-end">
+                          Total Debit (QAR)
+                        </td>
+                        <td class="text-end">0.00</td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="4" class="strong text-end">
+                          Total Debit (QAR)
+                        </td>
+                        <td class="text-end">0.00</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <a
-            href="#"
-            class="btn btn-link link-secondary"
-            data-bs-dismiss="modal"
-          >
-            Cancel
-          </a>
-          <button
-            type="submit"
-            class="btn btn-primary ms-auto"
-            data-bs-dismiss="modal"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="icon icon-tabler icon-tabler-device-floppy"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path
-                d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"
-              ></path>
-              <circle cx="12" cy="14" r="2"></circle>
-              <polyline points="14 4 14 8 8 8 8 4"></polyline>
-            </svg>
-            Save
-          </button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+          Cancel
+        </a>
+        <button type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="24"
+            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
+            <circle cx="12" cy="14" r="2"></circle>
+            <polyline points="14 4 14 8 8 8 8 4"></polyline>
+          </svg>
+          Save
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -359,24 +303,13 @@
 
 <!-- Create User Account -->
 
-<div
-  class="modal modal-blur fade"
-  id="modal-addUser"
-  tabindex="-1"
-  role="dialog"
-  aria-hidden="true"
->
+<div class="modal modal-blur fade" id="modal-addUser" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <form action="/sign-up" method="post">
         <div class="modal-header">
           <h5 class="modal-title">Create New User</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="row">
@@ -384,12 +317,7 @@
               <div class="mb-3">
                 <label class="form-label">Name</label>
                 <div class="input-group input-group-flat">
-                  <input
-                    type="text"
-                    name="name"
-                    class="form-control"
-                    autocomplete="off"
-                  />
+                  <input type="text" name="name" class="form-control" autocomplete="off" />
                 </div>
               </div>
             </div>
@@ -403,7 +331,7 @@
                   <option value="Manager">Manager</option>
                   <option value="User">User</option>
                 </select>
-               
+
               </div>
             </div>
           </div>
@@ -419,43 +347,24 @@
             <div class="col-lg-6">
               <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input name="password" type="password" class="form-control"  placeholder="Password"  autocomplete="off">
+                <input name="password" type="password" class="form-control" placeholder="Password" autocomplete="off">
 
               </div>
             </div>
-        
+
           </div>
         </div>
         <div class="modal-footer">
-          <a
-            href="#"
-            class="btn btn-link link-secondary"
-            data-bs-dismiss="modal"
-          >
+          <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
             Cancel
           </a>
-          <button
-            type="submit"
-            class="btn btn-primary ms-auto"
-            data-bs-dismiss="modal"
-          >
+          <button type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
             <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="icon icon-tabler icon-tabler-device-floppy"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="24"
+              height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path
-                d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"
-              ></path>
+              <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
               <circle cx="12" cy="14" r="2"></circle>
               <polyline points="14 4 14 8 8 8 8 4"></polyline>
             </svg>
@@ -483,7 +392,7 @@
             <div class="col-lg-8">
               <div class="mb-3">
                 <label class="form-label">Account Name</label>
-                  <input type="text" name="ledgerName" class="form-control" required>
+                <input type="text" name="ledgerName" class="form-control" required>
               </div>
             </div>
             <div class="col-lg-4">
@@ -494,9 +403,9 @@
             </div>
           </div>
         </div>
-      
+
         <div class="modal-footer">
-          <a href="#"  class="btn btn-link link-secondary" data-bs-dismiss="modal">  Cancel </a>
+          <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal"> Cancel </a>
           <button type="submit" class="btn btn-primary ms-auto">
             <i class="ti ti-device-floppy fs-3 fw-light me-2"></i>
             Save
@@ -523,7 +432,7 @@
             <div class="col-lg-6">
               <div class="mb-3">
                 <label class="form-label">Cost Center</label>
-                  <input type="text" name="costCenter" class="form-control" required>
+                <input type="text" name="costCenter" class="form-control" required>
               </div>
             </div>
             <div class="col-lg-6">
@@ -534,11 +443,18 @@
             </div>
           </div>
         </div>
-      
+
         <div class="modal-footer">
-          <a href="#"  class="btn btn-link link-secondary" data-bs-dismiss="modal">  Cancel </a>
+          <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal"> Cancel </a>
           <button type="submit" class="btn btn-primary ms-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path  d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" ></path> <circle cx="12" cy="14" r="2"></circle> <polyline points="14 4 14 8 8 8 8 4"></polyline></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="24"
+              height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
+              <circle cx="12" cy="14" r="2"></circle>
+              <polyline points="14 4 14 8 8 8 8 4"></polyline>
+            </svg>
             Save
           </button>
         </div>
@@ -562,7 +478,7 @@
             <div class="col-lg-6">
               <div class="mb-3">
                 <label class="form-label">Purpose</label>
-                  <input type="text" name="purpose" class="form-control" required>
+                <input type="text" name="purpose" class="form-control" required>
               </div>
             </div>
             <div class="col-lg-6">
@@ -573,11 +489,18 @@
             </div>
           </div>
         </div>
-      
+
         <div class="modal-footer">
-          <a href="#"  class="btn btn-link link-secondary" data-bs-dismiss="modal">  Cancel </a>
+          <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal"> Cancel </a>
           <button type="submit" class="btn btn-primary ms-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path  d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" ></path> <circle cx="12" cy="14" r="2"></circle> <polyline points="14 4 14 8 8 8 8 4"></polyline></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="24"
+              height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
+              <circle cx="12" cy="14" r="2"></circle>
+              <polyline points="14 4 14 8 8 8 8 4"></polyline>
+            </svg>
             Save
           </button>
         </div>
@@ -594,7 +517,24 @@
   // @formatter:off
   document.addEventListener("DOMContentLoaded", function () {
     window.Litepicker && (new Litepicker({
-      element: document.getElementById('datepicker-icon'),
+      element: document.getElementById('datepicker-registered'),
+      buttonText: {
+        previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>`,
+        nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>`,
+      },
+    }));
+  });
+  // @formatter:on
+  $('#datepicker-registered').val(new Date().toISOString().split('T')[0])
+</script>
+
+<script>
+  // @formatter:off
+  document.addEventListener("DOMContentLoaded", function () {
+    window.Litepicker && (new Litepicker({
+      element: document.getElementById('datepicker-istimara'),
       buttonText: {
         previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>`,
@@ -604,5 +544,5 @@
     }));
   });
 // @formatter:on
-$('#datepicker-icon').val(new Date().toISOString().split('T')[0])
+$('#datepicker-istimara').val(new Date().toISOString().split('T')[0])
 </script>

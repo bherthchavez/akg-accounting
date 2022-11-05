@@ -18,6 +18,28 @@ const vehiclesSchema = new mongoose.Schema(
         type:  String,
         required: true,
     },
+    istimara_exdate: {
+        type:  String,
+        required: true,
+    },
+    istimara_info: [{
+        voucher_no:  String,
+        date: String,
+        for_month:  String,
+        particulars:  String,
+        total_rent:  String,
+        total_bills:   String,
+        cash_received: String,
+    }],
+    rented_info: [{
+        voucher_no:  String,
+        date: String,
+        for_month:  String,
+        particulars:  String,
+        total_rent:  String,
+        total_bills:   String,
+        cash_received: String,
+    }],
     expenses: {
         type:  Number,
         required: true,

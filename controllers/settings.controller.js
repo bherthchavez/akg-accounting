@@ -403,34 +403,66 @@ module.exports = {
  //--------------------------------------------------------  SYSTEM SETTINGS //
     viewSysSettings : async (req, res) =>{
         if (req.isAuthenticated()){
-          
-                    Settings.findOne({name: "bill_settings"}, (err, billSetting)=>{
+
+            const settings1 = new Settings({
+                name: "voucher_settings",
+                prefix: "#VOU/2022/",
+                starting_no: "100",
+                created_by: "Admin"
+              });
+              
+              const settings2 = new Settings({
+                name: "invoice_settings",
+                prefix: "#INV/2022/",
+                starting_no: "100",
+                created_by: "Admin"
+              });
+
+              const defaultSettings = [settings1,settings2];
+
+              Settings.find({}, (err, foundItems)=>{
+                if (foundItems.length === 0) {
+                    Settings.insertMany(defaultSettings, err =>{
+                    if (err) {
+                      res.json({message: err.message});
+                    } else {
+                      console.log("Successfully saved settings to DB.");
+                    }
+                });
+                res.redirect("/system-settings");
+               } else {
+
+                Settings.findOne({name: "voucher_settings"}, (err, billSetting)=>{
+                    if (err) {
+                        res.json({message: err.message});
+                    } else {
+
+                        Settings.findOne({name: "invoice_settings"}, (err, PAVSetting)=>{
                         
-                        if (err) {
-                            res.json({message: err.message});
-                        } else {
+                            if (err) {
+                                res.json({message: err.message});
+                            } else {
+                                let nav = {
+                                    title: "Settings",
+                                    child: "System Settings"
+                                };
+                                
 
-                            Settings.findOne({name: "payment_voucher_settings"}, (err, PAVSetting)=>{
-                            
-                                if (err) {
-                                    res.json({message: err.message});
-                                } else {
-                                    let nav = {
-                                        title: "Settings",
-                                        child: "System Settings"
-                                    };
-                                    
-
-                                    res.render('system-settings', {title: "Settings - System Settings",
-                                    nav: nav,
-                                    billSetting: billSetting,
-                                    PAVSetting:PAVSetting,
-                                });
-
-                                }
+                                res.render('system-settings', {title: "Settings - System Settings",
+                                nav: nav,
+                                billSetting: billSetting,
+                                PAVSetting:PAVSetting,
                             });
-                        }
-                    });
+
+                            }
+                        });
+                    }
+                });
+
+               }
+              });
+          
+                   
                
 
         }else{

@@ -157,10 +157,10 @@
             <div class="modal-status bg-success"></div>
             <div class="modal-body text-center py-4">
               <i class="ti ti-circle-check text-green fs--h1"></i>
-              <% if (message.tType === 'bill'){ %>
-                <h3 mt-2>Bill created</h3>
+              <% if (message.tType === 'voucher'){ %>
+                <h3 mt-2>Voucher Created</h3>
                 <% }else{ %>
-                <h3 mt-2>Payment voucher created</h3>
+                <h3 mt-2>Invoice Created</h3>
               <% } %>
               <div class="text-muted"><%= message.message %></div>
             </div>

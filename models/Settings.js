@@ -16,16 +16,10 @@ const settingsSchema = new mongoose.Schema({
     created_by: {
         type:  String,
         required: true,
-    },
-    updated_at: {
-        type:  Date,
-        required: true,
-    },
-    created_at: {
-        type: Date,
-        required: true,
-        default: Date.now,
-    },
+    }
+},
+{
+    timestamps: true
 });
 
 
