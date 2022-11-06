@@ -36,9 +36,9 @@ const vehiclesSchema = new mongoose.Schema(
         date: String,
         for_month:  String,
         particulars:  String,
-        total_rent:  String,
-        total_bills:   String,
-        cash_received: String,
+        total_rent:  Number,
+        total_bills:   Number,
+        cash_received: Number,
     }],
     expenses: {
         type:  Number,

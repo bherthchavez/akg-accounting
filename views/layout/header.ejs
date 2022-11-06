@@ -82,7 +82,7 @@
           </div>
         </header>
 
-        <% if (message && message.type != 'transac') { %>
+        <% if (message && message.type != 'transac' && message.type != 'rentInfo') { %>
           <div class="alert-notif2">
             <div class="alert alert-important alert-<%= message.type %> alert-dismissible alertNotif2" role="alert">
               <div class="d-flex">

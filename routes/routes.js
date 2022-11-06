@@ -45,13 +45,14 @@ router.post('/add/vehicle', vehiclesController.addVehicle );
 router.post('/update/vehicle/:id', vehiclesController.updateVehicles)
 router.get('/delete/vehicle/:id', vehiclesController.deleteVehicle);
 
-router.get('/create-voucher/:id', transactionController.createVoucher);
+router.get('/create-voucher/:id', transactionController.createVoucher); 
 router.post('/transaction-voucher', transactionController.saveVoucher);
 
 router.get('/create-invoice/:id', transactionController.createExpenses);
 
 
-// router.get('/print-letter/:id', transactionController.printLetter);
+router.get('/rent-info/:id', vehiclesController.viewRentInfo);
+router.get('/return/:id', vehiclesController.returnVehicle);
 // router.get('/print-voucher/:id', transactionController.printVoucher);
 
 

@@ -34,7 +34,7 @@ module.exports = {
                                     res.render('create-voucher', {
                                         title: "Create Voucher",
                                         nav: nav,
-                                        vouNo:vouNo,
+                                        vouNo: vouNo,
                                         foundVehicles: foundVehicles,
                                         vehicleNo: foundItem.vehicle_no,
 
@@ -73,10 +73,28 @@ module.exports = {
                         total_rent: totalRent,
                         total_bills: totalBills,
                         cash_received: totalRecieved,
-                        status: "Pending",
+                        status: "Active",
                         created_by: req.user.name
                     });
                     voucher.save();
+
+                    const rentInfo = ({
+                        voucher_no: req.body.vouNo,
+                        date: req.body.date,
+                        for_month: req.body.forMonth,
+                        particulars: req.body.particulars,
+                        total_rent: totalRent,
+                        total_bills: totalBills,
+                        cash_received: totalRecieved
+                    });
+                    Vehicles.findOne({ _id: req.body.vehicleID},(err, foundV)=>{
+                        if(err){
+                          res.json({message: err.message, type: 'danger'});
+                        }else{
+                            foundV.rented_info.push(rentInfo);
+                            foundV.save();
+                        }
+                        });
 
                     let totalIncome = 0;
 
@@ -96,15 +114,15 @@ module.exports = {
                         });
 
 
-                    Settings.findOne({name: "voucher_settings"}, (err, voucherSetting)=>{
+                    Settings.findOne({ name: "voucher_settings" }, (err, voucherSetting) => {
                         let vouNo = parseFloat(voucherSetting.starting_no) + 1;
-                            Settings.findOneAndUpdate({name: "voucher_settings"},
-                            {$set: {starting_no:  vouNo}}, (err,)=>{
-                                if (err){
-                                res.json({message: err.message, type: 'danger'});
+                        Settings.findOneAndUpdate({ name: "voucher_settings" },
+                            { $set: { starting_no: vouNo } }, (err,) => {
+                                if (err) {
+                                    res.json({ message: err.message, type: 'danger' });
                                 }
-                                });
-                        });
+                            });
+                    });
 
                     req.session.message = {
                         type: 'transac',

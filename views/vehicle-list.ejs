@@ -1,273 +1,362 @@
-
 <%- include('layout/header') %>
 
-      <div class="page-wrapper">
-        <div class="container-xl">
-          <!-- Page title -->
-          <div class="page-header d-print-none">
-            <div class="row g-2 align-items-center">
-              <div class="col">
-                <!-- Page pre-title -->
-                <div class="page-pretitle">
-                  Accounts
-                </div>
-                <h2 class="page-title">
-                  Vehicle List
-                </h2>
-              </div>
-              <!-- Page title actions -->
-              <div class="col-12 col-md-auto ms-auto d-print-none">
-                <div class="btn-list">
-                 
-                  <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-suppAccount">
-                    <i class="ti ti-plus fs-h3 fw-light me-2"> </i>
-                    Add Vehicle
-                  </a>
-                  <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-addAccount" aria-label="Create new bank account">
-                    <i class="ti ti-plus fs-h4 fw-light"> </i>
-                  </a> 
-                </div>
-              </div>
+  <div class="page-wrapper">
+    <div class="container-xl">
+      <!-- Page title -->
+      <div class="page-header d-print-none">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+            <!-- Page pre-title -->
+            <div class="page-pretitle">
+              Accounts
+            </div>
+            <h2 class="page-title">
+              Vehicle List
+            </h2>
+          </div>
+          <!-- Page title actions -->
+          <div class="col-12 col-md-auto ms-auto d-print-none">
+            <div class="btn-list">
 
+              <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                data-bs-target="#modal-suppAccount">
+                <i class="ti ti-plus fs-h3 fw-light me-2"> </i>
+                Add Vehicle
+              </a>
+              <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
+                data-bs-target="#modal-addAccount" aria-label="Create new bank account">
+                <i class="ti ti-plus fs-h4 fw-light"> </i>
+              </a>
             </div>
           </div>
+
         </div>
-        <div class="page-body">
-          <div class="container-xl">
-            <div class="row row-deck row-cards">
-            
-             
-              <div class="col-12">
-                <div class="card">
-                  <div class="card-header hd-right">
-                    <div class="row row-cards">
-                    <div class="d-flex">
-                         <h3 >Manage Vehicle</h3>
-                       <div class="ms-auto text-muted">
-                        <div class="input-icon">
-                          <span class="input-icon-addon">
-                            <i class="ti ti-search"></i>
-                          </span>
-                          <input type="text" id="searchSA"  class="form-control" placeholder="Search…" aria-label="Search in website">
-                        </div>                     
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="container-xl">
+        <div class="row row-deck row-cards">
+
+
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header hd-right">
+                <div class="row row-cards">
+                  <div class="d-flex">
+                    <h3>Manage Vehicle</h3>
+                    <div class="ms-auto text-muted">
+                      <div class="input-icon">
+                        <span class="input-icon-addon">
+                          <i class="ti ti-search"></i>
+                        </span>
+                        <input type="text" id="searchSA" class="form-control" placeholder="Search…"
+                          aria-label="Search in website">
                       </div>
                     </div>
                   </div>
-             
-                  </div>
+                </div>
 
-                  <div class=" card-table table-responsive" >
-                    <div class="table-responsive"  style="max-height: 45rem">
-                      <% if (vehicleList != '') { %>
-                        <table class="table card-table table-vcenter text-nowrap datatable" >
-                          <thead>
-                            <tr>
-                              <th class="w-1">Action</th>
-                              <th>Model / Status / No.</th>
-                              <th>Vehicle Details</th>
-                              <th>Income</th>
-                              <th>Expense</th>
-                              <th></th>
-                            </tr>
-                          </thead>
-                          <tbody id="suppAcc">
-                            <%  vehicleList.forEach(function(vehicle){ %>
-                            <tr>
-                              <td>
-                                <div class="col-auto">
-                                  <div class="dropdown">
-                                    <a class="btn btn-action" role="button"  data-bs-toggle="dropdown" aria-expanded="false">
-                                      <i class="ti ti-dots-vertical fs-h3"></i>      
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                      <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-suppAccUp<%=vehicle._id%>">Edit / View</a>
-                                      <a  class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#modal-deleteVehicle<%=vehicle._id%>">Delete</a>
-                                    </div>
+              </div>
+
+              <div class=" card-table table-responsive">
+                <div class="table-responsive" style="max-height: 45rem">
+                  <% if (vehicleList !='' ) { %>
+                    <table class="table card-table table-vcenter text-nowrap datatable">
+                      <thead>
+                        <tr>
+                          <th class="w-1">Action</th>
+                          <th>Model / Status / No.</th>
+                          <th>Vehicle Details</th>
+                          <th>Income</th>
+                          <th>Expense</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody id="suppAcc">
+                        <% vehicleList.forEach(function(vehicle){ %>
+                          <tr>
+                            <td>
+                              <div class="col-auto">
+                                <div class="dropdown">
+                                  <a class="btn btn-action" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="ti ti-dots-vertical fs-h3"></i>
+                                  </a>
+                                  <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" data-bs-toggle="modal"
+                                      data-bs-target="#modal-vehicleUp<%=vehicle._id%>">Edit / View</a>
+                                    <a class="dropdown-item text-danger" data-bs-toggle="modal"
+                                      data-bs-target="#modal-deleteVehicle<%=vehicle._id%>">Delete</a>
+                                     
                                   </div>
-                                </div>
-                              </td>
-                              <td>
-                                <a class="fs-h3 fw-bold <%- (vehicle.status) === 'Available' ?  'text-success' : 'text-warning'  %>" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#modal-suppAccUp<%=vehicle._id%>"> <%=vehicle.make_model%> 
                                   
-                                  <span class="fs-h6 fw-normal mb-1  <%- (vehicle.status) === 'Available' ?  'badge bg-green-lt' : 'badge bg-orange-lt'  %>">
+                              </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="/rent-info/<%=vehicle._id%>" class="fs-h3 fw-bold <%- (vehicle.status) === 'Available' ?  'text-success' : 'text-warning'  %>">
+                                <%=vehicle.make_model%>
+                                  <span
+                                    class="fs-h6 fw-normal mb-1  <%- (vehicle.status) === 'Available' ?  'badge bg-green-lt' : 'badge bg-orange-lt'  %>">
                                     <%=vehicle.status%>
                                   </span>
-                                </a>
-                                <div class="text-muted mt-2"> <%=vehicle.vehicle_no%> </div>
-                              </td>
-                              <td>
-                                <div class="details-header"> Registered Owner</div>
-                                <div><%=vehicle.registered_owner%> </div> 
-    
-                                <div class="details-header"> Registered Date </div>
-                                <div><%=vehicle.registered_date%> </div> 
-                              </td>
-                              <td>
-                                <div class="currency-formated">QAR</div> <div class="number-formated-tbl text-success"><%= (vehicle.income).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')%></div>
-                              </td>
-                              <td>
-                                <div class="currency-formated">QAR</div> <div class="number-formated-tbl text-danger"><%= (vehicle.expenses).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')%></div>
-                              </td>
-                              <td >
+                              </a>
+                              <div class="text-muted mt-2">
+                                <%=vehicle.vehicle_no%>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="details-header"> Registered Owner</div>
+                              <div>
+                                <%=vehicle.registered_owner%>
+                              </div>
+
+                              <div class="details-header"> Registered Date </div>
+                              <div>
+                                <%=vehicle.registered_date%>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="currency-formated">QAR</div>
+                              <div class="number-formated-tbl text-success">
+                                <%= (vehicle.income).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' )%>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="currency-formated">QAR</div>
+                              <div class="number-formated-tbl text-danger">
+                                <%= (vehicle.expenses).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' )%>
+                              </div>
+                            </td>
+                            <td>
                               <div class="col-12 col-md-auto ms-auto d-print-none float-end">
                                 <div class="dropdown btn-list">
-                                    <button type="button" class="btn dropdown-toggle text-muted btn-pill" data-bs-toggle="dropdown"> New Transaction </button>
-                                    <div class="dropdown-menu">
-                                      <%if (vehicle.status === 'Available') {%>
-                                        <a  href="/create-voucher/<%= vehicle._id %>" class="dropdown-item text-muted mt-1"> Rent  </a>
-                                        <% }else if (vehicle.status === 'Rented') {%>
-                                          <a  href="/create-expenses/<%= vehicle._id %>" class="dropdown-item text-muted mt-1"> Return  </a>
+                                  <button type="button" class="btn dropdown-toggle text-muted btn-pill"
+                                    data-bs-toggle="dropdown"> New Transaction </button>
+                                  <div class="dropdown-menu">
+                                    <%if (vehicle.status==='Available' ) {%>
+                                      <a href="/create-voucher/<%= vehicle._id %>"
+                                        class="dropdown-item text-muted mt-1"> Rent </a>
+                                      <% }else if (vehicle.status==='Rented' ) {%>
+                                        <a href="/return/<%= vehicle._id %>"
+                                          class="dropdown-item text-muted mt-1"> Return </a>
                                         <%}%>
-                                       
-                                         <div class="dropdown-divider"></div>
-                                         <a  href="/create-invoice/<%= vehicle._id %>" class="dropdown-item text-muted mt-1"> Create Expenses  </a>
-                                    </div>
+
+                                          <div class="dropdown-divider"></div>
+                                          <a href="/create-invoice/<%= vehicle._id %>"
+                                            class="dropdown-item text-muted mt-1"> Create Expenses </a>
+                                  </div>
                                 </div>
-                            </div>
-                              </td>
-                            </tr>
-                          
+                              </div>
+                            </td>
+                          </tr>
+
                           <!-- Delete Vehicle -->
-                            <div class="modal modal-blur fade" id="modal-deleteVehicle<%=vehicle._id%>" tabindex="-1" role="dialog" aria-hidden="true">
-                              <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                  <div class="modal-status bg-danger"></div>
-                                  <div class="modal-body text-center py-4">
-                                    <i class="ti ti-alert-triangle fs--h1 text-danger"></i>
-                                    <h3><%=vehicle.vehicle_no%></h3>
-                                    <div class="text-muted">Do you really want to delete this vehicle?</div>
-                                  </div>
-                                  <div class="modal-footer">
-                                    <div class="w-100">
-                                      <div class="row">
-                                        <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
-                                            Cancel
-                                          </a></div>
-                                        <div class="col">
-                                          <a href="/delete/vehicle/<%=vehicle._id%>"class="btn btn-danger w-100" >Yes</a>
-                                      
-                                        </div>
+                          <div class="modal modal-blur fade" id="modal-deleteVehicle<%=vehicle._id%>" tabindex="-1"
+                            role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                  aria-label="Close"></button>
+                                <div class="modal-status bg-danger"></div>
+                                <div class="modal-body text-center py-4">
+                                  <i class="ti ti-alert-triangle fs--h1 text-danger"></i>
+                                  <h3>
+                                    <%=vehicle.vehicle_no%>
+                                  </h3>
+                                  <div class="text-muted">Do you really want to delete this vehicle?</div>
+                                </div>
+                                <div class="modal-footer">
+                                  <div class="w-100">
+                                    <div class="row">
+                                      <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                          Cancel
+                                        </a></div>
+                                      <div class="col">
+                                        <a href="/delete/vehicle/<%=vehicle._id%>" class="btn btn-danger w-100">Yes</a>
+
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
+                          </div>
 
-                            <!-- Update Vehicle -->
-                            <div class="modal modal-blur fade" id="modal-suppAccUp<%=vehicle._id%>" tabindex="-1" role="dialog" aria-hidden="true">
-                              <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
-                                  <form action="/update/vehicle/<%=vehicle._id%>" method="post">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title">Update vehicle</h5>
-                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                      <div class="row">
-                                        <div class="col-lg-6">
-                                          <div class="mb-3">
-                                            <label class="form-label">Vehicle Number</label>
-                                            <div class="input-group input-group-flat">
-                                              <input type="text" name="vehicleNo" class="form-control" value="<%=vehicle.vehicle_no%>" required  />
-                                            </div>
+                          <!-- Update Vehicle -->
+                          <div class="modal modal-blur fade" id="modal-vehicleUp<%=vehicle._id%>" tabindex="-1"
+                            role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                              <div class="modal-content">
+                                <form action="/update/vehicle/<%=vehicle._id%>" method="post">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title">Update vehicle</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                      aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <div class="row">
+                                      <div class="col-lg-6">
+                                        <div class="mb-3">
+                                          <label class="form-label">Vehicle Number</label>
+                                          <div class="input-group input-group-flat">
+                                            <input type="text" name="vehicleNo" class="form-control"
+                                              value="<%=vehicle.vehicle_no%>" required />
                                           </div>
                                         </div>
-                                        <div class="col-lg-6">
-                                          <div class="mb-3">
-                                            <label class="form-label">Make & Model</label>
-                                            <input type="text" name="makeModel" class="form-control" value="<%=vehicle.make_model%>" required/>
-                                          </div>
+                                      </div>
+                                      <div class="col-lg-6">
+                                        <div class="mb-3">
+                                          <label class="form-label">Make & Model</label>
+                                          <input type="text" name="makeModel" class="form-control"
+                                            value="<%=vehicle.make_model%>" required />
                                         </div>
-                                        <div class="col-lg-6">
-                                          <div class="mb-3">
-                                            <label class="form-label">Registered Owner</label> 
-                                            <input type="text" name="regOwner" class="form-control" value="<%=vehicle.registered_owner%>" required/>
+                                      </div>
+                                      <div class="col-lg-6">
+                                        <div class="mb-3">
+                                          <label class="form-label">Registered Owner</label>
+                                          <input type="text" name="regOwner" class="form-control"
+                                            value="<%=vehicle.registered_owner%>" required />
                                         </div>
+                                      </div>
+                                      <div class="col-lg-6">
+                                        <div class="mb-3">
+                                          <label class="form-label">Registered Date</label>
+                                          <input type="date" name="regDate" class="form-control"
+                                            value="<%=vehicle.registered_date%>" required />
                                         </div>
-                                        <div class="col-lg-6">
-                                          <div class="mb-3">
-                                            <label class="form-label">Registered Date</label>
-                                            <input type="date" name="regDate" class="form-control" value="<%=vehicle.registered_date%>" required/>
-                                          </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                              <div>
-                                                <div class="form-floating">
-                                                  <select class="form-select" name="status" id="floatingSelect<%=vehicle._id%>" aria-label="Floating label select example">
-                                                    <option value="Available"<%=vehicle.status==='Available' ? 'selected' : '' %>>Available</option>
-                                                    <option value="Rented"<%=vehicle.status==='Rented' ? 'selected' : '' %>>Rented</option>
-                                                  </select>
+                                      </div>
+                                      <div class="col-lg-6">
+                                        <label class="form-label">Status</label>
+                                        <select class="form-select" name="status" id="floatingSelect<%=vehicle._id%>"
+                                          aria-label="Floating label select example">
+                                          <option value="Available" <%=vehicle.status==='Available' ? 'selected' : '' %>
+                                            >Available</option>
+                                          <option value="Rented" <%=vehicle.status==='Rented' ? 'selected' : '' %>
+                                            >Rented</option>
+                                        </select>
+                                      </div>
 
-                                                  <label for="floatingSelect<%=vehicle._id%>">Status</label>
-                                                </div>
-                                              </div>
+                                      <div class="col-lg-6">
+                                        <div class="mb-3">
+                                          <label class="form-label">Istimara Expiration Date</label>
+                                          <div class="input-icon mb-2">
+                                            <input type="date" name="exDate" class="form-control " placeholder="Select istimara expiration date"
+                                             value="<%=vehicle.istimara_exdate%>" required />
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
-                              
-                                    <div class="modal-footer">
-                                      <a  href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal"  >
-                                        Cancel
-                                      </a>
-                                      <button type="submit" class="btn btn-primary ms-auto">Update </button>
-                                    </div>
-                                  </form>
-                                </div>
-                              </div>
-                              </div>
+                                  </div>
 
-                              <script>
-                                $(document).ready(function(){
-                              
-                      
-                                  $("#createBill<%=vehicle._id%>").on("click", function(){
-                                    $("#createBill<%=vehicle._id%>").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
-                      
-                                  })
-                                  $("#payBill<%=vehicle._id%>").on("click", function(){
-                                    $("#payBill<%=vehicle._id%>").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
-                                
-                                  })
-                                  
-                                });
-                                </script>
-                              
+                                  <div class="modal-footer">
+                                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                                      Cancel
+                                    </a>
+                                    <button type="submit" class="btn btn-primary ms-auto">Update </button>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
 
-                            <%  }) %>
-                          </tbody>
-                        </table>
-                      <% } else { %>
-                        <div class="text-center  my-5">
-                          <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
-                          <h1 class="text-secondary">Ohh!</h1>
-                          <p class="text-secondary"> No vehicles found in the database!</p>
+                          <script>
+                            $(document).ready(function () {
+
+
+                              $("#createBill<%=vehicle._id%>").on("click", function () {
+                                $("#createBill<%=vehicle._id%>").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
+
+                              })
+                              $("#payBill<%=vehicle._id%>").on("click", function () {
+                                $("#payBill<%=vehicle._id%>").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
+
+                              })
+
+                            });
+                          </script>
+
+
+                          <% }) %>
+                      </tbody>
+                    </table>
+                    <% } else { %>
+                      <div class="text-center  my-5">
+                        <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
+                        <h1 class="text-secondary">Ohh!</h1>
+                        <p class="text-secondary"> No vehicles found in the database!</p>
+                      </div>
+                      <% } %>
+                </div>
+                <div class="card-footer d-flex align-items-center">
+                  <% if (message && message.type === 'rentInfo') { %>
+                  <div class="modal modal-blur fade" id="modal-rentInfo" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-body">
+                       
+                          <!-- <div class="card"> -->
+                              <div class="card-header">
+                                <h3 class="card-title">
+                                  Vehicle No.   <%= message.vehicleNo %>
+                                </h3>
+                              </div>
+                              <div class="card-body">
+                                <dl class="row">
+                                  <dt class="col-5">Voucher No:</dt>
+                                  <dd class="col-7"><%= message.voucherNo %></dd>
+                                  <dt class="col-5">Date:</dt>
+                                  <dd class="col-7"><%= message.date %></dd>
+                                  <dt class="col-5">For the Month:</dt>
+                                  <dd class="col-7"><%= message.month %></dd>
+                                  <dt class="col-5">Particulars:</dt>
+                                  <dd class="col-7"><%= message.particulars %></dd>
+                                  <dt class="col-5 mt-2">Total Rent:</dt>
+                                  <dd class="col-7 text-danger mt-2"><div class="currency-formated">QAR</div><%= (message.rent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
+                                  <dt class="col-5">Total Bills:</dt>
+                                  <dd class="col-7 text-danger"><div class="currency-formated">QAR</div><%= (message.bills).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
+                                  <dt class="col-5 mt-2">Cash Received:</dt>
+                                  <dd class="col-7 text-danger mt-2 fw-bold"><div class="currency-formated fw-normal">QAR</div><%= (message.received).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
+                                </dl>
+                              </div>
+                            <!-- </div> -->
+                          
+
                         </div>
-                        <% } %> 
-                    </div>
-                    <div class="card-footer d-flex align-items-center">
-           
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">Cancel</button>
+                          <a href="/return/<%= message.id %>" class="btn btn-success">Return Vehicle</a>
+                        </div>
+                      </div>
                     </div>
                   </div>
-      
+                  <% } %>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
-     
-      
-        <script>
-          $(document).ready(function(){
-            $("#searchSA").on("keyup", function() {
-              var value = $(this).val().toLowerCase();
-              $("#suppAcc tr").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-              });
-            });
+      </div>
+    </div>
+    <script>
+      $(document).ready(function () {
+        $("#searchSA").on("keyup", function () {
+          var value = $(this).val().toLowerCase();
+          $("#suppAcc tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
           });
-          </script>
+        });
 
-<%- include('layout/modals') %>     
-<%- include('layout/footer') %>
+
+        '<% if (message && message.type ==="rentInfo") { %>'
+          $("#modal-rentInfo").modal('toggle');
+         ' <% } %>'
+      });
+    </script>
+
+
+
+    <%- include('layout/modals') %>
+      <%- include('layout/footer') %>
