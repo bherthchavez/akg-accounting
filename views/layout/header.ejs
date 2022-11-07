@@ -159,8 +159,10 @@
               <i class="ti ti-circle-check text-green fs--h1"></i>
               <% if (message.tType === 'voucher'){ %>
                 <h3 mt-2>Voucher Created</h3>
+                <% }else if(message.tType === 'invoice'){ %>
+                  <h3 mt-2>Invoice Created</h3>
                 <% }else{ %>
-                <h3 mt-2>Invoice Created</h3>
+                <h3 mt-2>Vehicle Returned</h3>
               <% } %>
               <div class="text-muted"><%= message.message %></div>
             </div>
@@ -173,18 +175,18 @@
                     </a>
                   </div>
 
-                    <% if (message.tType === 'bill'){ %>
+                    <% if (message.tType === 'voucher'){ %>
                       <div class="col">
-                        <a href="/pay-bill/<%= message.transID %>" class="btn btn-success w-100">
-                         Pay bill
-                       </a>
-                      </div>
-                       <% }else{ %>
-
-                         <div class="col">
-                          <a href="/print-voucher/<%= message.transID %>" class="btn btn-success w-100">
+                        <a href="/rent-info/<%= message.transID %>" class="btn btn-success w-100">
                           View voucher
                         </a>
+                        
+                      </div>
+                       <% }else{ %>
+                         <div class="col">
+                          <a class="btn btn-danger w-100" data-bs-dismiss="modal">
+                            Close
+                          </a>
                       </div>
                          <% } %>
                 </div>

@@ -2,13 +2,13 @@ let PaymentVoucher = require('../models/PaymentVoucher');
 const CostCenter = require('../models/CostCenter');
 const Vehicles = require('../models/Vehicles');
 const Voucher = require('../models/Voucher');
-
+const Invoice = require('../models/Invoice');
 module.exports = {
   
     viewDashboard: async (req, res)=>{
      if (req.isAuthenticated()){
 
-      PaymentVoucher.find().sort({ createdAt: -1 }).lean().exec((err, foundItem) => {
+      Invoice.find().sort({ createdAt: -1 }).lean().exec((err, foundInv) => {
          if (err) {
            res.json({ message: err.message, type: 'danger' });
          } else {
@@ -44,6 +44,11 @@ module.exports = {
                    res.json({ message: errbill.message, type: 'danger' });
                  } else {
 
+                  Voucher.find((errbill, vouFound) => {
+                    if (err) {
+                      res.json({ message: errbill.message, type: 'danger' });
+                    } else {
+
                        let nav = {
                          title: "Dashboard",
                        };
@@ -52,9 +57,12 @@ module.exports = {
                          title: "EL - Accounting - Dashboard",
                          nav: nav,
                          vehicleFound: vehicleFound,
+                         vouFound: vouFound,
                          foundcC: foundcC,
-                         voucherItems: foundItem
+                         invItems: foundInv
                        });
+                      }
+                    });
                  }
                });
              }

@@ -48,7 +48,8 @@ router.get('/delete/vehicle/:id', vehiclesController.deleteVehicle);
 router.get('/create-voucher/:id', transactionController.createVoucher); 
 router.post('/transaction-voucher', transactionController.saveVoucher);
 
-router.get('/create-invoice/:id', transactionController.createExpenses);
+router.get('/create-invoice/:id', transactionController.createInvoice);
+router.post('/transaction-invoice', transactionController.saveInvoice);
 
 
 router.get('/rent-info/:id', vehiclesController.viewRentInfo);

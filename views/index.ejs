@@ -1,92 +1,96 @@
 <%- include('layout/header') %>
 
-<div class="page-wrapper">
+  <div class="page-wrapper">
     <div class="container-xl">
 
-        <div class="page-header d-print-none">
-            <div class="row g-2 align-items-center">
-            <div class="col">
-                <!-- Page pre-title -->
-                <div class="page-pretitle">Overview</div>
-                <h2 class="page-title">Dashboard</h2>
-            </div>
-            <!-- Page title actions -->
-            <div class="col-12 col-md-auto ms-auto d-print-none">
-                <div class="dropdown btn-list">
-                    <button type="button" class="btn dropdown-toggle text-muted " data-bs-toggle="dropdown">
-                    <i class="ti ti-file-plus  fs-h3 me-2"></i> New Transaction
-                    </button>
-                    <div class="dropdown-menu">
-                    <a class="dropdown-item text-muted mt-1" data-bs-toggle="offcanvas" href="#offcanvasStart" role="button" aria-controls="offcanvasStart"> <i class="ti ti-file-invoice fs-h3 me-2"></i>
-                        Create Voucher 
-                    </a>
-                    <a class="dropdown-item text-muted mt-1" data-bs-toggle="offcanvas" href="#offcanvasStart2" role="button" aria-controls="offcanvasStart"> 
-                        <i class="ti ti-building-bank fs-h3 me-2"></i>
-                        Create Invoice  
-                    </a>
-                    </div>
-                </div>
-            </div>
-
-            </div>
-        </div>
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasStart" aria-labelledby="offcanvasStartLabel">
-            <div class="offcanvas-header">
-              <h2 class="offcanvas-title" id="offcanvasStartLabel">Select Vehicle</h2>
-              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-              <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
-
-              <% if (vehicleFound != '') { %>
-
-                  <form id="billForm" name="billForm">
-                   
-                      <%vehicleFound.forEach(function(vehicle){%>
-                      <label class="form-selectgroup-item flex-fill">
-                        <input type="radio" name="supplier" value="<%=vehicle._id%>" class="form-selectgroup-input" required/>
-                        <div class="form-selectgroup-label d-flex align-items-center p-3">
-                          <div class="me-3">
-                            <span class="form-selectgroup-check"></span>
-                          </div>
-                          <div>
-                            <%=vehicle.vehicle_no%>
-                          </div>
-                        </div>
-                      </label>
-                      <%})%>
-                  <div class="mt-4 text-end">
-                   
-                      <a href="" class="btn btn-primary w-50 fs-h3 createBill" > Create bill <i class="ti ti-chevron-right fs-h3 ms-2"></i></a>
-                   
-                  </div>
-                    </form>
-                    
-               <% } else { %>   
-
-                    <div class="empty">
-                      <div class="text-center  my-5">
-                        <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
-                        <h1 class="text-secondary">Ohh!</h1>
-                        <p class="text-secondary"> No vehicles found in the database!</p>
-                      </div>
-                      <div class="empty-action">
-        
-                        <a  href="/vehicle-list" class="btn btn-primary">
-                          <i class="ti ti-plus fs-h4 fw-light me-2"></i>
-                         Add new vehicle
-                        </a>
-                      </div>
-                    </div>
-
-                 <% } %> 
-                </div>
+      <div class="page-header d-print-none">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+            <!-- Page pre-title -->
+            <div class="page-pretitle">Overview</div>
+            <h2 class="page-title">Dashboard</h2>
+          </div>
+          <!-- Page title actions -->
+          <div class="col-12 col-md-auto ms-auto d-print-none">
+            <div class="dropdown btn-list">
+              <button type="button" class="btn dropdown-toggle text-muted " data-bs-toggle="dropdown">
+                <i class="ti ti-file-plus  fs-h3 me-2"></i> New Transaction
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item text-muted mt-1" data-bs-toggle="offcanvas" href="#offcanvasStart" role="button"
+                  aria-controls="offcanvasStart"> <i class="ti ti-file-invoice fs-h3 me-2"></i>
+                  Create Voucher
+                </a>
+                <a class="dropdown-item text-muted mt-1" data-bs-toggle="offcanvas" href="#offcanvasStart2"
+                  role="button" aria-controls="offcanvasStart">
+                  <i class="ti ti-building-bank fs-h3 me-2"></i>
+                  Create Invoice
+                </a>
               </div>
             </div>
-    </div>
-</div>
+          </div>
 
-<div class="page-body">
+        </div>
+      </div>
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasStart" aria-labelledby="offcanvasStartLabel">
+        <div class="offcanvas-header">
+          <h2 class="offcanvas-title" id="offcanvasStartLabel">Select Vehicle</h2>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
+
+            <% if (vehicleFound !='' ) { %>
+
+              <form id="billForm" name="billForm">
+
+                <%vehicleFound.forEach(function(vehicle){%>
+                  <label class="form-selectgroup-item flex-fill">
+                    <input type="radio" name="supplier" value="<%=vehicle._id%>" class="form-selectgroup-input"
+                      required />
+                    <div class="form-selectgroup-label d-flex align-items-center p-3">
+                      <div class="me-3">
+                        <span class="form-selectgroup-check"></span>
+                      </div>
+                      <div>
+                        <%=vehicle.vehicle_no%>
+                      </div>
+                    </div>
+                  </label>
+                  <%})%>
+                    <div class="mt-4 text-end">
+
+                      <a href="" class="btn btn-primary w-50 fs-h3 createBill"> Create bill <i
+                          class="ti ti-chevron-right fs-h3 ms-2"></i></a>
+
+                    </div>
+              </form>
+
+              <% } else { %>
+
+                <div class="empty">
+                  <div class="text-center  my-5">
+                    <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
+                    <h1 class="text-secondary">Ohh!</h1>
+                    <p class="text-secondary"> No vehicles found in the database!</p>
+                  </div>
+                  <div class="empty-action">
+
+                    <a href="/vehicle-list" class="btn btn-primary">
+                      <i class="ti ti-plus fs-h4 fw-light me-2"></i>
+                      Add new vehicle
+                    </a>
+                  </div>
+                </div>
+
+                <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-body">
     <div class="container-xl">
       <div class="row row-deck row-cards">
 
@@ -97,17 +101,17 @@
               <div class="row align-items-center">
                 <div class="col">
                   <div class="fw-bold fs-h2">
-                    <% if (vehicleFound != '') { %>
-                      <%  var sumOfRented = 0 %>
-                      <%  vehicleFound.forEach(function(vehicle){ %>
-                        <%  if(vehicle.status ==="Rented"){ %>
-                        <%  sumOfRented++  %>
-                        <% } %>
-                        <%  }) %>
-                        <%= sumOfRented %>
-                    <% } else { %>
-                      0
-                    <% } %> 
+                    <% if (vehicleFound !='' ) { %>
+                      <% var sumOfRented=0 %>
+                        <% vehicleFound.forEach(function(vehicle){ %>
+                          <% if(vehicle.status==="Rented" ){ %>
+                            <% sumOfRented++ %>
+                              <% } %>
+                                <% }) %>
+                                  <%= sumOfRented %>
+                                    <% } else { %>
+                                      0
+                                      <% } %>
                   </div>
                   <div class="text-muted">
                     Rented Vehicle
@@ -116,13 +120,13 @@
                 <div class="col-auto">
                   <span class="bg-orange-lt avatar fs-h2 ">
                     <i class="ti ti-list-numbers"></i>
-                   </span>
+                  </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-            
+
         <div class="col-sm-6 col-lg-3">
           <div class="card card-sm">
             <div class="card-status-bottom bg-green"></div>
@@ -130,17 +134,17 @@
               <div class="row align-items-center">
                 <div class="col">
                   <div class="fw-bold fs-h2">
-                    <% if (vehicleFound != '') { %>
-                      <%  var sumOfRented = 0 %>
-                      <%  vehicleFound.forEach(function(vehicle){ %>
-                        <%  if(vehicle.status ==="Available"){ %>
-                        <%  sumOfRented++  %>
-                        <% } %>
-                        <%  }) %>
-                        <%= sumOfRented %>
-                    <% } else { %>
-                      0
-                    <% } %> 
+                    <% if (vehicleFound !='' ) { %>
+                      <% var sumOfRented=0 %>
+                        <% vehicleFound.forEach(function(vehicle){ %>
+                          <% if(vehicle.status==="Available" ){ %>
+                            <% sumOfRented++ %>
+                              <% } %>
+                                <% }) %>
+                                  <%= sumOfRented %>
+                                    <% } else { %>
+                                      0
+                                      <% } %>
                   </div>
                   <div class="text-muted">
                     Available Vehicle
@@ -149,41 +153,7 @@
                 <div class="col-auto">
                   <span class="bg-green-lt avatar fs-h2 ">
                     <i class="ti ti-list-numbers"></i>
-                   </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-sm-6 col-lg-3">
-          <div class="card card-sm">
-            <div class="card-body">
-              <!-- <div class="card-status-top bg-blue"></div> -->
-              <div class="row align-items-center">
-            
-                <div class="col">
-                 
-                  <div class="fw-bold fs-h2">
-                    <span class="text-muted fs-h5 fw-light">QAR</span>
-                    <% if (vehicleFound != '') { %>
-                        <%  var sumOfExpenses = 0 %>
-                        <%  vehicleFound.forEach(function(vehicle){ %>
-                          <%  sumOfExpenses += + vehicle.expenses %>
-                          <%  }) %>
-                          <%= (sumOfExpenses).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') %>
-                      <% } else { %>
-                        0.0
-                      <% } %> 
-                  </div>
-                  <div class="text-muted">
-                    Total Expenses
-                  </div>
-                </div>
-                <div class="col-auto">
-                  <span class="bg-red-lt avatar fs-h2 ">
-                    <i class="ti ti-cash-banknote"></i>
-                   </span>
+                  </span>
                 </div>
               </div>
             </div>
@@ -195,20 +165,54 @@
             <div class="card-body">
               <!-- <div class="card-status-top bg-blue"></div> -->
               <div class="row align-items-center">
-            
+
                 <div class="col">
-                 
+
                   <div class="fw-bold fs-h2">
                     <span class="text-muted fs-h5 fw-light">QAR</span>
-                    <% if (vehicleFound != '') { %>
-                      <%  var sumOfIncome= 0 %>
-                      <%  vehicleFound.forEach(function(vehicle){ %>
-                        <%  sumOfIncome += + vehicle.income %>
-                        <%  }) %>
-                        <%= (sumOfIncome).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') %>
-                    <% } else { %>
-                      0.0
-                    <% } %> 
+                    <% if (vehicleFound !='' ) { %>
+                      <% var sumOfExpenses=0 %>
+                        <% vehicleFound.forEach(function(vehicle){ %>
+                          <% sumOfExpenses +=+ vehicle.expenses %>
+                            <% }) %>
+                              <%= (sumOfExpenses).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %>
+                                <% } else { %>
+                                  0.0
+                                  <% } %>
+                  </div>
+                  <div class="text-muted">
+                    Total Expenses
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <span class="bg-red-lt avatar fs-h2 ">
+                    <i class="ti ti-cash-banknote"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="card card-sm">
+            <div class="card-body">
+              <!-- <div class="card-status-top bg-blue"></div> -->
+              <div class="row align-items-center">
+
+                <div class="col">
+
+                  <div class="fw-bold fs-h2">
+                    <span class="text-muted fs-h5 fw-light">QAR</span>
+                    <% if (vehicleFound !='' ) { %>
+                      <% var sumOfIncome=0 %>
+                        <% vehicleFound.forEach(function(vehicle){ %>
+                          <% sumOfIncome +=+ vehicle.income %>
+                            <% }) %>
+                              <%= (sumOfIncome).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %>
+                                <% } else { %>
+                                  0.0
+                                  <% } %>
                   </div>
                   <div class="text-muted">
                     Total Income
@@ -217,7 +221,7 @@
                 <div class="col-auto">
                   <span class="bg-green-lt avatar fs-h2 ">
                     <i class="ti ti-cash-banknote"></i>
-                   </span>
+                  </span>
                 </div>
               </div>
             </div>
@@ -228,7 +232,10 @@
           <div class="card">
             <div class="card-body">
               <div class="d-flex">
-                <h3 class="card-title">Expenses</h3>
+                <h3 class="card-title">
+                  <h3 class="text-success">Income</h3>  
+                  <h3 class="mx-2 text-muted">vs</h3>  
+                  <h3 class="text-warning">Expenses</h3>  
                 <div class="ms-auto">
                   <h4 class="text-muted">Current Year - 2022</h4>
                 </div>
@@ -241,56 +248,61 @@
         <div class="col-lg-4">
           <div class="card">
             <div class="card-header">
-                <h3>Cost Centers Expenses - 2022</h3>
+              <h3>Cost Centers Expenses - 2022</h3>
             </div>
-            <div class="table-responsive"  style="max-height: 18rem">
-             <% if (foundcC != 0) { %>
-              <table class="table card-table table-vcenter">
-              <thead>
-                <tr>
-                  <th>Cost Center</th>
-                  <th class="text-end">Total</th>
-                  <!-- <th class="text-end"> <%-  new Date().toLocaleDateString("en-US", { month: 'long' }) %></th> -->
-                </tr>
-              </thead>
-              <tbody>
-                <%foundcC.forEach(function(cc){%>
-                  <% if(cc.subTotal>0){%>
-                <tr>
-                  <td><%=cc.cost_center%></td>
-                  <td class="text-end text-muted fs-h5 text-nowrap">
-                    QAR
-                     <div class="text-warning d-md-inline-flex fs-h3 ms-1"><%=(cc.subTotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></div>
-                   </td>
-                </tr>
-                <%}%>
-                <%})%>
-              </tbody>
-            </table>
-            <% } else { %>
-              <div class="text-center  my-5">
-                <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
-                <h3 class="text-secondary"> No bill created!</h3>
-              </div>
-             <% } %> 
-          </div>
+            <div class="table-responsive" style="max-height: 18rem">
+              <% if (foundcC !=0) { %>
+                <table class="table card-table table-vcenter">
+                  <thead>
+                    <tr>
+                      <th>Cost Center</th>
+                      <th class="text-end">Total</th>
+                      <!-- <th class="text-end"> <%-  new Date().toLocaleDateString("en-US", { month: 'long' }) %></th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <%foundcC.forEach(function(cc){%>
+                      <% if(cc.subTotal>0){%>
+                        <tr>
+                          <td>
+                            <%=cc.cost_center%>
+                          </td>
+                          <td class="text-end text-muted fs-h5 text-nowrap">
+                            QAR
+                            <div class="text-warning d-md-inline-flex fs-h3 ms-1">
+                              <%=(cc.subTotal).toFixed(2).replace( /\d(?=(\d{3})+\.)/g, '$&,' ) %>
+                            </div>
+                          </td>
+                        </tr>
+                        <%}%>
+                          <%})%>
+                  </tbody>
+                </table>
+                <% } else { %>
+                  <div class="text-center  my-5">
+                    <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
+                    <h3 class="text-secondary"> No bill created!</h3>
+                  </div>
+                  <% } %>
+            </div>
           </div>
         </div>
 
-        <div class="col-12">
+        <div class="col-6">
           <div class="card">
             <div class="card-header hd-right">
               <div class="row row-cards">
-           
+
                 <div class="d-flex">
-                  <h3>Transactions</h3>
+                  <h3>Income</h3>
                   <div class="ms-auto text-muted">
                     <div class="input-icon">
                       <span class="input-icon-addon">
                         <i class="ti ti-search"></i>
                       </span>
-                      <input type="text" id="searchPV"  class="form-control" placeholder="Search here…" aria-label="Search">
-                    </div>   
+                      <input type="text" id="searchPV" class="form-control" placeholder="Search here…"
+                        aria-label="Search">
+                    </div>
                   </div>
                 </div>
 
@@ -298,78 +310,177 @@
             </div>
             <div class="card-table table-responsive">
 
-              <div class="table-responsive"  style="max-height: 30rem">
-                <% if (voucherItems != '') { %>
-                <table class="table card-table table-vcenter text-nowrap datatablee">
-                  <thead>
-                    <tr>
-                      <th>Transaction  No</th> 
-                      <th> Date</th>
-                      <th>Payment From</th>
-                      <th>Payment Mode</th>
-                      <th>Description</th>
-                      <th>Amount</th>
-                      <th>Created By</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody id="payVoucher" >
-                    <%  voucherItems.forEach(function(item){ %>
-                    <tr>
-                      <td>
-                       
-                          <a href="/print-voucher/<%= item._id %>" class="btn btn-outline-secondary w-70 btn-sm " data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip" data-bs-title="Print Payment Voucher">
-                          
-                            <%=item.payment_voucher_no%>
-                          </a>
- 
-                      </td>
-                      <td >
-                          <%=(new Date(item.date).toLocaleDateString("en-US", {year: 'numeric', day: 'numeric', month: 'short' })) %>
-                      </td>
-                      <td>
-                        <%=item.payment_from%>
-                      </td>
-                      <td>
-                        <% if(item.payment_mode ==="Bank Transfer"){%>
-                            <%=item.payment_mode%>
-                            <a href="/print-letter/<%= item._id%>"  class="btn btn-action w-1 btn--small"  role="button" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip" data-bs-title="Print Bank Letter">
-                              <i class="ti ti-clipboard-text"></i>
-                            </a>
-                        <%}else{ %>
-                          <%=item.payment_mode%>
-                          <% } %>
-                      </td>
-                      <td class="text-capitalize">
-                        <%=item.description.substring(0, 20)%>
-                        <a class="cursor-pointer"  role="button" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip" data-bs-title="<%=item.description%>">
-                        ...
-                        </a>
-                      </td>
+              <div class="table-responsive" style="max-height: 30rem">
+                <% if (invItems !='' ) { %>
+                  <table class="table card-table table-vcenter text-nowrap datatablee">
+                    <thead>
+                      <tr>
+                        <th>Transaction No</th>
+                        <th> Date</th>
+                        <th>Payment From</th>
+                        <th>Payment Mode</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Created By</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="payVoucher">
+                      <% invItems.forEach(function(item){ %>
+                        <tr>
+                          <td>
 
-                      <td class="text-nowrap text-muted fs-h5">
-                       QAR
-                        <div class="text-warning d-md-inline-flex fs-h3 ms-1"> <%= (item.total_payment).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')%></div>
-                      </td>
-                      <td>
-                        <%=item.created_by%>
-                      </td>
-                      <td>
-                        <span class="status status-red fs-h5">
-                          <%= (item.status)%>
-                        </span>
-                      </td>
-                    </tr>
-                    <%  }) %>
-                  </tbody>
-                </table>
-                <% } else { %>
-                  <div class="text-center  my-5">
-                    <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
-                    <h1 class="text-secondary">Ohh!</h1>
-                    <p class="text-secondary"> No payment transaction found in the database!</p>
+                            <a href="/print-voucher/<%= item._id %>" class="btn btn-outline-secondary w-70 btn-sm "
+                              data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip"
+                              data-bs-title="Print Payment Voucher">
+
+                              <%=item.inv_no%>
+                            </a>
+
+                          </td>
+                          <td>
+                            <%=(new Date(item.date).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' ,
+                              month: 'short' })) %>
+                          </td>
+                          <td>
+                            <%=item.payee%>
+                          </td>
+                          <td>
+                            <%=item.expenses_type%>
+                          </td>
+                          <td class="text-capitalize">
+                            <%=item.description.substring(0, 20)%>
+                              <a class="cursor-pointer" role="button" data-bs-toggle="tooltip" data-bs-placement="right"
+                                data-bs-custom-class="custom-tooltip" data-bs-title="<%=item.description%>">
+                                ...
+                              </a>
+                          </td>
+
+                          <td class="text-nowrap text-muted fs-h5">
+                            QAR
+                            <div class="text-warning d-md-inline-flex fs-h3 ms-1">
+                              <%= (item.amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' )%>
+                            </div>
+                          </td>
+                          <td>
+                            <%=item.created_by%>
+                          </td>
+                          <td>
+                            <span class="status status-red fs-h5">
+                              <%= (item.status)%>
+                            </span>
+                          </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                  </table>
+                  <% } else { %>
+                    <div class="text-center  my-5">
+                      <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
+                      <h1 class="text-secondary">Ohh!</h1>
+                      <p class="text-secondary"> No transaction found in the database!</p>
+                    </div>
+                    <% } %>
+              </div>
+              <div class="card-footer d-flex align-items-center">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="card">
+            <div class="card-header hd-right">
+              <div class="row row-cards">
+
+                <div class="d-flex">
+                  <h3>Expenses</h3>
+                  <div class="ms-auto text-muted">
+                    <div class="input-icon">
+                      <span class="input-icon-addon">
+                        <i class="ti ti-search"></i>
+                      </span>
+                      <input type="text" id="searchPV" class="form-control" placeholder="Search here…"
+                        aria-label="Search">
+                    </div>
                   </div>
-              <% } %> 
+                </div>
+
+              </div>
+            </div>
+            <div class="card-table table-responsive">
+
+              <div class="table-responsive" style="max-height: 30rem">
+                <% if (invItems !='' ) { %>
+                  <table class="table card-table table-vcenter text-nowrap datatablee">
+                    <thead>
+                      <tr>
+                        <th>Transaction No</th>
+                        <th> Date</th>
+                        <th>Payment From</th>
+                        <th>Payment Mode</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Created By</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="payVoucher">
+                      <% invItems.forEach(function(item){ %>
+                        <tr>
+                          <td>
+
+                            <a href="/print-voucher/<%= item._id %>" class="btn btn-outline-secondary w-70 btn-sm "
+                              data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip"
+                              data-bs-title="Print Payment Voucher">
+
+                              <%=item.inv_no%>
+                            </a>
+
+                          </td>
+                          <td>
+                            <%=(new Date(item.date).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' ,
+                              month: 'short' })) %>
+                          </td>
+                          <td>
+                            <%=item.payee%>
+                          </td>
+                          <td>
+                            <%=item.expenses_type%>
+                          </td>
+                          <td class="text-capitalize">
+                            <%=item.description.substring(0, 20)%>
+                              <a class="cursor-pointer" role="button" data-bs-toggle="tooltip" data-bs-placement="right"
+                                data-bs-custom-class="custom-tooltip" data-bs-title="<%=item.description%>">
+                                ...
+                              </a>
+                          </td>
+
+                          <td class="text-nowrap text-muted fs-h5">
+                            QAR
+                            <div class="text-warning d-md-inline-flex fs-h3 ms-1">
+                              <%= (item.amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' )%>
+                            </div>
+                          </td>
+                          <td>
+                            <%=item.created_by%>
+                          </td>
+                          <td>
+                            <span class="status status-red fs-h5">
+                              <%= (item.status)%>
+                            </span>
+                          </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                  </table>
+                  <% } else { %>
+                    <div class="text-center  my-5">
+                      <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
+                      <h1 class="text-secondary">Ohh!</h1>
+                      <p class="text-secondary"> No transaction found in the database!</p>
+                    </div>
+                    <% } %>
               </div>
               <div class="card-footer d-flex align-items-center">
               </div>
@@ -381,215 +492,296 @@
     </div>
   </div>
 
-    <script>
-        $(document).ready(function(){
+  <script>
+    $(document).ready(function () {
 
-          $("#billForm").on("click",function() { 
-            var radVal =   $("input[name='form-payment']:checked").val();
-                $("a.createBill").attr("href","create-bill/"+radVal)
-             
-            });
+      $("#billForm").on("click", function () {
+        var radVal = $("input[name='form-payment']:checked").val();
+        $("a.createBill").attr("href", "create-bill/" + radVal)
 
-            $("#payForm").on("click",function() { 
-            var radVal =   $("input[name='form-payment']:checked").val();
-                $("a.payBill").attr("href","pay-bill/"+radVal)
-               
-            });
       });
-     </script>
 
-    <script>
-      $(document).ready(function(){
-        $("#searchPV").on("keyup", function() {
-          var value = $(this).val().toLowerCase();
-          $("#payVoucher tr").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-          });
+      $("#payForm").on("click", function () {
+        var radVal = $("input[name='form-payment']:checked").val();
+        $("a.payBill").attr("href", "pay-bill/" + radVal)
+
+      });
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      $("#searchPV").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#payVoucher tr").filter(function () {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
       });
-      </script>
+    });
+  </script>
 
-      <script>
+  <script>
 
-             let dataArray = [];
-             let [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec] =  Array(12).fill(0); 
+    let dataExpenses = [];
+    let [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec] = Array(12).fill(0);
 
-       
-    ' <% if (voucherItems != "") { %>'
+    ' <% if (invItems != "") { %>'
 
-       '<%  voucherItems.forEach(function(item){ %>'
-         
-        var dMonth = new Date('<%=item.date%>').getMonth() + 1;
+    '<%  invItems.forEach(function(item){ %>'
 
-        if (dMonth === 1){
-         
-          jan += + '<%=item.total_payment%>'
+    var dMonth = new Date('<%=item.date%>').getMonth() + 1;
 
-        }else if(dMonth === 2){
+    if (dMonth === 1) {
 
-          feb += + '<%=item.total_payment%>'
+      jan += + '<%=item.amount%>'
 
-        }else if(dMonth === 3){
+    } else if (dMonth === 2) {
 
-          mar += + '<%=item.total_payment%>'
+      feb += + '<%=item.amount%>'
 
-        }else if(dMonth === 4){
+    } else if (dMonth === 3) {
 
-          apr += + '<%=item.total_payment%>'
+      mar += + '<%=item.amount%>'
 
-        }else if(dMonth === 5){
+    } else if (dMonth === 4) {
 
-          may += + '<%=item.total_payment%>'
+      apr += + '<%=item.amount%>'
 
-        }else if(dMonth === 6){
+    } else if (dMonth === 5) {
 
-          jun += + '<%=item.total_payment%>'
+      may += + '<%=item.amount%>'
 
-        }else if(dMonth === 7){
+    } else if (dMonth === 6) {
 
-          jul += + '<%=item.total_payment%>'
+      jun += + '<%=item.amount%>'
 
-        }else if(dMonth === 8){
+    } else if (dMonth === 7) {
 
-          aug += + '<%=item.total_payment%>'
+      jul += + '<%=item.amount%>'
 
-        }else if(dMonth === 9){
+    } else if (dMonth === 8) {
 
-          sep += + '<%=item.total_payment%>'
+      aug += + '<%=item.amount%>'
 
-        }else if(dMonth === 10){
+    } else if (dMonth === 9) {
 
-          oct += + '<%=item.total_payment%>'
+      sep += + '<%=item.amount%>'
 
-        }else if(dMonth === 11){
+    } else if (dMonth === 10) {
 
-          nov += + '<%=item.total_payment%>'
+      oct += + '<%=item.amount%>'
 
-        }else if(dMonth === 12){
+    } else if (dMonth === 11) {
 
-          dec += + '<%=item.total_payment%>'
+      nov += + '<%=item.amount%>'
 
-        }
-        
-        ' <%  }) %>'
-        ' <%  } %>'
-            
-              dataArray[0] = jan;
-              dataArray[1] = feb;
-              dataArray[2] = mar;
-              dataArray[3] = apr;
-              dataArray[4] = may;
-              dataArray[5] = jun;
-              dataArray[6] = jul;
-              dataArray[7] = aug;
-              dataArray[8] = sep;
-              dataArray[9] = oct;
-              dataArray[10] = nov;
-              dataArray[11] = dec;
+    } else if (dMonth === 12) {
+
+      dec += + '<%=item.amount%>'
+
+    }
+
+    ' <%  }) %>'
+    ' <%  } %>'
 
 
 
-       document.addEventListener("DOMContentLoaded", function () {
-           window.ApexCharts && (new ApexCharts(document.getElementById('chart-tasks-overview'), {
-               chart: {
-                   type: "line",
-                   dropShadow: {
-                                  enabled: true,
-                                  color: '#000',
-                                  top: 18,
-                                  left: 7,
-                                  blur: 10,
-                                  opacity: 0.3
-                                },
-                   fontFamily: 'inherit',
-                   height: 300,
-                   parentHeightOffset: 0,
-                   toolbar: {
-                       show: false,
-                   },
-                   animations: {
-                       enabled: true
-                   },
-                   
-               },
-               dataLabels: {
-                   enabled: true,
-               },
-               fill: {
-                   opacity: 1,
-               },
-               stroke: {
-               width: 2,
-               lineCap: "round",
-               curve: "smooth",
-             },
-               series: [{
-                   name: "Total Expenses",
-                  
-                   data: dataArray
-               }],
-               grid: {
-                   padding: {
-                       top: -20,
-                       right: 0,
-                       left: -4,
-                       bottom: -4
-                   },
-                   strokeDashArray: 4,
-               },
-               xaxis: {
-               
-                  
-                   labels: {
-                       padding: 0,
-                   },
-                   tooltip: {
-                       enabled: true
-                   },
-                   axisBorder: {
-                       show: true,
-                   },
-                  
-                 
-                   categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                   title: {
-                            text: 'Month'
-                          },
-                        
-                  },
-                
-               yaxis: {
-                title: {
-                          text: 'AMOUNT'
-                        },
-                   labels: {
-                               formatter: function(number) {
-                                   var SI_SYMBOL = ["", "K", "M", "G", "T", "P", "E"];
-                             // what tier? (determines SI symbol)
-                               var tier = Math.log10(Math.abs(number)) / 3 | 0;
-   
-                           // if zero, we don't need a suffix
-                           if(tier == 0) return number;
-   
-                           // get suffix and determine scale
-                           var suffix = SI_SYMBOL[tier];
-                           var scale = Math.pow(10, tier * 3);
-   
-                           // scale the number
-                           var scaled = number / scale;
-   
-                           // format number and add suffix
-                           return scaled.toFixed(1) + suffix;
-                               }
-                           },
-               },
-               colors: ["#f59f00"],
-               legend: {
-                   show: false,
-               },
-           })).render();
-       });
+
+
+    ' <% if (vouFound != "") { %>'
+
+    let dataIncome = [];
+    let [jan_, feb_, mar_, apr_, may_, jun_, jul_, aug_, sep_, oct_, nov_, dec_] = Array(12).fill(0);
+
+
+    '<%  vouFound.forEach(function(item){ %>'
+
+    var dMonth_ = new Date('<%=item.date%>').getMonth() + 1;
+
+    if (dMonth_ === 1) {
+
+      jan_ += + '<%=item.total_rent%>'
+
+    } else if (dMonth_ === 2) {
+
+      feb_ += + '<%=item.total_rent%>'
+
+    } else if (dMonth_ === 3) {
+
+      mar_ += + '<%=item.total_rent%>'
+
+    } else if (dMonth_ === 4) {
+
+      apr_ += + '<%=item.total_rent%>'
+
+    } else if (dMonth_ === 5) {
+
+      may_ += + '<%=item.total_rent%>'
+
+    } else if (dMonth_ === 6) {
+
+      jun_ += + '<%=item.total_rent%>'
+
+    } else if (dMonth_ === 7) {
+
+      jul_ += + '<%=item.total_rent%>'
+
+    } else if (dMonth_ === 8) {
+
+      aug_ += + '<%=item.total_rent%>'
+
+    } else if (dMonth_ === 9) {
+
+      sep_ += + '<%=item.total_rent%>'
+
+    } else if (dMonth_ === 10) {
+
+      oct_ += + '<%=item.total_rent%>'
+
+    } else if (dMonth_ === 11) {
+
+      nov_ += + '<%=item.total_rent%>'
+
+    } else if (dMonth_ === 12) {
+
+      dec_ += + '<%=item.total_rent%>'
+
+    }
+
+    ' <%  }) %>'
+    ' <%  } %>'
+
+    dataExpenses[0] = jan;
+    dataExpenses[1] = feb;
+    dataExpenses[2] = mar;
+    dataExpenses[3] = apr;
+    dataExpenses[4] = may;
+    dataExpenses[5] = jun;
+    dataExpenses[6] = jul;
+    dataExpenses[7] = aug;
+    dataExpenses[8] = sep;
+    dataExpenses[9] = oct;
+    dataExpenses[10] = nov;
+    dataExpenses[11] = dec;
+
+    dataIncome[0] = jan_;
+    dataIncome[2] = mar_;
+    dataIncome[1] = feb_;
+    dataIncome[3] = apr_;
+    dataIncome[4] = may_;
+    dataIncome[5] = jun_;
+    dataIncome[6] = jul_;
+    dataIncome[7] = aug_;
+    dataIncome[8] = sep_;
+    dataIncome[9] = oct_;
+    dataIncome[10] = nov_;
+    dataIncome[11] = dec_;
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+      window.ApexCharts && (new ApexCharts(document.getElementById('chart-tasks-overview'), {
+        chart: {
+          type: "line",
+          dropShadow: {
+            enabled: true,
+            color: '#000',
+            top: 18,
+            left: 7,
+            blur: 10,
+            opacity: 0.3
+          },
+          fontFamily: 'inherit',
+          height: 300,
+          parentHeightOffset: 0,
+          toolbar: {
+            show: false,
+          },
+          animations: {
+            enabled: true
+          },
+
+        },
+        dataLabels: {
+          enabled: true,
+        },
+        fill: {
+          opacity: 1,
+        },
+        stroke: {
+          width: 2,
+          lineCap: "round",
+          curve: "smooth",
+        },
+        series: [{
+          name: "Total Income",
+          data: dataIncome
+        },
+        {
+          name: "Total Expenses",
+          data: dataExpenses
+        }],
+        grid: {
+          padding: {
+            top: -20,
+            right: 0,
+            left: -4,
+            bottom: -4
+          },
+          strokeDashArray: 4,
+        },
+        xaxis: {
+
+
+          labels: {
+            padding: 0,
+          },
+          tooltip: {
+            enabled: true
+          },
+          axisBorder: {
+            show: true,
+          },
+
+
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          title: {
+            text: 'Month'
+          },
+
+        },
+
+        yaxis: {
+          title: {
+            text: 'AMOUNT'
+          },
+          labels: {
+            formatter: function (number) {
+              var SI_SYMBOL = ["", "K", "M", "G", "T", "P", "E"];
+              // what tier? (determines SI symbol)
+              var tier = Math.log10(Math.abs(number)) / 3 | 0;
+
+              // if zero, we don't need a suffix
+              if (tier == 0) return number;
+
+              // get suffix and determine scale
+              var suffix = SI_SYMBOL[tier];
+              var scale = Math.pow(10, tier * 3);
+
+              // scale the number
+              var scaled = number / scale;
+
+              // format number and add suffix
+              return scaled.toFixed(1) + suffix;
+            }
+          },
+        },
+        colors: [tabler.getColor("lime"),"#f59f00"],
+        legend: {
+          show: false,
+        },
+      })).render();
+    });
        // @formatter:on
-     </script>
+  </script>
 
-<%- include('layout/footer') %>
+  <%- include('layout/footer') %>

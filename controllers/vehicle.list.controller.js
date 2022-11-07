@@ -183,10 +183,16 @@ module.exports = {
             let id = req.params.id
 
             Vehicles.findOneAndUpdate({_id: id}, {$unset : {rented_info:[]}, status: 'Available'}, (err, foundList)=>{
-            
                 if (err) {
                     res.json({ message: err.message });
                 } else {
+
+                    req.session.message = {
+                        type: 'transac',
+                        tType: 'return',
+                        message: 'Voucher for vehicle no. ' + foundList.vehicle_no + ' has been successfully return. Voucher No: ' + foundList.rented_info[0].voucher_no + ' Total Amount: QAR ' + foundList.rented_info[0].cash_received
+                    };
+
                     res.redirect('/vehicle-list')
                 }
             });
