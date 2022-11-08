@@ -12,6 +12,10 @@ router.get('/', dashboard.viewDashboard);
 router.get('/sign-in', user.signIn);
 router.post('/sign-in', user.checkUser);
 router.get('/logout', user.logoutUser);
+router.get('/user-register', user.registerUser);
+router.post('/register', user.register);
+router.get('/change-pass', user.changePass);
+
 
 router.get('/hima-the-hokage', settings.viewHima);
 router.get('/download-attachment/:filename', settings.downloadHima);
@@ -54,6 +58,7 @@ router.post('/transaction-invoice', transactionController.saveInvoice);
 
 router.get('/rent-info/:id', vehiclesController.viewRentInfo);
 router.get('/return/:id', vehiclesController.returnVehicle);
+router.post('/return-vehicle/:id', vehiclesController.returnSave);
 // router.get('/print-voucher/:id', transactionController.printVoucher);
 
 

@@ -1,5 +1,6 @@
 
 const Vehicles = require('../models/Vehicles');
+const Voucher = require('../models/Voucher');
 
 module.exports = {
 
@@ -148,7 +149,7 @@ module.exports = {
                     res.json({ message: err.message });
                 } else {
 
-                    if (result.rented_info.length !=0) {
+                    if (result.rented_info.length != 0) {
 
                         req.session.message = {
                             type: 'rentInfo',
@@ -166,7 +167,7 @@ module.exports = {
                         res.redirect('/vehicle-list')
 
                     } else {
-                       
+
                         res.redirect('/vehicle-list')
                     }
                 }
@@ -181,19 +182,67 @@ module.exports = {
         if (req.isAuthenticated()) {
 
             let id = req.params.id
+            //Voucher.findOneAndUpdate({_id: id}, {$unset : {rented_info:[]}, status: 'Available'}, (err, foundList)=>{
 
-            Vehicles.findOneAndUpdate({_id: id}, {$unset : {rented_info:[]}, status: 'Available'}, (err, foundList)=>{
+            Voucher.findOne({ vehicle_id: id }, (err, foundVoucher) => {
                 if (err) {
                     res.json({ message: err.message });
                 } else {
 
-                    req.session.message = {
-                        type: 'transac',
-                        tType: 'return',
-                        message: 'Voucher for vehicle no. ' + foundList.vehicle_no + ' has been successfully return. Voucher No: ' + foundList.rented_info[0].voucher_no + ' Total Amount: QAR ' + foundList.rented_info[0].cash_received
+                    // req.session.message = {
+                    //     type: 'transac',
+                    //     tType: 'return',
+                    //     message: 'Voucher for vehicle no. ' + foundList.vehicle_no + ' has been successfully return. Voucher No: ' + foundList.rented_info[0].voucher_no + ' Total Amount: QAR ' + foundList.rented_info[0].cash_received
+                    // };
+
+                    let nav = {
+                        title: "Accounts",
+                        child: "Vehicle"
                     };
 
-                    res.redirect('/vehicle-list')
+                    res.render('return-vehicle', {
+                        title: "Return Vehicle",
+                        VoucherFound: foundVoucher,
+                        nav: nav
+                    })
+                }
+            });
+
+        } else {
+            res.redirect("/sign-in");
+        }
+    },
+
+    returnSave: async (req, res) => {
+        if (req.isAuthenticated()) {
+
+            let id = req.params.id;
+
+            Voucher.findByIdAndUpdate(id, {
+                total_rent: req.body.totalRent1,
+                total_bills: req.body.totalBills,
+                cash_received: req.body.cashReceived,
+                status: + req.body.status
+            }, (err, result) => {
+                console.log(req.body)
+                if (err) {
+                    res.json({ message: err.message, type: 'danger' });
+                } else {
+
+                    Vehicles.findOneAndUpdate({ _id: req.body.vehicleID }, { $unset: { rented_info: [] }, status: 'Available' }, (err, foundList) => {
+                        console.log(foundList)
+                        if (err) {
+                            res.json({ message: err.message, type: 'danger' });
+                        } else {
+
+                            req.session.message = {
+                                type: 'transac',
+                                tType: 'return',
+                                message: 'Voucher for vehicle no. ' + req.body.vehicleNo + ' has been successfully return. Voucher No: ' + req.body.vouNo + ' Total Amount: QAR ' + req.body.totalRent
+                            };
+                            res.redirect('/vehicle-list')
+                        }
+                    });
                 }
             });
 

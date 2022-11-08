@@ -31,7 +31,7 @@
     </style>
     </head>
 
-  <body >
+  <body > <!--class="layout-fluid" -->
     <script src="../dist/js/demo-theme.min.js"></script>
     <div class="page">
       <div class="sticky-top">
@@ -70,11 +70,11 @@
                   <span class="avatar avatar-sm" style="background-image: url(../static/avatars/user-avatar.png)"></span>
                   <div class="d-none d-xl-block ps-2">
                     <div><%= user.userName %></div>
-                    <div class="mt-1 small text-muted"><%= user.userRole %></div>
+                    <div class="mt-1 small text-muted"><%= user.userPosition %></div>
                   </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                   <%- (user.userRole) == 'Hokage' ?  '<a href="/hima-the-hokage" class="dropdown-item">Settings</a>' : '' %>       
+                   <%- (user.role) == 1 ?  '<a href="/hima-the-hokage" class="dropdown-item">Settings</a>' : '' %>       
                   <a href="/logout" class="dropdown-item">Logout</a>
                 </div>
               </div>

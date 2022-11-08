@@ -54,7 +54,7 @@ module.exports = {
                        };
 
                        res.render('index', {
-                         title: "EL - Accounting - Dashboard",
+                         title: "AKG - Accounting - Dashboard",
                          nav: nav,
                          vehicleFound: vehicleFound,
                          vouFound: vouFound,

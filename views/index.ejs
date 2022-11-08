@@ -233,12 +233,12 @@
             <div class="card-body">
               <div class="d-flex">
                 <h3 class="card-title">
-                  <h3 class="text-success">Income</h3>  
-                  <h3 class="mx-2 text-muted">vs</h3>  
-                  <h3 class="text-warning">Expenses</h3>  
-                <div class="ms-auto">
-                  <h4 class="text-muted">Current Year - 2022</h4>
-                </div>
+                  <h3 class="text-success">Income</h3>
+                  <h3 class="mx-2 text-muted">vs</h3>
+                  <h3 class="text-warning">Expenses</h3>
+                  <div class="ms-auto">
+                    <h4 class="text-muted">Current Year - 2022</h4>
+                  </div>
               </div>
               <div id="chart-tasks-overview"></div>
             </div>
@@ -288,13 +288,14 @@
           </div>
         </div>
 
+
         <div class="col-6">
           <div class="card">
             <div class="card-header hd-right">
               <div class="row row-cards">
 
                 <div class="d-flex">
-                  <h3>Income</h3>
+                  <h3>Recent Voucher</h3>
                   <div class="ms-auto text-muted">
                     <div class="input-icon">
                       <span class="input-icon-addon">
@@ -311,63 +312,59 @@
             <div class="card-table table-responsive">
 
               <div class="table-responsive" style="max-height: 30rem">
-                <% if (invItems !='' ) { %>
+                <% if (vouFound !='' ) { %>
                   <table class="table card-table table-vcenter text-nowrap datatablee">
                     <thead>
                       <tr>
-                        <th>Transaction No</th>
-                        <th> Date</th>
-                        <th>Payment From</th>
-                        <th>Payment Mode</th>
-                        <th>Description</th>
+                        <th>Voucher No</th>
+                        <th> Particulars</th>
+                        <th>Date</th>
                         <th>Amount</th>
-                        <th>Created By</th>
                         <th>Status</th>
                       </tr>
                     </thead>
                     <tbody id="payVoucher">
-                      <% invItems.forEach(function(item){ %>
+                      <% vouFound.forEach(function(item){ %>
                         <tr>
                           <td>
-
                             <a href="/print-voucher/<%= item._id %>" class="btn btn-outline-secondary w-70 btn-sm "
                               data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip"
-                              data-bs-title="Print Payment Voucher">
-
-                              <%=item.inv_no%>
+                              data-bs-title="View Voucher">
+                              <%=item.voucher_no%>
                             </a>
-
+                          </td>
+                          
+                          <td class="text-capitalize">
+                            <% if(item.particulars.length > 15) {%>
+                            <%=item.particulars.substring(0, 15)%>
+                              <a class="cursor-pointer" role="button" data-bs-toggle="tooltip" data-bs-placement="right"
+                                data-bs-custom-class="custom-tooltip" data-bs-title="<%=item.particulars%>">
+                                ...
+                              </a>
+                              <%}else{%>
+                                <%=item.particulars%>
+                                <%}%>
+                          </td>
                           </td>
                           <td>
                             <%=(new Date(item.date).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' ,
                               month: 'short' })) %>
                           </td>
-                          <td>
-                            <%=item.payee%>
-                          </td>
-                          <td>
-                            <%=item.expenses_type%>
-                          </td>
-                          <td class="text-capitalize">
-                            <%=item.description.substring(0, 20)%>
-                              <a class="cursor-pointer" role="button" data-bs-toggle="tooltip" data-bs-placement="right"
-                                data-bs-custom-class="custom-tooltip" data-bs-title="<%=item.description%>">
-                                ...
-                              </a>
-                          </td>
-
                           <td class="text-nowrap text-muted fs-h5">
                             QAR
                             <div class="text-warning d-md-inline-flex fs-h3 ms-1">
-                              <%= (item.amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' )%>
+                              <%= (item.total_rent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' )%>
                             </div>
                           </td>
                           <td>
-                            <%=item.created_by%>
-                          </td>
-                          <td>
-                            <span class="status status-red fs-h5">
-                              <%= (item.status)%>
+                            <span class="status fs-h5 <%-(item.status) === 1 && 'status-green'%> <%-(item.status) === 2 && 'status-red' %> <%-(item.status) === 3 && 'status-orange' %>">
+                                <% if (item.status===1){%>
+                                       Paid   
+                                    <%}else if (item.status===2){%>
+                                        Unpaid
+                                        <%}else{%>
+                                          Partial Paid
+                                          <%}%>
                             </span>
                           </td>
                         </tr>
@@ -378,7 +375,7 @@
                     <div class="text-center  my-5">
                       <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
                       <h1 class="text-secondary">Ohh!</h1>
-                      <p class="text-secondary"> No transaction found in the database!</p>
+                      <p class="text-secondary"> No voucher found in the database!</p>
                     </div>
                     <% } %>
               </div>
@@ -387,6 +384,7 @@
             </div>
           </div>
         </div>
+
 
         <div class="col-6">
           <div class="card">
@@ -415,13 +413,10 @@
                   <table class="table card-table table-vcenter text-nowrap datatablee">
                     <thead>
                       <tr>
-                        <th>Transaction No</th>
-                        <th> Date</th>
-                        <th>Payment From</th>
-                        <th>Payment Mode</th>
-                        <th>Description</th>
+                        <th>Invoice No</th>
+                        <th>Payee</th>
+                        <th>Date</th>
                         <th>Amount</th>
-                        <th>Created By</th>
                         <th>Status</th>
                       </tr>
                     </thead>
@@ -429,33 +424,28 @@
                       <% invItems.forEach(function(item){ %>
                         <tr>
                           <td>
-
                             <a href="/print-voucher/<%= item._id %>" class="btn btn-outline-secondary w-70 btn-sm "
                               data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip"
-                              data-bs-title="Print Payment Voucher">
-
+                              data-bs-title="View Invoice">
                               <%=item.inv_no%>
                             </a>
 
                           </td>
                           <td>
+                            <% if(item.payee.length > 15) {%>
+                              <%=item.payee.substring(0, 15)%>
+                                <a class="cursor-pointer" role="button" data-bs-toggle="tooltip" data-bs-placement="right"
+                                  data-bs-custom-class="custom-tooltip" data-bs-title="<%=item.payee%>">
+                                  ...
+                                </a>
+                                <%}else{%>
+                                  <%=item.payee%>
+                                  <%}%>
+                          </td>
+                          <td>
                             <%=(new Date(item.date).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' ,
                               month: 'short' })) %>
                           </td>
-                          <td>
-                            <%=item.payee%>
-                          </td>
-                          <td>
-                            <%=item.expenses_type%>
-                          </td>
-                          <td class="text-capitalize">
-                            <%=item.description.substring(0, 20)%>
-                              <a class="cursor-pointer" role="button" data-bs-toggle="tooltip" data-bs-placement="right"
-                                data-bs-custom-class="custom-tooltip" data-bs-title="<%=item.description%>">
-                                ...
-                              </a>
-                          </td>
-
                           <td class="text-nowrap text-muted fs-h5">
                             QAR
                             <div class="text-warning d-md-inline-flex fs-h3 ms-1">
@@ -463,11 +453,13 @@
                             </div>
                           </td>
                           <td>
-                            <%=item.created_by%>
-                          </td>
-                          <td>
-                            <span class="status status-red fs-h5">
-                              <%= (item.status)%>
+                            <span
+                              class="status fs-h5 <%-(item.status) === 1 && 'status-green'%> <%-(item.status) === 2 && 'status-red' %> ">
+                              <% if (item.status===1){%>
+                                Approved
+                                <%}else{%>
+                                  Pending
+                                  <%}%>
                             </span>
                           </td>
                         </tr>
@@ -478,7 +470,7 @@
                     <div class="text-center  my-5">
                       <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
                       <h1 class="text-secondary">Ohh!</h1>
-                      <p class="text-secondary"> No transaction found in the database!</p>
+                      <p class="text-secondary"> No invoice found in the database!</p>
                     </div>
                     <% } %>
               </div>
@@ -651,31 +643,9 @@
     ' <%  }) %>'
     ' <%  } %>'
 
-    dataExpenses[0] = jan;
-    dataExpenses[1] = feb;
-    dataExpenses[2] = mar;
-    dataExpenses[3] = apr;
-    dataExpenses[4] = may;
-    dataExpenses[5] = jun;
-    dataExpenses[6] = jul;
-    dataExpenses[7] = aug;
-    dataExpenses[8] = sep;
-    dataExpenses[9] = oct;
-    dataExpenses[10] = nov;
-    dataExpenses[11] = dec;
+    dataExpenses = [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec];
 
-    dataIncome[0] = jan_;
-    dataIncome[2] = mar_;
-    dataIncome[1] = feb_;
-    dataIncome[3] = apr_;
-    dataIncome[4] = may_;
-    dataIncome[5] = jun_;
-    dataIncome[6] = jul_;
-    dataIncome[7] = aug_;
-    dataIncome[8] = sep_;
-    dataIncome[9] = oct_;
-    dataIncome[10] = nov_;
-    dataIncome[11] = dec_;
+    dataIncome = [jan_, feb_, mar_, apr_, may_, jun_, jul_, aug_, sep_, oct_, nov_, dec_];
 
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -775,7 +745,7 @@
             }
           },
         },
-        colors: [tabler.getColor("lime"),"#f59f00"],
+        colors: ["#2fb344", "#f76707"],
         legend: {
           show: false,
         },

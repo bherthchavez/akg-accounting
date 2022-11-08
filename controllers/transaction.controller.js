@@ -74,7 +74,7 @@ module.exports = {
                         total_rent: totalRent,
                         total_bills: totalBills,
                         cash_received: totalRecieved,
-                        status: "Active",
+                        status: 2,
                         created_by: req.user.name
                     });
                     voucher.save();
@@ -201,19 +201,15 @@ module.exports = {
                     let cDetails =''
 
                     if (req.body.expensesFor ==='vehicle'){
-                        
+                    
                         vId = req.body.vehicleID
                         vNo = foundVehicle.vehicle_no
-
                     }else{
                         vId = 'other'
                         vNo = 'other'
                     }
 
                      (req.body.paymentType) ==='card' ?  cDetails = req.body.cardDetails : cDetails='cash';
-
-                    
-
                     const invoice = new Invoice({
                         inv_no: req.body.invNo,
                         expenses_for: req.body.expensesFor,
@@ -229,16 +225,11 @@ module.exports = {
                         month: req.body.forMonth,
                         remarks: req.body.remarks,
                         amount: amount,
-                        status: "Active",
+                        status: 2,
                         created_by: req.user.name
                     });
-                    
-
-
 
                     invoice.save();
-
-
 
                     let totalExpenses = 0;
                     

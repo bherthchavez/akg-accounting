@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const passportLocalMongoose = require("passport-local-mongoose");
-const passport =require("passport");
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -11,29 +10,17 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    password: {
-        type: String,
-        required: true,
-    },
     email: {
         type:  String,
         required: true,
     },
-    userRole: {
+    position: {
         type:  String,
         required: true,
     },
-    image: {
-        type:  String,
+    role: {
+        type:  Number,
         required: true,
-    },
-    created_by: {
-        type: String,
-        required: true,
-    },
-    active: {
-        type: Boolean,
-        default: true
     }
 },
 {
@@ -41,10 +28,5 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.plugin(passportLocalMongoose);
-
-const User = new mongoose.model("User", userSchema);
-passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 module.exports = new mongoose.model("User", userSchema);
