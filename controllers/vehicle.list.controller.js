@@ -6,8 +6,6 @@ module.exports = {
 
     addVehicle: async (req, res) => {
         if (req.isAuthenticated()) {
-
-
             const newVehicle = new Vehicles({
                 vehicle_no: req.body.vehicleNo,
                 make_model: req.body.makeModel,
@@ -46,7 +44,8 @@ module.exports = {
 
                     let nav = {
                         title: "Accounts",
-                        child: "Vehicle"
+                        child: "Vehicle",
+                        view: 2
                     };
 
                     res.render('vehicle-list', {
@@ -197,7 +196,8 @@ module.exports = {
 
                     let nav = {
                         title: "Accounts",
-                        child: "Vehicle"
+                        child: "Vehicle",
+                         view: 2
                     };
 
                     res.render('return-vehicle', {

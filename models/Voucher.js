@@ -46,6 +46,10 @@ const voucherSchema = new mongoose.Schema(
         created_by: {
             type: String,
             required: true
+        },
+        company_id: {
+            type: String,
+            required: true
         }
     },
     {

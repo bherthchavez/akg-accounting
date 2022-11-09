@@ -1,0 +1,292 @@
+<%- include('layout/header') %>
+
+  <div class="page-wrapper">
+    <div class="container-xl">
+      <!-- Page title -->
+      <div class="page-header d-print-none">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+            <!-- Page pre-title -->
+            <div class="page-pretitle">
+              Setup
+            </div>
+            <h2 class="page-title">
+              Company List
+            </h2>
+          </div>
+          <!-- Page title actions -->
+          <div class="col-12 col-md-auto ms-auto d-print-none">
+            <div class="btn-list">
+
+              <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                data-bs-target="#modal-addCompany">
+                <i class="ti ti-plus fs-h3 fw-light me-2"> </i>
+                Add Company
+              </a>
+              <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
+                data-bs-target="#modal-addCompany" aria-label="Create new bank account">
+                <i class="ti ti-plus fs-h4 fw-light"> </i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="container-xl">
+        <div class="row row-deck row-cards">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header hd-right">
+                <div class="row row-cards">
+                  <div class="d-flex">
+                    <h3>Manage Company</h3>
+                    <div class="ms-auto text-muted">
+                      <div class="input-icon">
+                        <span class="input-icon-addon">
+                          <i class="ti ti-search"></i>
+                        </span>
+                        <input type="text" id="searchSA" class="form-control" placeholder="Search…"
+                          aria-label="Search in website">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class=" card-table table-responsive">
+                <div class="table-responsive" style="max-height: 45rem">
+                  <% if (companyList !='' ) { %>
+                  <table class="table card-table table-vcenter text-nowrap datatable">
+                    <thead>
+                      <tr>
+                        <th class="w-1">Action</th>
+                        <th>Commercial Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                      </tr>
+                    </thead>
+                    <tbody id="suppAcc">
+                      <% companyList.forEach(function(company){ %>
+                      <tr>
+                        <td>
+                          <div class="col-auto">
+                            <div class="dropdown">
+                              <a class="btn btn-action" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="ti ti-dots-vertical fs-h3"></i>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-updateCompany<%=company._id%>">Edit /
+                                  View</a>
+                                <a class="dropdown-item text-danger" data-bs-toggle="modal"
+                                  data-bs-target="#modal-deleteCompany<%=company._id%>">Delete</a>
+
+                              </div>
+
+                            </div>
+                          </div>
+
+                        </td>
+                        <td>
+                          <%=company.commercial_name%>
+                        </td>
+                        <td>
+                          <%=company.email%>
+                        </td>
+                        <td>
+                          <%=company.phone%>
+                        </td>
+                        <td>
+                          <%=company.address%>
+                        </td>
+                      </tr>
+
+                      <!-- Delete Vehicle -->
+                      <div class="modal modal-blur fade" id="modal-deleteCompany<%=company._id%>" tabindex="-1"
+                        role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                              aria-label="Close"></button>
+                            <div class="modal-status bg-danger"></div>
+                            <div class="modal-body text-center py-4">
+                              <i class="ti ti-alert-triangle fs--h1 text-danger"></i>
+                              <h3>
+                                <%=company.commercial_name%>
+                              </h3>
+                              <div class="text-muted">Do you really want to delete this company?</div>
+                            </div>
+                            <div class="modal-footer">
+                              <div class="w-100">
+                                <div class="row">
+                                  <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                      Cancel
+                                    </a></div>
+                                  <div class="col">
+                                    <a href="/delete-company/<%=company._id%>" class="btn btn-danger w-100">Yes</a>
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                       <!-- Update Company -->
+                      <div class="modal modal-blur fade" id="modal-updateCompany<%=company._id%>" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                          <div class="modal-content">
+                            <form action="/update-company/<%=company._id%>" method="post">
+                              <div class="modal-header">
+                                <h5 class="modal-title">Update Company</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="row">
+                                  <div class="col-lg-6">
+                                    <div class="mb-3">
+                                      <label class="form-label">Legal Name</label>
+                                      <div class="input-group input-group-flat">
+                                        <input type="text" name="legalName" class="form-control" value=" <%=company.legal_name%>" required />
+                                      </div>
+                                    </div>
+                                    <div class="mb-3">
+                                      <label class="form-label">Commercial Name</label>
+                                      <input type="text" name="commName" class="form-control" value=" <%=company.commercial_name%>" required />
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-6">
+                                    <div class="mb-3">
+                                      <label class="form-label">Email</label>
+                                      <input type="email" name="email" class="form-control" value=" <%=company.email%>" required />
+                                    </div>
+                                    <div class="mb-3">
+                                      <label class="form-label">Phone</label>
+                                      <div class="input-icon mb-2">
+                                        <input type="text" name="phone" class="form-control" value=" <%=company.phone%>" required />
+                                      </div>
+                                    </div>
+                                  </div>
+                                
+                                  <div class="col">
+                                    <div class="mb-3">
+                                      <label class="form-label">Address</label>
+                                      <textarea name="address"  class="form-control" rows="5" required><%=company.address%></textarea>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                      
+                              <div class="modal-footer">
+                                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                                  Cancel
+                                </a>
+                                <button type="submit" class="btn btn-primary ms-auto">Update </button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <% }) %>
+                    </tbody>
+                  </table>
+
+                  <% } else { %>
+                    <div class="text-center  my-5">
+                      <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
+                      <h1 class="text-secondary">Ohh!</h1>
+                      <p class="text-secondary"> No company found in the database!</p>
+                    </div>
+                    <% } %>
+
+                  <!-- Add New Company -->
+                  <div class="modal modal-blur fade" id="modal-addCompany" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                      <div class="modal-content">
+                        <form action="/add-company" method="post">
+                          <div class="modal-header">
+                            <h5 class="modal-title">New Company</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="row">
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Legal Name</label>
+                                  <div class="input-group input-group-flat">
+                                    <input type="text" name="legalName" class="form-control" required />
+                                  </div>
+                                </div>
+                                <div class="mb-3">
+                                  <label class="form-label">Commercial Name</label>
+                                  <input type="text" name="commName" class="form-control" required />
+                                </div>
+                              </div>
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Email</label>
+                                  <input type="email" name="email" class="form-control" required />
+                                </div>
+                                <div class="mb-3">
+                                  <label class="form-label">Phone</label>
+                                  <div class="input-icon mb-2">
+                                    <input type="text" name="phone" class="form-control" required />
+                                  </div>
+                                </div>
+                              </div>
+                             
+                              <div class="col">
+                                <div class="mb-3">
+                                  <label class="form-label">Address</label>
+                                  <textarea name="address"  class="form-control" rows="5" required></textarea>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                  
+                          <div class="modal-footer">
+                            <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                              Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary ms-auto">
+                              Save
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="card-footer d-flex align-items-center">
+                  
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $(document).ready(function () {
+        $("#searchSA").on("keyup", function () {
+          var value = $(this).val().toLowerCase();
+          $("#suppAcc tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+
+      });
+    </script>
+
+
+
+    <%- include('layout/modals') %>
+      <%- include('layout/footer') %>

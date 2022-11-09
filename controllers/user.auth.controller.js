@@ -60,12 +60,17 @@ module.exports = {
             });
           }
 
+         
+
           req.session.user = {
             userName: req.user.name,
             userPosition: req.user.position,
-            role: req.user.role
+            role: req.user.role,
+            company: req.user.company
           };
-          res.redirect("/");
+
+          (req.user.role === 1) ? res.redirect("/owner-dashboard") : res.redirect("/");
+          
         });
 
       }
@@ -80,53 +85,7 @@ module.exports = {
       res.redirect('/');
     });
 
-  },
-  registerUser: async (req, res) => {
-    res.render('register');
-  },
-  register: async (req, res) => {
-
-    const name = req.body.name
-    const role = req.body.role
-    const email = req.body.email
-    const username = req.body.username
-    const position = req.body.position
-    const password = req.body.password
-
-    User.register(new User({ name: name, role: role, email: email, username: username, position: position }), password,  (err, user) =>{
-      if (err) {
-        res.json({ success: false, message: "Your account could not be saved. Error: " + err });
-      }
-      else {
-        console.log('new user has been saved.');
-        res.redirect("/");
-      }
-    });
-
-  },
-
-  changePass: async (req, res) => {
-
-    const password = '@himauzumaki'
-    const username = 'chocho'
-
-    User.findByUsername(username).then(function(sanitizedUser) {
-      if (sanitizedUser) {
-          sanitizedUser.setPassword(password, function() {
-              sanitizedUser.save();
-              console.log('password reset successful');
-              res.redirect("/logout");
-          });
-      } else {
-          res.send('user does not exist');
-      }
-  }, function(err) {
-      console.error(err);
-  })
-
-   
-
-  },
+  }
 
 
 }

@@ -29,7 +29,8 @@ module.exports = {
                                     let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
                                     let nav = {
                                         title: "Accounts",
-                                        child: "Vehicle"
+                                        child: "Vehicle",
+                                        view: 2
                                     };
 
                                     res.render('create-voucher', {
@@ -164,7 +165,8 @@ module.exports = {
                                     let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
                                     let nav = {
                                         title: "Accounts",
-                                        child: "Vehicle"
+                                        child: "Vehicle",
+                                        view: 2
                                     };
 
                                     res.render('create-invoice', {

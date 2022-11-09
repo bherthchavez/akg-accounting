@@ -46,7 +46,8 @@ module.exports = {
 
                                     let nav = {
                                         title: "Settings",
-                                        child: "Master"
+                                        child: "Master",
+                                        view: 2
                                     };
 
                                     res.render('account-ledger', {title: "Settings - Account Ledger",
@@ -174,7 +175,8 @@ module.exports = {
 
                                     let nav = {
                                         title: "Settings",
-                                        child: "Master"
+                                        child: "Master",
+                                        view: 2
                                     };
 
                                     res.render('cost-center', {title: "Settings - Cost Center",
@@ -302,7 +304,8 @@ module.exports = {
 
                                     let nav = {
                                         title: "Settings",
-                                        child: "Master"
+                                        child: "Master",
+                                        view: 2
                                     };
 
                                     res.render('transfer-purpose', {title: "Settings - Transfer Purpose",
@@ -444,7 +447,8 @@ module.exports = {
                             } else {
                                 let nav = {
                                     title: "Settings",
-                                    child: "System Settings"
+                                    child: "System Settings",
+                                    view: 2
                                 };
                                 
 
@@ -581,7 +585,8 @@ module.exports = {
 
                                             let nav = {
                                                 title: "",
-                                                child: ""
+                                                child: "",
+                                                view: 2
                                             };
 
                                             res.render('hima-the-hokage', {title: "Settings -For Hima",

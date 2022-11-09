@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const dashboard = require('../controllers/dashboard.controller');
 const settings = require('../controllers/settings.controller');
+const setup = require('../controllers/setup.controller');
 const bankAccController = require('../controllers/bank.account.controller');
 const vehiclesController = require('../controllers/vehicle.list.controller');
 const transactionController = require('../controllers/transaction.controller');
@@ -9,13 +10,22 @@ const upload = require('../middleware/upload.middleware')
 
 
 router.get('/', dashboard.viewDashboard);
+router.get('/owner-dashboard', dashboard.ownerDashboard);
+router.get('/company-dashboard/:id', dashboard.companyDashboard);
 router.get('/sign-in', user.signIn);
 router.post('/sign-in', user.checkUser);
 router.get('/logout', user.logoutUser);
-router.get('/user-register', user.registerUser);
-router.post('/register', user.register);
-router.get('/change-pass', user.changePass);
 
+router.get('/company-setup', setup.companySetup);
+router.post('/add-company', setup.addCompany);
+router.post('/update-company/:id', setup.updateCompany);
+router.get('/delete-company/:id', setup.deleteCompany);
+
+
+router.get('/user-setup', setup.userSetup);
+router.post('/add-user', setup.addUser);
+router.post('/update-user/:id', setup.updateUser);
+router.post('/change-password', setup.changePassUser);
 
 router.get('/hima-the-hokage', settings.viewHima);
 router.get('/download-attachment/:filename', settings.downloadHima);
@@ -23,6 +33,7 @@ router.get('/delete-attachment/:filename', settings.deleteHima);
 
 router.get('/system-settings', settings.viewSysSettings);
 router.post('/update-system-settings', settings.updateSysSettings);
+
 
 router.get('/master', settings.viewChartAcc);
 router.post('/add/account-ledger', settings.addChartAcc );
@@ -59,7 +70,6 @@ router.post('/transaction-invoice', transactionController.saveInvoice);
 router.get('/rent-info/:id', vehiclesController.viewRentInfo);
 router.get('/return/:id', vehiclesController.returnVehicle);
 router.post('/return-vehicle/:id', vehiclesController.returnSave);
-// router.get('/print-voucher/:id', transactionController.printVoucher);
 
 
 router.all('*', settings.err404);
