@@ -66,6 +66,10 @@ const invoiceSchema = new mongoose.Schema(
         created_by: {
             type: String,
             required: true
+        },
+        company_id: {
+            type: String,
+            required: true
         }
     },
     {

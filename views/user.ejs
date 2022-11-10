@@ -64,7 +64,7 @@
                         <tr>
                           <th class="w-1">Action</th>
                           <th>Name</th>
-                          <th>User Name</th>
+                          <th>email</th>
                           <th>Company</th>
                           <th>Position</th>
                           <th>Role</th>
@@ -86,7 +86,7 @@
                                       data-bs-target="#modal-updateUser<%=user._id%>">View / Update
                                       </a>
                                     <a class="dropdown-item" data-bs-toggle="modal"
-                                      data-bs-target="#modal-changePass<%=user._id%>">Change Password</a>
+                                      data-bs-target="#modal-changePass<%=user._id%>">Reset Password</a>
                                     <!-- <a class="dropdown-item text-danger" data-bs-toggle="modal"
                                       data-bs-target="#modal-deleteUser<%=user._id%>">Delete</a> -->
 
@@ -100,7 +100,7 @@
                               <%=user.name%>
                             </td>
                             <td>
-                              <%=user.username%>
+                              <%=user.email%>
                             </td>
                             <td>
                               <%=user.company%>
@@ -250,10 +250,10 @@
                                       <div class="col-lg-6">
                                         <div class="mb-3">
                                           <div class="form-label">Company</div>
-                                          <select class="form-select" name="company" required>
+                                             <select class="form-select" name="company" required>
                                             <option>--</option>
                                             <% foundCompany.forEach(function(company){ %>
-                                              <option value="<%=company.commercial_name%>" <%=user.company===company.commercial_name ? 'selected' : '' %>><%=company.commercial_name%></option>
+                                              <option value="<%=company._id%>" <%=user.company===company.commercial_name ? 'selected' : '' %>><%=company.commercial_name%></option>
                                               <%})%>
                                           </select>
                                         </div>
@@ -349,7 +349,7 @@
                                         <select class="form-select" name="company" required>
                                           <option>--</option>
                                           <% foundCompany.forEach(function(company){ %>
-                                            <option value="<%=company.commercial_name%>"><%=company.commercial_name%></option>
+                                            <option value="<%=company._id%>"><%=company.commercial_name%></option>
                                             <%})%>
                                         </select>
                                       </div>

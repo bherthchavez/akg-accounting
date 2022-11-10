@@ -145,7 +145,8 @@ module.exports = {
             userName: req.user.name,
             userPosition: req.user.position,
             role: req.user.role,
-            company: foundCompany.legal_name
+            company: foundCompany.legal_name,
+            companyID: foundCompany._id
           };
 
 

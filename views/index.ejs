@@ -327,11 +327,11 @@
                       <% vouFound.forEach(function(item){ %>
                         <tr>
                           <td>
-                            <a href="/print-voucher/<%= item._id %>" class="btn btn-outline-secondary w-70 btn-sm "
-                              data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip"
-                              data-bs-title="View Voucher">
+                            <a class="btn btn-outline-secondary w-70 btn-sm" data-bs-toggle="modal"
+                                      data-bs-target="#modal-viewVou<%= item.id %>">
                               <%=item.voucher_no%>
                             </a>
+                         
                           </td>
                           
                           <td class="text-capitalize">
@@ -368,6 +368,53 @@
                             </span>
                           </td>
                         </tr>
+
+
+                        <div class="modal modal-blur fade" id="modal-viewVou<%= item.id %>" tabindex="-1" role="dialog" aria-hidden="true">
+                          <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-body">
+                                    <div class="card-header">
+                                      <dt class="col-5">Voucher No:</dt>
+                                      <dd class="col-7 mt-2"><%= item.voucher_no %></dd>
+                                    </div>
+                                    <div class="card-body">
+                                      <dl class="row">
+                                        <dt class="col-5">Vehicle No:</dt>
+                                        <dd class="col-7"><%= item.vehicle_no %></dd>
+                                        <dt class="col-5">Date:</dt>
+                                        <dd class="col-7"><%= item.date %></dd>
+                                        <dt class="col-5">For the Month:</dt>
+                                        <dd class="col-7"><%= item.for_month %></dd>
+                                        <dt class="col-5">Particulars:</dt>
+                                        <dd class="col-7"><%= item.particulars %></dd>
+                                        <dt class="col-5 mt-2">Status:</dt>
+                                        <dd class="col-7 mt-2 fw-bold <%-(item.status) === 1 && 'text-green'%> <%-(item.status) === 2 && 'text-red' %> <%-(item.status) === 3 && 'text-orange' %>">
+                                          <% if (item.status===1){%>
+                                            Paid   
+                                         <%}else if (item.status===2){%>
+                                             Unpaid
+                                             <%}else{%>
+                                               Partial Paid
+                                               <%}%>
+                                        </dd>
+                                        <dt class="col-5 mt-2">Total Rent:</dt>
+                                        <dd class="col-7 text-danger mt-2"><div class="currency-formated">QAR</div><%= (item.total_rent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
+                                        <dt class="col-5">Total Bills:</dt>
+                                        <dd class="col-7 text-danger"><div class="currency-formated">QAR</div><%= (item.total_bills).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
+                                        <dt class="col-5 mt-2">Cash Received:</dt>
+                                        <dd class="col-7 text-danger mt-2 fw-bold"><div class="currency-formated fw-normal">QAR</div><%= (item.cash_received).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
+                                       
+                                       </dl>
+                                    </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">Cancel</button>
+                                <a href="/return/<%= item.id %>" class="btn btn-success">Update Voucher</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                         <% }) %>
                     </tbody>
                   </table>

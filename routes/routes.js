@@ -21,6 +21,9 @@ router.post('/add-company', setup.addCompany);
 router.post('/update-company/:id', setup.updateCompany);
 router.get('/delete-company/:id', setup.deleteCompany);
 
+router.get('/register', setup.devRegister); //for development
+router.post('/add-userDev', setup.addUserDev);  //for development
+
 
 router.get('/user-setup', setup.userSetup);
 router.post('/add-user', setup.addUser);

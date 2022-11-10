@@ -183,7 +183,7 @@ module.exports = {
             let id = req.params.id
             //Voucher.findOneAndUpdate({_id: id}, {$unset : {rented_info:[]}, status: 'Available'}, (err, foundList)=>{
 
-            Voucher.findOne({ vehicle_id: id }, (err, foundVoucher) => {
+            Voucher.findOne({ vehicle_no: id }, (err, foundVoucher) => {
                 if (err) {
                     res.json({ message: err.message });
                 } else {

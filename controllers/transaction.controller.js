@@ -76,6 +76,7 @@ module.exports = {
                         total_bills: totalBills,
                         cash_received: totalRecieved,
                         status: 2,
+                        company_id: req.user.company_id,
                         created_by: req.user.name
                     });
                     voucher.save();
@@ -228,6 +229,7 @@ module.exports = {
                         remarks: req.body.remarks,
                         amount: amount,
                         status: 2,
+                        company_id: req.user.company_id,
                         created_by: req.user.name
                     });
 

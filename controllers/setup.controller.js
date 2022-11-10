@@ -25,7 +25,7 @@ module.exports = {
             title: "Setup",
             view: 1
           };
-          res.render('setup', {
+          res.render('company', {
             title: "Company Setup",
             nav: nav,
             companyList: foundList
@@ -110,8 +110,6 @@ module.exports = {
         if (err) {
           res.json({ message: err.message });
         } else {
-
-          console.log(result.length)
           if (result.length === 0) {
 
             Company.findByIdAndRemove(id, (err) => {
@@ -147,10 +145,12 @@ module.exports = {
     }
   },
 
+  devRegister: async (req, res) => {
+    res.render('register')
+
+  },
   userSetup: async (req, res) => {
     if (req.isAuthenticated()) {
-
-
       User.find().exec((err, foundList) => {
         if (err) {
           res.json({ message: err.message });
@@ -184,10 +184,8 @@ module.exports = {
 
   },
 
-  addUser: async (req, res) => {
-    if (req.isAuthenticated()) {
-
-      const name = req.body.name
+  addUserDev: async (req, res) => {
+    const name = req.body.name
       const username = req.body.username
       const email = req.body.email
       const company = req.body.company
@@ -196,16 +194,49 @@ module.exports = {
       const status = + req.body.status
       const password = req.body.password
 
-      User.register(new User({
-        name: name,
-        username: username,
-        email: email,
-        company: company,
-        position: position,
-        role: role,
-        status: status,
-        created_by: req.user.name
-      }), password, (err, user) => {
+     
+
+          User.register(new User({
+            name: name,
+            username: username,
+            email: email,
+            company:company,
+            company_id: 123131,
+            position: position,
+            role: role,
+            status: status,
+            created_by: 'hima'
+          }), password, (err, user) => {
+            if (err) {
+
+             
+                console.log("Your account could not be saved. Error: " + err,)
+              
+              res.redirect("/user-setup");
+            } else {
+              console.log('New user account added successfully!')
+              res.redirect("/");
+            }
+
+          });
+  },
+
+  addUser: async (req, res) => {
+    if (req.isAuthenticated()) {
+
+
+
+      const name = req.body.name
+      const username = req.body.username
+      const email = req.body.email
+      const companyId = req.body.company
+      const position = req.body.position
+      const role = + req.body.role
+      const status = + req.body.status
+      const password = req.body.password
+
+      Company.findById({ _id:companyId }).exec((err, foundCompany) => {
+
         if (err) {
 
           req.session.message = {
@@ -213,15 +244,38 @@ module.exports = {
             message: "Your account could not be saved. Error: " + err,
           };
           res.redirect("/user-setup");
+        } else {
+
+          User.register(new User({
+            name: name,
+            username: username,
+            email: email,
+            company: foundCompany.commercial_name,
+            company_id: companyId,
+            position: position,
+            role: role,
+            status: status,
+            created_by: req.user.name
+          }), password, (err, user) => {
+            if (err) {
+
+              req.session.message = {
+                type: 'danger',
+                message: "Your account could not be saved. Error: " + err,
+              };
+              res.redirect("/user-setup");
+            } else {
+              req.session.message = {
+                type: 'success',
+                message: 'New user account added successfully!',
+              };
+              res.redirect("/user-setup");
+            }
+
+          });
         }
-        else {
-          req.session.message = {
-            type: 'success',
-            message: 'New user account added successfully!',
-          };
-          res.redirect("/user-setup");
-        }
-      });
+      })
+
 
     } else {
       res.redirect("/sign-in");
@@ -233,29 +287,47 @@ module.exports = {
     if (req.isAuthenticated()) {
 
       let id = req.params.id;
+      const companyId = req.body.company
 
-      User.findByIdAndUpdate(id, {
-        name: req.body.name,
-        username: req.body.commName,
-        email: req.body.email,
-        company: req.body.company,
-        position: req.body.position,
-        role: + req.body.role,
-        status: + req.body.status,
-        created_by: req.user.name
-      }, (err, result) => {
+      Company.findOne({_id:companyId}).exec((err, foundCompany) => {
+
         if (err) {
-          res.json({ message: err.message, type: 'danger' });
+          req.session.message = {
+            type: 'danger',
+            message: "user account could not be saved. Error: " + err,
+          };
+          res.redirect("/user-setup");
         } else {
 
-          req.session.message = {
-            type: 'success',
-            message: 'User account updated successfully!'
-          };
+          User.findByIdAndUpdate(id, {
+            name: req.body.name,
+            username: req.body.commName,
+            email: req.body.email,
+            company: foundCompany.commercial_name,
+            company_id: companyId,
+            position: req.body.position,
+            role: + req.body.role,
+            status: + req.body.status,
+            created_by: req.user.name
+          }, (err, result) => {
+            if (err) {
+              req.session.message = {
+                type: 'danger',
+                message: "user account could not be saved. Error: " + err,
+              };
+              res.redirect("/user-setup");
+            } else {
 
-          res.redirect('/user-setup')
-        }
-      });
+              req.session.message = {
+                type: 'success',
+                message: 'User account updated successfully!'
+              };
+
+              res.redirect('/user-setup')
+            }
+          });
+          }
+        })
 
     } else {
       res.redirect("/sign-in");
@@ -266,52 +338,52 @@ module.exports = {
   changePassUser: async (req, res) => {
     if (req.isAuthenticated()) {
 
-    if (req.body.password === req.body.newPassword) {
-      User.findByUsername(req.body.username).then(function (sanitizedUser) {
-        if (sanitizedUser) {
-          sanitizedUser.setPassword(req.body.password, function () {
-            sanitizedUser.save();
+      if (req.body.password === req.body.newPassword) {
+        User.findByUsername(req.body.username).then(function (sanitizedUser) {
+          if (sanitizedUser) {
+            sanitizedUser.setPassword(req.body.password, function () {
+              sanitizedUser.save();
 
+              req.session.message = {
+                type: 'success',
+                message: 'Password successfully change.'
+              };
+
+              res.redirect('/user-setup')
+            });
+          } else {
             req.session.message = {
-              type: 'success',
-              message: 'Password successfully change.'
+              type: 'danger',
+              message: 'User does not exist.'
             };
 
             res.redirect('/user-setup')
-          });
-        } else {
+          }
+        }, function (err) {
           req.session.message = {
             type: 'danger',
-            message: 'User does not exist.'
+            message: err
           };
 
           res.redirect('/user-setup')
-        }
-      }, function (err) {
+        })
+
+
+
+      } else {
+
         req.session.message = {
           type: 'danger',
-          message: err
+          message: 'Password does not match! Please try again.'
         };
 
         res.redirect('/user-setup')
-      })
 
-     
+      }
+
+
 
     } else {
-
-      req.session.message = {
-        type: 'danger',
-        message: 'Password does not match! Please try again.'
-      };
-
-      res.redirect('/user-setup')
-
-    }
-
-
-
- } else {
       res.redirect("/sign-in");
     }
 

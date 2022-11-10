@@ -59,14 +59,12 @@ module.exports = {
               }
             });
           }
-
-         
-
           req.session.user = {
             userName: req.user.name,
             userPosition: req.user.position,
             role: req.user.role,
-            company: req.user.company
+            company: req.user.company,
+            company_id: req.user.company_id
           };
 
           (req.user.role === 1) ? res.redirect("/owner-dashboard") : res.redirect("/");
