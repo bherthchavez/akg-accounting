@@ -14,7 +14,7 @@ module.exports = {
                 istimara_exdate: req.body.exDate,
                 expenses: 0.0,
                 income: 0.0,
-                status: req.body.status,
+                status: + req.body.status,
                 created_by: req.user.name,
             });
             newVehicle.save((err) => {
@@ -48,7 +48,7 @@ module.exports = {
                         view: 2
                     };
 
-                    res.render('vehicle-list', {
+                    res.render('vehicle', {
                         title: "Vehicle List",
                         vehicleList: foundVehicles,
                         nav: nav
@@ -73,7 +73,7 @@ module.exports = {
                 registered_owner: req.body.regOwner,
                 registered_date: req.body.regDate,
                 istimara_exdate: req.body.exDate,
-                status: req.body.status
+                status: + req.body.status
             }, (err, result) => {
                 if (err) {
                     res.json({ message: err.message, type: 'danger' });
@@ -143,24 +143,32 @@ module.exports = {
 
             let id = req.params.id
 
-            Vehicles.findById(id, (err, result) => {
-                if (err) {
-                    res.json({ message: err.message });
+            const voucherNo = req.body.voucherNo
+
+            Voucher.findById(id, (err, result) => {
+                if (err || !result) {
+                    req.session.message = {
+                        type: 'danger',
+                        message: "Transaction cannot view. Error: " + err,
+                    };
+                    res.redirect("/");
                 } else {
 
-                    if (result.rented_info.length != 0) {
+                    if (result) {
 
                         req.session.message = {
-                            type: 'rentInfo',
+                            type: 'viewVoucher',
+                            for: result.voucher_for,
                             id: result._id,
                             vehicleNo: result.vehicle_no,
-                            voucherNo: result.rented_info[0].voucher_no,
-                            date: result.rented_info[0].date,
-                            month: result.rented_info[0].for_month,
-                            particulars: result.rented_info[0].particulars,
-                            rent: result.rented_info[0].total_rent,
-                            bills: result.rented_info[0].total_bills,
-                            received: result.rented_info[0].cash_received
+                            voucherNo: result.voucher_no,
+                            date: result.date,
+                            month: result.for_month,
+                            particulars: result.particulars,
+                            rent: result.total_rent,
+                            bills: result.total_bills,
+                            received: result.cash_received,
+                            status: result.status
                         };
 
                         res.redirect('/vehicle-list')
@@ -181,18 +189,11 @@ module.exports = {
         if (req.isAuthenticated()) {
 
             let id = req.params.id
-            //Voucher.findOneAndUpdate({_id: id}, {$unset : {rented_info:[]}, status: 'Available'}, (err, foundList)=>{
 
-            Voucher.findOne({ vehicle_no: id }, (err, foundVoucher) => {
+            Voucher.findOne({ _id: id }, (err, foundVoucher) => {
                 if (err) {
                     res.json({ message: err.message });
                 } else {
-
-                    // req.session.message = {
-                    //     type: 'transac',
-                    //     tType: 'return',
-                    //     message: 'Voucher for vehicle no. ' + foundList.vehicle_no + ' has been successfully return. Voucher No: ' + foundList.rented_info[0].voucher_no + ' Total Amount: QAR ' + foundList.rented_info[0].cash_received
-                    // };
 
                     let nav = {
                         title: "Accounts",

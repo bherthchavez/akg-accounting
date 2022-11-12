@@ -1,0 +1,152 @@
+<%- include('layout/header') %>
+
+  <div class="page-wrapper">
+    <div class="container-xl">
+      <!-- Page title -->
+      <div class="page-header d-print-none">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+
+            <h2 class="page-title">
+              Return Vehicle
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form action="/transaction-voucher" method="post">
+
+      <div class="page-body">
+        <div class="container-xl">
+          <div class="row row-cards">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row mt-lg-2">
+                    <div class="col-lg-6">
+                      <div class="col">
+                        <div class="row">
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                          <div class="mb-3">
+                            <div class="form-label">Vehicle Number</div>
+                            <input type="text" name="vehicleNo" class="form-control" value="<%=VoucherFound.vehicle_no%>" readonly>
+                          </div>
+                          <div class="mb-3">
+                            <div class="form-label">Date</div>
+                            <input type="text" name="date" class="form-control" value="<%=VoucherFound.date%>" readonly>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Total Rent</label>
+                            <div class="input-group mb-2">
+                              <span class="input-group-text fs-h5">
+                                QAR
+                              </span>
+                              <input type="text" class="form-control text-danger totalRent"
+                                name="totalRent" value="<%=VoucherFound.total_rent%>" required>
+                            </div>
+                          </div>
+                          </div>
+                          
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                          <div class="mb-3">
+                            <div class="form-label">Voucher Number</div>
+                            <input type="text" name="vouNo" class="form-control" value="<%=VoucherFound.voucher_no%>" readonly>
+                          </div>
+                          <div class="mb-3">
+                            <div class="form-label">For the Month</div>
+                            <input type="text" name="month" class="form-control" value="<%=VoucherFound.for_month%>" readonly>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Total Bills</label>
+                            <div class="input-group mb-2">
+                              <span class="input-group-text fs-h5">
+                                QAR
+                              </span>
+                              <input type="text" class="form-control text-danger totalBills"
+                                name="totalBills" value="<%=VoucherFound.total_bills%>" required>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                    
+                      
+                    </div>
+
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label">Particulars</label>
+                        <textarea class="form-control" name="particulars" rows="5"readonly> <%=VoucherFound.particulars%></textarea>
+                      </div>
+                      <div class="row">
+                        <div class="col-auto ms-auto">
+                          <div class="mb-3">
+                            <label class="form-label">Cash Received</label>
+                            <div class="input-group mb-2">
+                              <span class="input-group-text fs-h5">
+                                QAR
+                              </span>
+                              <input type="text" class="form-control text-danger cashReceived"
+                                name="cashReceived" value="<%=VoucherFound.cash_received%>" readonly>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <div class="row align-items-center">
+                    <div class="col"></div>
+                    <div class="col-auto">
+                      <a href="/vehicle-list" class="btn cancelBill">
+                        Cancel
+                      </a>
+                      <input type="submit" name="submit" value="Save Transaction" class="btn btn-primary ms-3 d-none d-sm-inline-block" />
+                      <input type="submit" name="submit" value="Save" class="btn btn-primary ms-3 d-sm-none" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+  
+
+    <script>
+      $(document).ready(function () {
+        $(".cancelBill").on("click", function () {
+          $(".cancelBill").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
+        })
+      });
+
+      $('#datepicker-icon').val(new Date().toISOString().split('T')[0])
+    </script>
+
+  
+<script>
+  
+     $(".totalRent").keyup(()=>{
+      getCashR()
+     })
+     $(".totalBills").keyup(()=>{
+      getCashR()
+     });
+
+     const getCashR = ()=>{
+      let rentAmount = + ($(".totalRent").val().split(',').join(''))
+       let billAmount = + ($(".totalBills").val().split(',').join(''))
+       let cashReceived = rentAmount - billAmount;
+    
+       $(".cashReceived").val((cashReceived).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')); 
+     }
+
+</script>
+
+
+    <%- include('layout/footer') %>

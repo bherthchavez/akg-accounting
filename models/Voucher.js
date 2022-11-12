@@ -7,6 +7,10 @@ const voucherSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        voucher_for: {
+            type: String,
+            required: true
+        },
         vehicle_id: {
             type: String,
             required: true
@@ -40,6 +44,10 @@ const voucherSchema = new mongoose.Schema(
             required: true
         },
         status: {
+            type: Number,
+            required: true
+        },
+        vehicle_status: {
             type: Number,
             required: true
         },

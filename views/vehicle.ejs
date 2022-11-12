@@ -87,24 +87,33 @@
                                       data-bs-target="#modal-vehicleUp<%=vehicle._id%>">Edit / View</a>
                                     <a class="dropdown-item text-danger" data-bs-toggle="modal"
                                       data-bs-target="#modal-deleteVehicle<%=vehicle._id%>">Delete</a>
-                                     
+
                                   </div>
-                                  
-                              </div>
+
                                 </div>
                               </div>
+
                             </td>
                             <td>
-                              <a href="/rent-info/<%=vehicle._id%>" class="fs-h3 fw-bold <%- (vehicle.status) === 'Available' ?  'text-success' : 'text-warning'  %>">
-                                <%=vehicle.make_model%>
-                                  <span
-                                    class="fs-h6 fw-normal mb-1  <%- (vehicle.status) === 'Available' ?  'badge bg-green-lt' : 'badge bg-orange-lt'  %>">
-                                    <%=vehicle.status%>
-                                  </span>
-                              </a>
-                              <div class="text-muted mt-2">
-                                <%=vehicle.vehicle_no%>
-                              </div>
+                              <% if (vehicle.status===2){%>
+                                <a href="/rent-info/<%=vehicle.voucher_id%>" <%}else{%>
+                                  <a href="/vehicle-list" <%}%>
+                                    class="fs-h3 fw-bold <%- (vehicle.status)===1 ? 'text-success' : 'text-warning' %>">
+                                      <%=vehicle.make_model%>
+                                        <span
+                                          class="fs-h6 fw-normal mb-1  <%- (vehicle.status) === 1 ?  'badge bg-green-lt' : 'badge bg-orange-lt'  %>">
+
+
+                                          <% if (vehicle.status===1){%>
+                                            Available
+                                            <%}else{%>
+                                              Rented
+                                              <%}%>
+                                        </span>
+                                  </a>
+                                  <div class="text-muted mt-2">
+                                    <%=vehicle.vehicle_no%>
+                                  </div>
                             </td>
                             <td>
                               <div class="details-header"> Registered Owner</div>
@@ -133,19 +142,22 @@
                               <div class="col-12 col-md-auto ms-auto d-print-none float-end">
                                 <div class="dropdown btn-list">
                                   <button type="button" class="btn dropdown-toggle text-muted btn-pill"
-                                    data-bs-toggle="dropdown"> New Transaction </button>
+                                    data-bs-toggle="dropdown">
+                                    New Transaction </button>
                                   <div class="dropdown-menu">
-                                    <%if (vehicle.status==='Available' ) {%>
+                                    <%if (vehicle.status===1 ) {%>
                                       <a href="/create-voucher/<%= vehicle._id %>"
                                         class="dropdown-item text-muted mt-1"> Rent </a>
-                                      <% }else if (vehicle.status==='Rented' ) {%>
-                                        <a href="/return/<%=vehicle._id%>"
-                                          class="dropdown-item text-muted mt-1"> Return </a>
+                                      <% }else if (vehicle.status===2 ) {%>
+                                        <a href="/update-voucher/<%=vehicle.voucher_id%>"
+                                          class="dropdown-item text-muted mt-1">
+                                          Return </a>
                                         <%}%>
 
                                           <div class="dropdown-divider"></div>
                                           <a href="/create-invoice/<%= vehicle._id %>"
-                                            class="dropdown-item text-muted mt-1"> Create Expenses </a>
+                                            class="dropdown-item text-muted mt-1"> Create
+                                            Expenses </a>
                                   </div>
                                 </div>
                               </div>
@@ -231,9 +243,9 @@
                                         <label class="form-label">Status</label>
                                         <select class="form-select" name="status" id="floatingSelect<%=vehicle._id%>"
                                           aria-label="Floating label select example">
-                                          <option value="Available" <%=vehicle.status==='Available' ? 'selected' : '' %>
+                                          <option value="1" <%=vehicle.status===1 ? 'selected' : '' %>
                                             >Available</option>
-                                          <option value="Rented" <%=vehicle.status==='Rented' ? 'selected' : '' %>
+                                          <option value="2" <%=vehicle.status===2 ? 'selected' : '' %>
                                             >Rented</option>
                                         </select>
                                       </div>
@@ -242,8 +254,9 @@
                                         <div class="mb-3">
                                           <label class="form-label">Istimara Expiration Date</label>
                                           <div class="input-icon mb-2">
-                                            <input type="date" name="exDate" class="form-control " placeholder="Select istimara expiration date"
-                                             value="<%=vehicle.istimara_exdate%>" required />
+                                            <input type="date" name="exDate" class="form-control "
+                                              placeholder="Select istimara expiration date"
+                                              value="<%=vehicle.istimara_exdate%>" required />
                                           </div>
                                         </div>
                                       </div>
@@ -290,48 +303,98 @@
                       <% } %>
                 </div>
                 <div class="card-footer d-flex align-items-center">
-                  <% if (message && message.type === 'rentInfo') { %>
-                  <div class="modal modal-blur fade" id="modal-rentInfo" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                  <!-- Create Vehicle  -->
+                  <div class="modal modal-blur fade" id="modal-suppAccount" tabindex="-1" role="dialog"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
                       <div class="modal-content">
-                        <div class="modal-body">
-                       
-                          <!-- <div class="card"> -->
-                              <div class="card-header">
-                                <h3 class="card-title">
-                                  Vehicle No.   <%= message.vehicleNo %>
-                                </h3>
+                        <form action="/add/vehicle" method="post">
+                          <div class="modal-header">
+                            <h5 class="modal-title">New Vehicle</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="row">
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Vehicle Number</label>
+                                  <div class="input-group input-group-flat">
+                                    <input type="text" name="vehicleNo" class="form-control" required />
+                                  </div>
+                                </div>
                               </div>
-                              <div class="card-body">
-                                <dl class="row">
-                                  <dt class="col-5">Voucher No:</dt>
-                                  <dd class="col-7"><%= message.voucherNo %></dd>
-                                  <dt class="col-5">Date:</dt>
-                                  <dd class="col-7"><%= message.date %></dd>
-                                  <dt class="col-5">For the Month:</dt>
-                                  <dd class="col-7"><%= message.month %></dd>
-                                  <dt class="col-5">Particulars:</dt>
-                                  <dd class="col-7"><%= message.particulars %></dd>
-                                  <dt class="col-5 mt-2">Total Rent:</dt>
-                                  <dd class="col-7 text-danger mt-2"><div class="currency-formated">QAR</div><%= (message.rent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
-                                  <dt class="col-5">Total Bills:</dt>
-                                  <dd class="col-7 text-danger"><div class="currency-formated">QAR</div><%= (message.bills).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
-                                  <dt class="col-5 mt-2">Cash Received:</dt>
-                                  <dd class="col-7 text-danger mt-2 fw-bold"><div class="currency-formated fw-normal">QAR</div><%= (message.received).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
-                                </dl>
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Make & Model</label>
+                                  <input type="text" name="makeModel" class="form-control" required />
+                                </div>
                               </div>
-                            <!-- </div> -->
-                          
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Registered Owner</label>
+                                  <input type="text" name="regOwner" class="form-control" required />
+                                </div>
+                              </div>
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Registered Date</label>
+                                  <div class="input-icon mb-2">
+                                    <input name="regDate" class="form-control " placeholder="Select registered date"
+                                      id="datepicker-registered" required />
+                                    <span class="input-icon-addon">
+                                      <i class="ti ti-calendar"></i>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
 
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">Cancel</button>
-                          <a href="/return/<%= message.voucherNo %>" class="btn btn-success">Return Vehicle</a>
-                        </div>
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Status</label>
+                                  <select class="form-select" name="status" id="floatingSelect"
+                                    aria-label="Floating label select example" required>
+                                    <option>--</option>
+                                    <option value="1">Available</option>
+                                    <option value="2">Rented</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Istimara Expiration Date</label>
+                                  <div class="input-icon mb-2">
+                                    <input name="exDate" class="form-control "
+                                      placeholder="Select istimara expiration date" id="datepicker-istimara" required />
+                                    <span class="input-icon-addon">
+                                      <i class="ti ti-calendar"></i>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="modal-footer">
+                            <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                              Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary ms-auto">
+                              <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
+                                <circle cx="12" cy="14" r="2"></circle>
+                                <polyline points="14 4 14 8 8 8 8 4"></polyline>
+                              </svg>
+                              Save
+                            </button>
+                          </div>
+                        </form>
                       </div>
                     </div>
                   </div>
-                  <% } %>
                 </div>
               </div>
 
@@ -340,23 +403,101 @@
         </div>
       </div>
     </div>
-    <script>
-      $(document).ready(function () {
-        $("#searchSA").on("keyup", function () {
-          var value = $(this).val().toLowerCase();
-          $("#suppAcc tr").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+
+    <!-- View Transaction -->
+    <% if (message && message.type==='viewVoucher' ) { %>
+      <div class="modal modal-blur fade" id="modal-viewVoucher" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="card-header">
+                <dt class="col-5">Voucher No:</dt>
+                <dd class="col-7 mt-2">
+                  <%= message.voucherNo %>
+                </dd>
+              </div>
+              <div class="card-body">
+                <dl class="row">
+                  <% if (message.for!='Others' ){%>
+                    <dt class="col-5">Vehicle No:</dt>
+                    <dd class="col-7">
+                      <%= message.vehicleNo %>
+                    </dd>
+                    <%}%>
+                      <dt class="col-5">Date:</dt>
+                      <dd class="col-7">
+                        <%= message.date %>
+                      </dd>
+                      <dt class="col-5">For the Month:</dt>
+                      <dd class="col-7">
+                        <%= message.month %>
+                      </dd>
+                      <dt class="col-5">Particulars:</dt>
+                      <dd class="col-7">
+                        <%= message.particulars %>
+                      </dd>
+                      <dt class="col-5 mt-2">Status:</dt>
+                      <dd
+                        class="col-7 mt-2 fw-bold <%-(message.status) === 1 && 'text-green'%> <%-(message.status) === 2 && 'text-red' %> <%-(message.status) === 3 && 'text-orange' %>">
+                        <% if (message.status===1){%>
+                          Paid
+                          <%}else if (message.status===2){%>
+                            Unpaid
+                            <%}else{%>
+                              Partial Paid
+                              <%}%>
+                      </dd>
+                      <dt class="col-5 mt-2">Total Rent:</dt>
+                      <dd class="col-7 text-danger mt-2">
+                        <div class="currency-formated">QAR</div>
+                        <%= (message.rent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %>
+                      </dd>
+                      <dt class="col-5">Total Bills:</dt>
+                      <dd class="col-7 text-danger">
+                        <div class="currency-formated">QAR</div>
+                        <%= (message.bills).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %>
+                      </dd>
+                      <dt class="col-5 mt-2">Cash Received:</dt>
+                      <dd class="col-7 text-danger mt-2 fw-bold">
+                        <div class="currency-formated fw-normal">QAR</div>
+                        <%= (message.received).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %>
+                      </dd>
+
+                </dl>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">Cancel</button>
+              <a href="/update-voucher/<%= message.id %>" class="btn btn-success">Return Vehicle</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% } %>
+
+
+        <script>
+          $(document).ready(function () {
+            $("#searchSA").on("keyup", function () {
+              var value = $(this).val().toLowerCase();
+              $("#suppAcc tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+              });
+            });
+
+
+            '<% if (message && message.type ==="rentInfo") { %>'
+            $("#modal-rentInfo").modal('toggle');
+            ' <% } %>'
+
+            '<% if (message &&  message.type ==="viewVoucher") { %>'
+            $("#modal-viewVoucher").modal('toggle');
+
+            ' <% } %>'
           });
-        });
-
-
-        '<% if (message && message.type ==="rentInfo") { %>'
-          $("#modal-rentInfo").modal('toggle');
-         ' <% } %>'
-      });
-    </script>
+        </script>
 
 
 
-    <%- include('layout/modals') %>
-      <%- include('layout/footer') %>
+        <%- include('layout/modals') %>
+          <%- include('layout/footer') %>

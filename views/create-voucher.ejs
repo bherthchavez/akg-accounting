@@ -30,29 +30,19 @@
                         <div class="row">
                           <div class="col-sm-12 col-md-6 col-lg-6">
                           <div class="mb-3">
-                            <div class="form-label">Vehicle Model / Number</div>
-                            <select class="form-select" name="vehicleID" required>
+                            <div class="form-label">Voucher For</div>
+                            <select class="form-select" name="voucherFor" required>
                               <% foundVehicles.forEach(function(vehicle) { %>
-                                <option value="<%=vehicle._id%>" <%=vehicleNo===vehicle.vehicle_no ? 'selected' : '' %>>
-                                  <%=vehicle.make_model%> - <%=vehicle.vehicle_no%>
+                                <option value="<%=vehicle._id%>"Ren <%=vehicleNo===vehicle.vehicle_no ? 'selected' : '' %>>
+                                 Rent from <%=vehicle.make_model%> - <%=vehicle.vehicle_no%>
                                 </option>
                                 <% }) %>
+
+                                <option value="Others">Others</option>
                             </select>
 
 
                           </div>
-                          </div>
-                          
-                        <div class="col-sm-12 col-md-6 col-lg-6">
-                          <div class="mb-3">
-                            <div class="form-label">Voucher Number</div>
-                            <input type="text" name="vouNo" class="form-control" value="<%=vouNo%>" readonly>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-12 col-md-6 col-lg-6">
                           <div class="mb-3">
                             <div class="form-label">Date</div>
                             <div class="input-icon mb-2">
@@ -63,9 +53,13 @@
                               </span>
                             </div>
                           </div>
-                        </div>
-
+                          </div>
+                          
                         <div class="col-sm-12 col-md-6 col-lg-6">
+                          <div class="mb-3">
+                            <div class="form-label">Voucher Number</div>
+                            <input type="text" name="vouNo" class="form-control" value="<%=vouNo%>" readonly>
+                          </div>
                           <div class="mb-3">
                             <div class="form-label">For the Month</div>
                             <select class="form-select" name="forMonth" required>
@@ -85,8 +79,27 @@
                             </select>
                           </div>
                         </div>
+                      </div>
+                      </div>
+                      <div class="row">
                         
+                    
+                      
+                      <div class="col-sm-12 col-md-6 col-lg-6">
+                      
+                      </div>
+                      </div>
+                      
+                    </div>
 
+                    <div class="col-lg-6">
+                      <div class="row">
+                      <div class="col-sm-12 col-md-6 col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label">Particulars</label>
+                        <textarea class="form-control" name="particulars" rows="5" required></textarea>
+                      </div>
+                      </div>
                       <div class="col-sm-12 col-md-6 col-lg-6">
                         <div class="mb-3">
                           <label class="form-label">Total Rent</label>
@@ -98,9 +111,6 @@
                               name="totalRent" placeholder="0.00" required>
                           </div>
                         </div>
-                      </div>
-                      
-                      <div class="col-sm-12 col-md-6 col-lg-6">
                         <div class="mb-3">
                           <label class="form-label">Total Bills</label>
                           <div class="input-group mb-2">
@@ -113,14 +123,8 @@
                         </div>
                       </div>
                       </div>
-                      
-                    </div>
+                     
 
-                    <div class="col-lg-6">
-                      <div class="mb-3">
-                        <label class="form-label">Particulars</label>
-                        <textarea class="form-control" name="particulars" rows="5" required></textarea>
-                      </div>
                       <div class="row">
                         <div class="col-auto ms-auto">
                           <div class="mb-3">

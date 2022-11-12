@@ -3,7 +3,7 @@ const dashboard = require('../controllers/dashboard.controller');
 const settings = require('../controllers/settings.controller');
 const setup = require('../controllers/setup.controller');
 const bankAccController = require('../controllers/bank.account.controller');
-const vehiclesController = require('../controllers/vehicle.list.controller');
+const vehiclesController = require('../controllers/vehicle.controller');
 const transactionController = require('../controllers/transaction.controller');
 const user = require('../controllers/user.auth.controller');
 const upload = require('../middleware/upload.middleware')
@@ -65,6 +65,9 @@ router.get('/delete/vehicle/:id', vehiclesController.deleteVehicle);
 
 router.get('/create-voucher/:id', transactionController.createVoucher); 
 router.post('/transaction-voucher', transactionController.saveVoucher);
+router.get('/view-voucher/:id', transactionController.viewVoucher);
+router.get('/update-voucher/:id', transactionController.updateVoucher);
+router.post('/save/update-voucher/:id', transactionController.saveUpdate);
 
 router.get('/create-invoice/:id', transactionController.createInvoice);
 router.post('/transaction-invoice', transactionController.saveInvoice);

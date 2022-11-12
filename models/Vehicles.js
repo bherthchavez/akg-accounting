@@ -5,6 +5,7 @@ const vehiclesSchema = new mongoose.Schema(
     vehicle_no: {
         type:  String,
         required: true,
+        unique:true
     },
     make_model: {
         type:  String,
@@ -22,24 +23,6 @@ const vehiclesSchema = new mongoose.Schema(
         type:  String,
         required: true,
     },
-    istimara_info: [{
-        voucher_no:  String,
-        date: String,
-        for_month:  String,
-        particulars:  String,
-        total_rent:  String,
-        total_bills:   String,
-        cash_received: String,
-    }],
-    rented_info: [{
-        voucher_no:  String,
-        date: String,
-        for_month:  String,
-        particulars:  String,
-        total_rent:  Number,
-        total_bills:   Number,
-        cash_received: Number,
-    }],
     expenses: {
         type:  Number,
         required: true,
@@ -49,8 +32,11 @@ const vehiclesSchema = new mongoose.Schema(
         required: true,
     },
     status: {
-        type:  String,
+        type:  Number,
         required: true,
+    },
+    voucher_id: {
+        type:  String,
     },
     created_by: {
         type:  String,
