@@ -104,7 +104,7 @@
                     <% if (vehicleFound !='' ) { %>
                       <% var sumOfRented=0 %>
                         <% vehicleFound.forEach(function(vehicle){ %>
-                          <% if(vehicle.status==="Rented" ){ %>
+                          <% if(vehicle.status===2 ){ %>
                             <% sumOfRented++ %>
                               <% } %>
                                 <% }) %>
@@ -137,7 +137,7 @@
                     <% if (vehicleFound !='' ) { %>
                       <% var sumOfRented=0 %>
                         <% vehicleFound.forEach(function(vehicle){ %>
-                          <% if(vehicle.status==="Available" ){ %>
+                          <% if(vehicle.status===1 ){ %>
                             <% sumOfRented++ %>
                               <% } %>
                                 <% }) %>
@@ -296,15 +296,15 @@
 
                 <div class="d-flex">
                   <h3>Recent Voucher</h3>
-                  <div class="ms-auto text-muted">
+                  <!-- <div class="ms-auto text-muted">
                     <div class="input-icon">
                       <span class="input-icon-addon">
                         <i class="ti ti-search"></i>
                       </span>
-                      <input type="text" id="searchPV" class="form-control" placeholder="Search here…"
+                      <input type="text" class="form-control" placeholder="Search here…"
                         aria-label="Search">
                     </div>
-                  </div>
+                  </div> -->
                 </div>
 
               </div>
@@ -323,12 +323,13 @@
                         <th>Status</th>
                       </tr>
                     </thead>
-                    <tbody id="payVoucher">
+                    <tbody id="searchTD">
                       <% vouFound.forEach(function(item){ %>
                         <tr>
                           <td>
                             
-                            <a href="/view-voucher/<%=item._id%>" class="btn btn-outline-secondary w-70 btn-sm" >
+                            <a href="/view-voucher/<%=item._id%>" class="btn btn-outline-secondary w-70 btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip"
+                              data-bs-title="View Voucher">
                               <%=item.voucher_no%>
                             </a>
                          
@@ -396,7 +397,7 @@
 
                 <div class="d-flex">
                   <h3>Expenses</h3>
-                  <div class="ms-auto text-muted">
+                  <!-- <div class="ms-auto text-muted">
                     <div class="input-icon">
                       <span class="input-icon-addon">
                         <i class="ti ti-search"></i>
@@ -404,7 +405,7 @@
                       <input type="text" id="searchPV" class="form-control" placeholder="Search here…"
                         aria-label="Search">
                     </div>
-                  </div>
+                  </div> -->
                 </div>
 
               </div>
@@ -423,13 +424,11 @@
                         <th>Status</th>
                       </tr>
                     </thead>
-                    <tbody id="payVoucher">
+                    <tbody id="searchTD">
                       <% invItems.forEach(function(item){ %>
                         <tr>
                           <td>
-                         
-                            <a href="/print-voucher/<%= item._id %>" class="btn btn-outline-secondary w-70 btn-sm "
-                              data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip"
+                            <a href="/view-invoice/<%=item._id%>" class="btn btn-outline-secondary w-70 btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip"
                               data-bs-title="View Invoice">
                               <%=item.inv_no%>
                             </a>
@@ -488,67 +487,7 @@
     </div>
   </div>
 
-  <!-- View Transaction -->
-  <% if (message && message.type==='viewVoucher' ) { %>
-    <div class="modal modal-blur fade" id="modal-viewVoucher" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-body">
-                <div class="card-header">
-                  <dt class="col-5">Voucher No:</dt>
-                  <dd class="col-7 mt-2"><%= message.voucherNo %></dd>
-                </div>
-                <div class="card-body">
-                  <dl class="row">
-                    <% if (message.for!='Others'){%>
-                    <dt class="col-5 mt-2">Vehicle No:</dt>
-                    <dd class="col-7 mt-2"><%= message.vehicleNo %></dd>
-
-                    <dt class="col-5">Vehicle Status:</dt>
-                    <dd class="col-7 fw-bold <%-message.vehicleStatus === 1 ? 'text-green' : 'text-orange'%>">
-                     
-                      <% if (message.vehicleStatus===1){%>
-                        Returned 
-                         <%}else{%>
-                           Rented
-                           <%}%>
-                    </dd>
-                    <%}%>
-                    <dt class="col-5 mt-2">Date:</dt>
-                    <dd class="col-7 mt-2"><%= message.date %></dd>
-                    <dt class="col-5">For the Month:</dt>
-                    <dd class="col-7"><%= message.month %></dd>
-                    <dt class="col-5">Particulars:</dt>
-                    <dd class="col-7"><%= message.particulars %></dd>
-                    <dt class="col-5 mt-2">Status:</dt>
-                    <dd class="col-7 mt-2 fw-bold <%-(message.status) === 1 && 'text-green'%> <%-(message.status) === 2 && 'text-red' %> <%-(message.status) === 3 && 'text-orange' %>">
-                      <% if (message.status===1){%>
-                        Paid   
-                     <%}else if (message.status===2){%>
-                         Unpaid
-                         <%}else{%>
-                           Partial Paid
-                           <%}%>
-                    </dd>
-                    <dt class="col-5 mt-2">Total Rent:</dt>
-                    <dd class="col-7 text-danger mt-2"><div class="currency-formated">QAR</div><%= (message.rent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
-                    <dt class="col-5">Total Bills:</dt>
-                    <dd class="col-7 text-danger"><div class="currency-formated">QAR</div><%= (message.bills).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
-                    <dt class="col-5 mt-2">Cash Received:</dt>
-                    <dd class="col-7 text-danger mt-2 fw-bold"><div class="currency-formated fw-normal">QAR</div><%= (message.received).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
-                   
-                   </dl>
-                </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">Cancel</button>
-            <a href="/update-voucher/<%= message.id %>" class="btn btn-success">Update Voucher</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <% } %>
-
+  
   <script>
     $(document).ready(function () {
 
@@ -568,18 +507,12 @@
 
   <script>
     $(document).ready(function () {
-      $("#searchPV").on("keyup", function () {
+      $("#searchTrans").on("keyup", function () {
         var value = $(this).val().toLowerCase();
-        $("#payVoucher tr").filter(function () {
+        $("#searchTD tr").filter(function () {
           $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
       });
-
-
-           '<% if (message &&  message.type ==="viewVoucher") { %>'
-           $("#modal-viewVoucher").modal('toggle');
-          
-            ' <% } %>'
     });
   </script>
 
@@ -825,4 +758,6 @@
        // @formatter:on
   </script>
 
+
+  <%- include('layout/notif') %>
   <%- include('layout/footer') %>

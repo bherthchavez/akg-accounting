@@ -173,7 +173,7 @@
           </div>
       </header>
 
-      <% if (message && message.type !='transac' && message.type !='rentInfo' && message.type !='viewVoucher' ) { %>
+      <% if (message && message.type !='transac' && message.type !='rentInfo' && message.type !='viewVoucher' && message.type !='viewInvoice' ) { %>
         <div class="alert-notif2">
           <div class="alert alert-important alert-<%= message.type %> alert-dismissible alertNotif2" role="alert">
             <div class="d-flex">
@@ -189,6 +189,7 @@
             <a class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="close"></a>
           </div>
         </div>
+        
         <% } %>
         
         <% if (nav.view === 2) { %>
@@ -238,6 +239,19 @@
                       </div>
                     </li>
                   </ul>
+                  <% if (nav.title === 'Dashboard') { %>
+                    <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+                      <form action="../" method="get" autocomplete="off" novalidate>
+                        <div class="input-icon">
+                          <span class="input-icon-addon">
+                            <i class="ti ti-search"></i>
+                           </span>
+                          <input type="text" id="searchTrans" class="form-control" placeholder="Search transaction…" aria-label="Search transaction">
+                        </div>
+                      </form>
+                    </div>
+                    <%}%>
+
                 </div>
               </div>
             </div>
@@ -280,6 +294,8 @@
           
 
           <% } %>
+
+          
     </div>
 
 
@@ -298,7 +314,7 @@
                 <% }else if(message.tType==='invoice' ){ %>
                   <h3 mt-2>Invoice Created</h3>
                   <% }else{ %>
-                    <h3 mt-2>Vehicle Returned</h3>
+                    <h3 mt-2>Voucher Updated</h3>
                     <% } %>
                       <div class="text-muted">
                         <%= message.message %>
@@ -313,19 +329,25 @@
                     </a>
                   </div>
 
-                  <% if (message.tType==='voucher' ){ %>
+                  <% if (message.tType==='voucherV' ){ %>
                     <div class="col">
                       <a href="/rent-info/<%= message.transID %>" class="btn btn-success w-100">
                         View voucher
                       </a>
 
                     </div>
-                    <% }else{ %>
+                    <% }else if(message.tType==='voucher'){ %>
                       <div class="col">
-                        <a class="btn btn-danger w-100" data-bs-dismiss="modal">
-                          Close
+                        <a href="/view-voucher/<%= message.transID %>" class="btn btn-success w-100">
+                          View voucher
                         </a>
                       </div>
+                      <% }else{ %>
+                        <div class="col">
+                          <a href="/view-invoice/<%= message.transID %>" class="btn btn-success w-100">
+                            View invoice
+                          </a>
+                        </div>
                       <% } %>
                 </div>
               </div>

@@ -8,7 +8,7 @@
           <div class="col">
 
             <h2 class="page-title">
-              Return Vehicle
+               <%-VoucherFound.vehicle_status===1 || VoucherFound.voucher_for==='Others' ? 'Update Voucher' : 'Return Vehicle'%>
             </h2>
           </div>
         </div>
@@ -37,8 +37,10 @@
                             </div>
                             <div class="card-body">
                               <dl class="row">
+                                <% if (VoucherFound.voucher_for != 'Others') {%>
                                 <dt class="col-5">Vehicle No:</dt>
                                 <dd class="col-7"><%= VoucherFound.vehicle_no %></dd>
+                                <%}%>
                                 <dt class="col-5">Date:</dt>
                                 <dd class="col-7"><%= VoucherFound.date %></dd>
                                 <dt class="col-5">For the Month:</dt>
@@ -74,7 +76,8 @@
                               name="totalRent" value="<%=VoucherFound.total_rent%>" required>
                           </div>
                         </div>
-                       
+
+                        <% if (VoucherFound.voucher_for!='Others'){%>
                           <div class="mb-3">
                             <div class="form-label">Vehicle Status</div>
                             <% if (VoucherFound.vehicle_status===2){%>
@@ -89,6 +92,7 @@
                                value="<%=VoucherFound.vehicle_status %>" hidden>
                             <%}%>
                           </div>
+                          <%}%>
                          
                     
                         </div>
@@ -134,10 +138,10 @@
                   <div class="row align-items-center">
                     <div class="col"></div>
                     <div class="col-auto">
-                      <a href="/vehicle-list" class="btn cancelBill">
+                      <a href="<%- VoucherFound.voucher_for === 'Others' || VoucherFound.vehicle_status === 1 ? '/' : '/vehicle-list' %>" class="btn cancelBill">
                         Cancel
                       </a>
-                      <input type="submit" name="submit" value="Return Vehicle" class="btn btn-primary ms-3 d-none d-sm-inline-block" />
+                      <input type="submit" name="submit" value="<%- VoucherFound.voucher_for === 'Others' || VoucherFound.vehicle_status === 1 ? 'Update Voucher' : 'Return Vehicle' %>" class="btn btn-primary ms-3 d-none d-sm-inline-block" />
                       <input type="submit" name="submit" value="Return" class="btn btn-primary ms-3 d-sm-none" />
                     </div>
                   </div>
@@ -181,6 +185,7 @@
       let rentAmount = + ($(".totalRent").val().split(',').join(''))
        let billAmount = + ($(".totalBills").val().split(',').join(''))
        let cashReceived = rentAmount - billAmount;
+       $('#cashR').text((cashReceived).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
     
        $(".cashReceived").val(cashReceived); 
      }

@@ -8,14 +8,14 @@
           <div class="col">
 
             <h2 class="page-title">
-              Create Invoice
+              Update Invoice
             </h2>
           </div>
         </div>
       </div>
     </div>
 
-    <form action="/transaction-invoice" method="post">
+    <form action="/save/update-invoice/<%= foundInv._id %>" method="post">
 
       <div class="page-body">
         <div class="container-xl">
@@ -23,53 +23,28 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-body">
-                  <div class="col">
-                    <div class="mb-4">
-                      <div class="form-selectgroup">
-                        <input type="text" name="expensesFor" class="form-control selectedExpenses" value="vehicle" hidden>
-                        <label class="form-selectgroup-item">
-                          <input type="radio" name="icons" value="vehicle" class="form-selectgroup-input" checked=""
-                            onclick="selectExpenses(this)">
-                          <span class="form-selectgroup-label fw-bold"><i class="ti ti-car me-1 icon"></i>Vehicle
-                            Expenses</span>
-                        </label>
-                        <label class="form-selectgroup-item">
-                          <input type="radio" name="icons" value="Others" class="form-selectgroup-input"
-                            onclick="selectExpenses(this)">
-                          <span class="form-selectgroup-label fw-bold"><i class="ti ti-cash me-1 icon"></i>Other
-                            Expenses</span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
                   <div class="row mt-lg-2">
                     <div class="col-lg-6">
 
                       <div class="col">
                         <div class="row">
                           <div class="col-sm-12 col-md-6 col-lg-6">
-                            <div class="vEx">
-                              <div class="mb-3 vInput">
-                                <div class="form-label">Vehicle Model / Number</div>
-                                <select class="form-select" name="vehicleID">
-                                  <% foundVehicles.forEach(function(vehicle) { %>
-                                    <option value="<%=vehicle._id%>" <%=vehicleNo===vehicle.vehicle_no ? 'selected' : ''
-                                      %>>
-                                      <%=vehicle.make_model%> - <%=vehicle.vehicle_no%>
-                                    </option>
-                                    <% }) %>
-                                </select>
+                            <% if (foundInv.expenses_for!='Others'){%>
+                              <div class="mb-3">
+                                <div class="form-label">Vehicle Number</div>
+
+                                <input type="text" name="vehicleID" class="form-control" value="<%=foundInv.vehicle_no%>" readonly>
                               </div>
-                            </div>
+                              <% } %>
 
                             <div class="mb-3">
                               <div class="form-label">Invoice Number</div>
-                              <input type="text" name="invNo" class="form-control" value="<%=vouNo%>" readonly>
+                              <input type="text" name="invNo" class="form-control" value="<%=foundInv.inv_no%>" readonly>
                             </div>
                             <div class="mb-3">
                               <div class="form-label">Invoice Date</div>
                               <div class="input-icon mb-2">
-                                <input name="invDate" class="form-control " placeholder="Select date"
+                                <input name="invDate" value="<%=foundInv.inv_date%>" class="form-control " placeholder="Select date"
                                   id="datepicker-invDate" required />
                                 <span class="input-icon-addon">
                                   <i class="ti ti-calendar"></i>
@@ -79,7 +54,7 @@
                             <div class="mb-3">
                               <div class="form-label">Date</div>
                               <div class="input-icon mb-2">
-                                <input name="date" class="form-control " placeholder="Select date" id="datepicker-date"
+                                <input name="date" value="<%=foundInv.date%>" class="form-control " placeholder="Select date" id="datepicker-date"
                                   required />
                                 <span class="input-icon-addon">
                                   <i class="ti ti-calendar"></i>
@@ -92,32 +67,31 @@
                           <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="mb-3">
                               <div class="form-label">Payee</div>
-                              <input type="text" name="payee" class="form-control" required>
+                              <input type="text" value="<%=foundInv.payee%>" name="payee" class="form-control" required>
                             </div>
                             <div class="mb-3">
                               <div class="form-label">Expense Type</div>
                               <select class="form-select" name="expenseType" required>
-                                <option selected>--</option>
-                                <option value="Battery">Battery</option>
-                                <option value="Petrol">Petrol</option>
-                                <option value="Tyre">Tyre</option>
-                                <option value="Wheel Alignment">Wheel Alignment</option>
-                                <option value="Office Expenses">Office Expenses</option>
-                                <option value="Car Wash">Car Wash</option>
-                                <option value="Spare Parts & Service">Spare Parts & Service</option>
-                                <option value="Oil Change">Oil Change</option>
-                                <option value="Ministry Payments">Ministry Payments</option>
-                                <option value="Traffic Penalty">Traffic Penalty</option>
-                                <option value="Salary">Salary</option>
-                                <option value="Insurance">Insurance</option>
-                                <option value="Istimara">Istimara</option>
-                                <option value="Vehicle Inspection">Vehicle Inspection</option>
-                                <option value="Bank Deposit">Bank Deposit</option>
+                                <option value="Battery" <%-foundInv.expenses_type==='Battery' && 'selected' %>>Battery</option>
+                                <option value="Petrol" <%-foundInv.expenses_type==='Petrol' && 'selected' %>>Petrol</option>
+                                <option value="Tyre" <%-foundInv.expenses_type==='Tyre' && 'selected' %>>Tyre</option>
+                                <option value="Wheel Alignment" <%-foundInv.expenses_type==='Wheel Alignment' && 'selected' %>>Wheel Alignment</option>
+                                <option value="Office Expenses" <%-foundInv.expenses_type==='Office Expenses' && 'selected' %>>Office Expenses</option>
+                                <option value="Car Wash" <%-foundInv.expenses_type==='Car Wash' && 'selected' %>>Car Wash</option>
+                                <option value="Spare Parts & Service" <%-foundInv.expenses_type==='Spare Parts & Service' && 'selected' %>>Spare Parts & Service</option>
+                                <option value="Oil Change" <%-foundInv.expenses_type==='Oil Change' && 'selected' %>>Oil Change</option>
+                                <option value="Ministry Payments" <%-foundInv.expenses_type==='Ministry Payments' && 'selected' %>>Ministry Payments</option>
+                                <option value="Traffic Penalty" <%-foundInv.expenses_type==='Traffic Penalty' && 'selected' %>>Traffic Penalty</option>
+                                <option value="Salary" <%-foundInv.expenses_type==='Salary' && 'selected' %>>Salary</option>
+                                <option value="Insurance" <%-foundInv.expenses_type==='Insurance' && 'selected' %>>Insurance</option>
+                                <option value="Istimara" <%-foundInv.expenses_type==='Istimara' && 'selected' %>>Istimara</option>
+                                <option value="Vehicle Inspection" <%-foundInv.expenses_type==='Vehicle Inspection' && 'selected' %>>Vehicle Inspection</option>
+                                <option value="Bank Deposit" <%-foundInv.expenses_type==='Bank Deposit' && 'selected' %>>Bank Deposit</option>
                               </select>
                             </div>
                             <div class="mb-3">
                               <label class="form-label">Description</label>
-                              <textarea class="form-control" name="description" rows="5" required></textarea>
+                              <textarea class="form-control" name="description" rows="5" required><%=foundInv.description%></textarea>
                             </div>
                           </div>
                         </div>
@@ -131,35 +105,40 @@
                             <div class="mb-3">
                               <div class="form-label">Payment Type</div>
                               <select class="form-select" name="paymentType" onchange="changePayment(this)" required>
-                                <option value="Cash">Cash</option>
-                                <option value="Card">Card</option>
+                                <option value="Cash" <%-foundInv.payment_type==='Cash' && 'selected' %>>Cash</option>
+                                <option value="Card" <%-foundInv.payment_type==='Card' && 'selected' %>>Card</option>
                               </select>
                             </div>
+                            <% if (foundInv.payment_type ==='Card'){%>
+                            <div id="cardDetails" class="mb-3">
+                              <label class="form-label">Card Details</label>
+                              <textarea class="form-control" name="cardDetails" rows="1" required><%=foundInv.card_details%></textarea>
+                             </div>
+                             <%}%>
                           </div>
 
                           <div class="mb-3">
                             <div class="form-label">Month</div>
                             <select class="form-select" name="forMonth" required>
-                              <% let month=new Date().toLocaleDateString("en-US", { month: 'long' }) %>
-                                <option value="January" <%-month==='January' && 'selected' %>>January</option>
-                                <option value="February" <%-month==='February' && 'selected' %>>February</option>
-                                <option value="March" <%-month==='March' && 'selected' %>>March</option>
-                                <option value="April" <%-month==='April' && 'selected' %>>April</option>
-                                <option value="May" <%-month==='May' && 'selected' %>>May</option>
-                                <option value="June" <%-month==='June' && 'selected' %>>June</option>
-                                <option value="July" <%-month==='July' && 'selected' %>>July</option>
-                                <option value="August" <%-month==='August' && 'selected' %>>August</option>
-                                <option value="September" <%-month==='September' && 'selected' %>>September</option>
-                                <option value="October" <%-month==='October' && 'selected' %>>October</option>
-                                <option value="November" <%-month==='November' && 'selected' %>>November</option>
-                                <option value="December" <%-month==='December' && 'selected' %>>December</option>
+                                <option value="January" <%-foundInv.month ==='January' && 'selected' %>>January</option>
+                                <option value="February" <%-foundInv.month ==='February' && 'selected' %>>February</option>
+                                <option value="March" <%-foundInv.month ==='March' && 'selected' %>>March</option>
+                                <option value="April" <%-foundInv.month ==='April' && 'selected' %>>April</option>
+                                <option value="May" <%-foundInv.month ==='May' && 'selected' %>>May</option>
+                                <option value="June" <%-foundInv.month ==='June' && 'selected' %>>June</option>
+                                <option value="July" <%-foundInv.month ==='July' && 'selected' %>>July</option>
+                                <option value="August" <%-foundInv.month ==='August' && 'selected' %>>August</option>
+                                <option value="September" <%-foundInv.month ==='September' && 'selected' %>>September</option>
+                                <option value="October" <%-foundInv.month ==='October' && 'selected' %>>October</option>
+                                <option value="November" <%-foundInv.month ==='November' && 'selected' %>>November</option>
+                                <option value="December" <%-foundInv.month ==='December' && 'selected' %>>December</option>
                             </select>
                           </div>
                         </div>
                         <div class="col-sm-12 col-md-6 col-lg-6">
                           <div class="mb-3">
                             <label class="form-label">Remarks</label>
-                            <textarea class="form-control" name="remarks" rows="5" required></textarea>
+                            <textarea class="form-control"  name="remarks" rows="5" required><%=foundInv.remarks%></textarea>
                           </div>
                         </div>
                       </div>
@@ -173,7 +152,7 @@
                                 QAR
                               </span>
                               <input type="text" class="form-control text-danger cashReceived" name="amount"
-                                placeholder="0.00" required>
+                              value="<%=foundInv.amount%>"  required>
                             </div>
                           </div>
                         </div>
@@ -185,7 +164,7 @@
                   <div class="row align-items-center">
                     <div class="col"></div>
                     <div class="col-auto">
-                      <a href="/vehicle-list" class="btn cancelBill">
+                      <a href="/" class="btn">
                         Cancel
                       </a>
                       <input type="submit" name="submit" value="Save Invoice"
@@ -219,7 +198,7 @@
         }));
       });
       // @formatter:on
-      $('#datepicker-invDate').val(new Date().toISOString().split('T')[0])
+      // $('#datepicker-invDate').val(new Date().toISOString().split('T')[0])
     </script>
 
     <script>
@@ -236,7 +215,7 @@
         }));
       });
       // @formatter:on
-      $('#datepicker-date').val(new Date().toISOString().split('T')[0])
+      // $('#datepicker-date').val(new Date().toISOString().split('T')[0])
     </script>
 
     <script>
@@ -246,7 +225,6 @@
         })
       });
 
-
       function changePayment(selectObject) {
         let value = selectObject.value;
         let cardDetails = '';
@@ -255,7 +233,7 @@
         if (value === "Card") {
           cardDetails += '<div id="cardDetails" class="mb-3">'
           cardDetails += ' <label class="form-label">Card Details</label>'
-          cardDetails += ' <textarea class="form-control" name="cardDetails" rows="1" required></textarea>'
+          cardDetails += ' <textarea class="form-control" name="cardDetails" rows="1" required><%=foundInv.card_details%></textarea>'
           cardDetails += ' </div>'
           $("#paymentType").append(cardDetails);
 
@@ -263,30 +241,7 @@
           $('#cardDetails').remove();
         }
       }
-
-
-      function selectExpenses(selectValue) {
-        let value = selectValue.value;
-        $('.selectedExpenses').val(value)
-        let vInput = '';
-
-          vInput += ' <div class="mb-3 vInput">'
-          vInput += '<div class="form-label">Vehicle Model / Number</div>'
-          vInput += ' <select class="form-select" name="vehicleID">'
-          vInput += ' <% foundVehicles.forEach(function(vehicle) { %>'
-          vInput += ' <option value="<%=vehicle._id%>" <%=vehicleNo===vehicle.vehicle_no ? "selected" : "" %>>'
-          vInput += '  <%=vehicle.make_model%> - <%=vehicle.vehicle_no%>'
-          vInput += ' </option>'
-          vInput += ' <% }) %>'
-          vInput += ' </select>'
-          vInput += '</div>'
-
-        if (value === 'Others') {
-          $('.vInput').remove();
-        }else{
-          $(".vEx").append(vInput);
-        }
-      }
+       
     </script>
 
 

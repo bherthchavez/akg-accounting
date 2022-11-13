@@ -48,8 +48,7 @@ const voucherSchema = new mongoose.Schema(
             required: true
         },
         vehicle_status: {
-            type: Number,
-            required: true
+            type: Number
         },
         created_by: {
             type: String,

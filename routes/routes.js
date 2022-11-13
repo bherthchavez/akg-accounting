@@ -71,7 +71,9 @@ router.post('/save/update-voucher/:id', transactionController.saveUpdate);
 
 router.get('/create-invoice/:id', transactionController.createInvoice);
 router.post('/transaction-invoice', transactionController.saveInvoice);
-
+router.get('/view-invoice/:id', transactionController.viewInvoice);
+router.get('/update-invoice/:id', transactionController.updateInvoice);
+router.post('/save/update-invoice/:id', transactionController.saveUpdate);
 
 router.get('/rent-info/:id', vehiclesController.viewRentInfo);
 router.get('/return/:id', vehiclesController.returnVehicle);
