@@ -67,13 +67,13 @@ router.get('/create-voucher/:id', transactionController.createVoucher);
 router.post('/transaction-voucher', transactionController.saveVoucher);
 router.get('/view-voucher/:id', transactionController.viewVoucher);
 router.get('/update-voucher/:id', transactionController.updateVoucher);
-router.post('/save/update-voucher/:id', transactionController.saveUpdate);
+router.post('/save/update-voucher/:id', transactionController.saveUpdateVou);
 
 router.get('/create-invoice/:id', transactionController.createInvoice);
 router.post('/transaction-invoice', transactionController.saveInvoice);
 router.get('/view-invoice/:id', transactionController.viewInvoice);
 router.get('/update-invoice/:id', transactionController.updateInvoice);
-router.post('/save/update-invoice/:id', transactionController.saveUpdate);
+router.post('/save/update-invoice/:id', transactionController.saveUpdateInv);
 
 router.get('/rent-info/:id', vehiclesController.viewRentInfo);
 router.get('/return/:id', vehiclesController.returnVehicle);

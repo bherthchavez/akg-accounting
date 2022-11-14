@@ -256,7 +256,7 @@ module.exports = {
         }
     },
 
-    saveUpdate: async (req, res) => {
+    saveUpdateVou: async (req, res) => {
         if (req.isAuthenticated()) {
 
             let id = req.params.id;
@@ -296,8 +296,9 @@ module.exports = {
 
                                 req.session.message = {
                                     type: 'transac',
-                                    tType: 'return',
-                                    message: 'Voucher for vehicle no. ' + req.body.vehicleNo + ' has been successfully return. Voucher No: ' + req.body.vouNo + ' Total Amount: QAR ' + req.body.totalRent
+                                    tType: 'voucher',
+                                    message: 'Voucher for vehicle no. ' + req.body.vehicleNo + ' has been successfully return. Voucher No: ' + req.body.vouNo + ' Total Amount: QAR ' + req.body.totalRent,
+                                    transID: result._id
                                 };
                                 res.redirect('/vehicle-list')
 
@@ -320,8 +321,9 @@ module.exports = {
 
                                 req.session.message = {
                                     type: 'transac',
-                                    tType: 'vUpdated',
-                                    message: 'Voucher has been successfully updated. Voucher No: ' + result.voucher_no + ' Total Amount: QAR ' + result.total_rent
+                                    tType: 'voucher',
+                                    message: 'Voucher has been successfully updated. Voucher No: ' + result.voucher_no + ' Total Amount: QAR ' + result.total_rent,
+                                    transID: result._id
                                 };
                                 res.redirect('/')
 
@@ -588,6 +590,108 @@ module.exports = {
                         foundInv: foundInv,
                         nav: nav
                     })
+                }
+            });
+
+
+        } else {
+            res.redirect("/sign-in");
+        }
+    },
+
+    saveUpdateInv: async (req, res) => {
+        if (req.isAuthenticated()) {
+
+            let id = req.params.id;
+
+            let cDetails;
+            (req.body.paymentType) === 'Card' ? cDetails = req.body.cardDetails : cDetails = 'Cash';
+            const amount = + (req.body.amount).split(',').join('');
+
+
+            Invoice.findById(id, (err, resultInvoice) => {
+                if (err || !resultInvoice) {
+                    req.session.message = {
+                        type: 'danger',
+                        message: "Transaction cannot view. Error: " + err,
+                    };
+                    res.redirect("/");
+                } else {
+
+                    if (resultInvoice.expenses_for != 'Others') {
+
+                        Invoice.findByIdAndUpdate(id, {
+                            inv_date: req.body.invDate,
+                            date: req.body.date,
+                            payee: req.body.payee,
+                            expenses_type: req.body.expenseType,
+                            description: req.body.description,
+                            payment_type: req.body.paymentType,
+                            card_details: cDetails,
+                            month: req.body.forMonth,
+                            remarks: req.body.remarks,
+                            amount: amount,
+
+                        }, (err, result) => {
+                            if (err) {
+                                req.session.message = {
+                                    type: 'danger',
+                                    message: "Transaction cannot save. Error: " + err,
+                                };
+                                res.redirect("/");
+                            } else {
+
+                                
+
+                                req.session.message = {
+                                    type: 'transac',
+                                    tType: 'invUpdate',
+                                    message: 'Invoice for vehicle no. ' + result.vehicle_no + ' has been successfully updated. Invoice No: ' + result.inv_no + ' Total Amount: QAR ' + amount,
+                                    transID: result._id
+                                };
+                                res.redirect('/vehicle-list')
+
+                            }
+                        });
+
+
+                    } else {
+
+                        Invoice.findByIdAndUpdate(id, {
+                            inv_date: req.body.invDate,
+                            date: req.body.date,
+                            payee: req.body.payee,
+                            expenses_type: req.body.expenseType,
+                            description: req.body.description,
+                            payment_type: req.body.paymentType,
+                            card_details: cDetails,
+                            month: req.body.forMonth,
+                            remarks: req.body.remarks,
+                            amount: amount,
+
+                        }, (err, result) => {
+                            if (err) {
+                                req.session.message = {
+                                    type: 'danger',
+                                    message: "Transaction cannot be save. Error: " + err,
+                                };
+                                res.redirect("/");
+                            } else {
+                                req.session.message = {
+                                    type: 'transac',
+                                    tType: 'invUpdate',
+                                    message: 'Invoice has been successfully updated. Invoice No: ' + result.inv_no + ' Total Amount: QAR ' + amount,
+                                    transID: result._id
+                                };
+                                res.redirect('/')
+
+                            }
+                        });
+
+
+                    }
+
+
                 }
             });
 

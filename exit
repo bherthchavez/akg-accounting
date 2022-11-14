@@ -1,0 +1,59 @@
+[33mcommit 881d80a51455f2da58c29d3dde52fd0f7b08d9b9[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: bherth <bherthchavez@gmail.com>
+Date:   Mon Nov 14 01:24:09 2022 +0800
+
+    done view invoice and with update view invoice only
+
+[33mcommit 4ec0b079cb524d83f3074d2f8c87eda75a9dc5f1[m
+Author: bherth <bherthchavez@gmail.com>
+Date:   Sun Nov 13 01:53:18 2022 +0800
+
+    restructure voucher creation for vehicle
+
+[33mcommit 4eb897ff07b50a8a47dd48c6285a817ff8cdd1f6[m
+Author: bherth <bherthchavez@gmail.com>
+Date:   Fri Nov 11 03:06:16 2022 +0800
+
+    adding company id in user and all transaction
+
+[33mcommit 6efcce752f73222019af2d2817aca3f518d92d77[m
+Author: bherth <bherthchavez@gmail.com>
+Date:   Thu Nov 10 01:44:39 2022 +0800
+
+    adding group dashboard, company and user setup
+
+[33mcommit 65df47aec6cd835e14ac89fa651c08bd2391b7d6[m
+Author: bherth <bherthchavez@gmail.com>
+Date:   Wed Nov 9 02:07:39 2022 +0800
+
+    return vehicle with status voucher, restructure user login, adding, update pass
+
+[33mcommit 6f47d99620fcf4ed8386b6926973af3badb08431[m
+Author: bherth <bherthchavez@gmail.com>
+Date:   Tue Nov 8 01:12:44 2022 +0800
+
+    adding expenses and analytics dashboard
+
+[33mcommit 5509dcb0609616b1d3d803a9bce0056377e760ff[m
+Author: bherth <bherthchavez@gmail.com>
+Date:   Mon Nov 7 02:09:42 2022 +0800
+
+    adding view rent info and return function
+
+[33mcommit 9fd498a6c2ab659418b252fa91185bf56519d078[m
+Author: bherth <bherthchavez@gmail.com>
+Date:   Sun Nov 6 01:29:46 2022 +0800
+
+    added create voucher, settings and adjusment on dashboard
+
+[33mcommit fe1298be7a491aead8912f85942e51956b0917e0[m
+Author: bherth <bherthchavez@gmail.com>
+Date:   Sat Nov 5 01:58:38 2022 +0800
+
+    adding trasaction income
+
+[33mcommit dfbfed86f1f0eba92c2217c21de69ef8a54552aa[m
+Author: bherth <bherthchavez@gmail.com>
+Date:   Fri Nov 4 02:20:45 2022 +0800
+
+    done vehicle crud

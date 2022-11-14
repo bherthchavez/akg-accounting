@@ -313,6 +313,8 @@
                 <h3 mt-2>Voucher Created</h3>
                 <% }else if(message.tType==='invoice' ){ %>
                   <h3 mt-2>Invoice Created</h3>
+                  <% }else if(message.tType==='invUpdate' ){ %>
+                    <h3 mt-2>Invoice Updated</h3>
                   <% }else{ %>
                     <h3 mt-2>Voucher Updated</h3>
                     <% } %>
