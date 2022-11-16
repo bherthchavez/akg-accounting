@@ -19,12 +19,12 @@
             <div class="btn-list">
 
               <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
-                data-bs-target="#modal-suppAccount">
+                data-bs-target="#modal-vehicleAccount">
                 <i class="ti ti-plus fs-h3 fw-light me-2"> </i>
                 Add Vehicle
               </a>
               <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
-                data-bs-target="#modal-addAccount" aria-label="Create new bank account">
+                data-bs-target="#modal-vehicleAccount" aria-label="Create new bank account">
                 <i class="ti ti-plus fs-h4 fw-light"> </i>
               </a>
             </div>
@@ -201,7 +201,7 @@
                             role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
                               <div class="modal-content">
-                                <form action="/update/vehicle/<%=vehicle._id%>" method="post">
+                                <form action="/update/vehicle/<%=vehicle._id%>" method="post"  enctype="multipart/form-data">
                                   <div class="modal-header">
                                     <h5 class="modal-title">Update vehicle</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -217,30 +217,23 @@
                                               value="<%=vehicle.vehicle_no%>" required />
                                           </div>
                                         </div>
-                                      </div>
-                                      <div class="col-lg-6">
-                                        <div class="mb-3">
-                                          <label class="form-label">Make & Model</label>
-                                          <input type="text" name="makeModel" class="form-control"
-                                            value="<%=vehicle.make_model%>" required />
-                                        </div>
-                                      </div>
-                                      <div class="col-lg-6">
                                         <div class="mb-3">
                                           <label class="form-label">Registered Owner</label>
                                           <input type="text" name="regOwner" class="form-control"
                                             value="<%=vehicle.registered_owner%>" required />
                                         </div>
-                                      </div>
-                                      <div class="col-lg-6">
+                                        <div class="mb-3">
+                                          <label class="form-label">Make & Model</label>
+                                          <input type="text" name="makeModel" class="form-control"
+                                            value="<%=vehicle.make_model%>" required />
+                                        </div>
                                         <div class="mb-3">
                                           <label class="form-label">Registered Date</label>
                                           <input type="date" name="regDate" class="form-control"
                                             value="<%=vehicle.registered_date%>" required />
                                         </div>
-                                      </div>
-                                      <div class="col-lg-6">
-                                        <label class="form-label">Status</label>
+                                        <div class="mb-3">
+                                          <label class="form-label">Status</label>
                                         <select class="form-select" name="status" id="floatingSelect<%=vehicle._id%>"
                                           aria-label="Floating label select example">
                                           <option value="1" <%=vehicle.status===1 ? 'selected' : '' %>
@@ -248,10 +241,10 @@
                                           <option value="2" <%=vehicle.status===2 ? 'selected' : '' %>
                                             >Rented</option>
                                         </select>
+                                        </div>
                                       </div>
-
                                       <div class="col-lg-6">
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                           <label class="form-label">Istimara Expiration Date</label>
                                           <div class="input-icon mb-2">
                                             <input type="date" name="exDate" class="form-control "
@@ -259,7 +252,38 @@
                                               value="<%=vehicle.istimara_exdate%>" required />
                                           </div>
                                         </div>
+                                        <div class="modal-body">
+                                        <div class="mb-3">
+                                          <label class="form-label">Download Attachments</label>
+                                          <div class="row">
+                                            <div class="col">
+                                              <a href="/download/<%=vehicle.istimara_file%>" class="btn btn-vk w-100 mb-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Download"> 
+                                                <i class="ti ti-download icon"></i> 
+                                                Istimara
+                                              </a>
+                                            </div>
+                                            <div class="col">
+                                              <a href="/download/<%=vehicle.insurance_file%>" class="btn btn-vk w-100 mb-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Download"> 
+                                                <i class="ti ti-download icon"></i> 
+                                                Insurance
+                                              </a>
+                                            </div>
+                                          </div>
+                                      
+                                       </div>
+                                       
+                                       
+                                       <div class="mb-3">
+                                        <label class="form-label">Replace Istimara</label>
+                                        <input type="file" name="istimaraFile" class="form-control"  accept="image/*,.pdf" />
                                       </div>
+                                      <div class="mb-3">
+                                        <label class="form-label">Replace Insurance</label>
+                                        <input type="file" name="insuranceFile" class="form-control"  accept="image/*,.pdf" />
+                                      </div>
+                                    </div>
+                                      </div>
+                                      
                                     </div>
                                   </div>
 
@@ -274,23 +298,6 @@
                             </div>
                           </div>
 
-                          <script>
-                            $(document).ready(function () {
-
-
-                              $("#createBill<%=vehicle._id%>").on("click", function () {
-                                $("#createBill<%=vehicle._id%>").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
-
-                              })
-                              $("#payBill<%=vehicle._id%>").on("click", function () {
-                                $("#payBill<%=vehicle._id%>").prepend('<span class="spinner-border spinner-border-sm me-2" role="status"></span> ');
-
-                              })
-
-                            });
-                          </script>
-
-
                           <% }) %>
                       </tbody>
                     </table>
@@ -304,11 +311,11 @@
                 </div>
                 <div class="card-footer d-flex align-items-center">
                   <!-- Create Vehicle  -->
-                  <div class="modal modal-blur fade" id="modal-suppAccount" tabindex="-1" role="dialog"
+                  <div class="modal modal-blur fade" id="modal-vehicleAccount" tabindex="-1" role="dialog"
                     aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-dialog modal-lg role=" document">
                       <div class="modal-content">
-                        <form action="/add/vehicle" method="post">
+                        <form action="/add/vehicle" method="post" enctype="multipart/form-data">
                           <div class="modal-header">
                             <h5 class="modal-title">New Vehicle</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -322,19 +329,27 @@
                                     <input type="text" name="vehicleNo" class="form-control" required />
                                   </div>
                                 </div>
-                              </div>
-                              <div class="col-lg-6">
-                                <div class="mb-3">
-                                  <label class="form-label">Make & Model</label>
-                                  <input type="text" name="makeModel" class="form-control" required />
-                                </div>
-                              </div>
-                              <div class="col-lg-6">
                                 <div class="mb-3">
                                   <label class="form-label">Registered Owner</label>
                                   <input type="text" name="regOwner" class="form-control" required />
                                 </div>
+                                <div class="mb-3">
+                                  <label class="form-label">Make & Model</label>
+                                  <input type="text" name="makeModel" class="form-control" required />
+                                </div>
+
+                                <div class="mb-4">
+                                  <label class="form-label">Status</label>
+                                  <select class="form-select" name="status" id="floatingSelect"
+                                    aria-label="Floating label select example" required>
+                                    <option>--</option>
+                                    <option value="1">Available</option>
+                                    <option value="2">Rented</option>
+                                  </select>
+                                </div>
+
                               </div>
+
                               <div class="col-lg-6">
                                 <div class="mb-3">
                                   <label class="form-label">Registered Date</label>
@@ -346,20 +361,6 @@
                                     </span>
                                   </div>
                                 </div>
-                              </div>
-
-                              <div class="col-lg-6">
-                                <div class="mb-3">
-                                  <label class="form-label">Status</label>
-                                  <select class="form-select" name="status" id="floatingSelect"
-                                    aria-label="Floating label select example" required>
-                                    <option>--</option>
-                                    <option value="1">Available</option>
-                                    <option value="2">Rented</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="col-lg-6">
                                 <div class="mb-3">
                                   <label class="form-label">Istimara Expiration Date</label>
                                   <div class="input-icon mb-2">
@@ -370,9 +371,19 @@
                                     </span>
                                   </div>
                                 </div>
+                                <div class="mb-3">
+                                  <label class="form-label">Upload Istimara</label>
+                                  <input type="file" name="istimaraFile" class="form-control"  accept="image/*,.pdf" required/>
+                                </div>
+                                <div class="mb-3">
+                                  <label class="form-label">Upload Insurance</label>
+                                  <input type="file" name="insuranceFile" class="form-control"  accept="image/*,.pdf" required/>
+                                </div>
                               </div>
+
                             </div>
                           </div>
+
 
                           <div class="modal-footer">
                             <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
@@ -495,6 +506,10 @@
 
             ' <% } %>'
           });
+
+
+         
+            
         </script>
 
 

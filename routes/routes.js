@@ -6,7 +6,7 @@ const bankAccController = require('../controllers/bank.account.controller');
 const vehiclesController = require('../controllers/vehicle.controller');
 const transactionController = require('../controllers/transaction.controller');
 const user = require('../controllers/user.auth.controller');
-const upload = require('../middleware/upload.middleware')
+const upload  = require('../middleware/upload.middleware')
 
 
 router.get('/', dashboard.viewDashboard);
@@ -59,9 +59,11 @@ router.post('/update/bank-accounts/:id', bankAccController.updateBankAcc)
 router.get('/delete/bank-account/:id', bankAccController.deleteBankAcc);
 
 router.get('/vehicle-list', vehiclesController.viewVehicles);
-router.post('/add/vehicle', vehiclesController.addVehicle );
-router.post('/update/vehicle/:id', vehiclesController.updateVehicles)
+router.post('/add/vehicle',upload, vehiclesController.addVehicle );
+router.post('/update/vehicle/:id',upload, vehiclesController.updateVehicles)
 router.get('/delete/vehicle/:id', vehiclesController.deleteVehicle);
+
+router.get('/download/:filename', vehiclesController.dlAttachment);
 
 router.get('/create-voucher/:id', transactionController.createVoucher); 
 router.post('/transaction-voucher', transactionController.saveVoucher);
@@ -78,6 +80,8 @@ router.post('/save/update-invoice/:id', transactionController.saveUpdateInv);
 router.get('/rent-info/:id', vehiclesController.viewRentInfo);
 router.get('/return/:id', vehiclesController.returnVehicle);
 router.post('/return-vehicle/:id', vehiclesController.returnSave);
+
+
 
 
 router.all('*', settings.err404);

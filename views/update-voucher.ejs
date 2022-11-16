@@ -8,7 +8,8 @@
           <div class="col">
 
             <h2 class="page-title">
-               <%-VoucherFound.vehicle_status===1 || VoucherFound.voucher_for==='Others' ? 'Update Voucher' : 'Return Vehicle'%>
+               <!-- <%-VoucherFound.vehicle_status===1 || VoucherFound.voucher_for==='Others' ? 'Update Voucher' : 'Return Vehicle'%> -->
+               Update Voucher
             </h2>
           </div>
         </div>
@@ -141,7 +142,7 @@
                       <a href="<%- VoucherFound.voucher_for === 'Others' || VoucherFound.vehicle_status === 1 ? '/' : '/vehicle-list' %>" class="btn cancelBill">
                         Cancel
                       </a>
-                      <input type="submit" name="submit" value="<%- VoucherFound.voucher_for === 'Others' || VoucherFound.vehicle_status === 1 ? 'Update Voucher' : 'Return Vehicle' %>" class="btn btn-primary ms-3 d-none d-sm-inline-block" />
+                      <input type="submit" name="submit" value="Update Voucher" class="btn btn-primary ms-3 d-none d-sm-inline-block" />
                       <input type="submit" name="submit" value="Return" class="btn btn-primary ms-3 d-sm-none" />
                     </div>
                   </div>

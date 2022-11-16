@@ -23,6 +23,14 @@ const vehiclesSchema = new mongoose.Schema(
         type:  String,
         required: true,
     },
+    istimara_file: {
+        type:  String,
+        required: true
+    },
+    insurance_file: {
+        type:  String,
+        required: true
+    },
     expenses: {
         type:  Number,
         required: true,

@@ -2,6 +2,9 @@
 const Vehicles = require('../models/Vehicles');
 const Voucher = require('../models/Voucher');
 
+const fs = require('fs');
+const path = require('path');
+
 module.exports = {
 
     addVehicle: async (req, res) => {
@@ -12,6 +15,8 @@ module.exports = {
                 registered_owner: req.body.regOwner,
                 registered_date: req.body.regDate,
                 istimara_exdate: req.body.exDate,
+                istimara_file: req.files['istimaraFile'][0].filename,
+                insurance_file: req.files['insuranceFile'][0].filename,
                 expenses: 0.0,
                 income: 0.0,
                 status: + req.body.status,
@@ -33,6 +38,7 @@ module.exports = {
             res.redirect("/sign-in");
         }
     },
+
 
     viewVehicles: async (req, res) => {
         if (req.isAuthenticated()) {
@@ -66,7 +72,7 @@ module.exports = {
         if (req.isAuthenticated()) {
 
             let id = req.params.id;
-
+           
             Vehicles.findByIdAndUpdate(id, {
                 vehicle_no: req.body.vehicleNo,
                 make_model: req.body.makeModel,
@@ -79,6 +85,36 @@ module.exports = {
                     res.json({ message: err.message, type: 'danger' });
                 } else {
 
+                    if(req.files['istimaraFile']){ // new istimara
+                        const filePath = path.join(__dirname, '../public/attachment/' + result.istimara_file);
+                        fs.unlink(filePath, (err) => { // remove old istimara
+                            if (err) {
+                                res.json({message: err.message});
+                            }else{ //update new istimara to db
+                                Vehicles.findByIdAndUpdate(id, {
+                                    istimara_file: req.files['istimaraFile'][0].filename
+                                }, (err) => {
+                                    (err) && res.json({message: err.message});
+                                })
+                            }
+                            })
+                    }
+
+                    if(req.files['insuranceFile']){ // new  insurance
+                        const filePath = path.join(__dirname, '../public/attachment/' + result.insurance_file);
+                        fs.unlink(filePath, (err) => { // remove old  insurance
+                            if (err) {
+                                res.json({message: err.message});
+                            }else{ //update new  insurance to db
+                                Vehicles.findByIdAndUpdate(id, {
+                                    insurance_file: req.files['insuranceFile'][0].filename
+                                }, (err) => {
+                                    (err) && res.json({message: err.message});
+                                })
+                            }
+                            })
+                    }
+
                     req.session.message = {
                         type: 'success',
                         message: 'Vehicle updated successfully!'
@@ -88,6 +124,7 @@ module.exports = {
                 }
             });
 
+            
         } else {
             res.redirect("/sign-in");
         }
@@ -250,7 +287,33 @@ module.exports = {
         } else {
             res.redirect("/sign-in");
         }
-    }
+    },
+
+    dlAttachment: async (req, res) =>{
+        if (req.isAuthenticated()){
+
+            const filePath = path.join(__dirname, '../public/attachment/' + req.params.filename);
+            console.log(filePath)
+
+            res.download(
+                filePath, 
+                req.params.filename, // Remember to include file extension
+               
+                (err) => {
+        
+                if (err) {
+
+                    res.json({message: err.message});
+                
+                }else{
+                    console.log(filePath)
+                }
+        
+            });
+        }else{
+            res.redirect("/sign-in");
+        }
+    },
 
 
 }
