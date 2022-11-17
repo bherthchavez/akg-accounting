@@ -50,19 +50,25 @@ module.exports = {
                       res.json({ message: errbill.message, type: 'danger' });
                     } else {
 
-                      let nav = {
-                        title: "Dashboard",
-                        view: 2
-                      };
+                      
 
-                      res.render('index', {
-                        title: "AKG - Accounting - Dashboard",
-                        nav: nav,
-                        vehicleFound: vehicleFound,
-                        vouFound: vouFound,
-                        foundcC: foundcC,
-                        invItems: foundInv
-                      });
+                          let nav = {
+                            title: "Dashboard",
+                            view: 2
+                          };
+
+                          res.render('index', {
+                            title: "AKG - Accounting - Dashboard",
+                            nav: nav,
+                            vehicleFound: vehicleFound,
+                            vouFound: vouFound,
+                            foundcC: foundcC,
+                            invItems: foundInv
+                          });
+
+                    }
+                      })
+
                     }
                   });
                 }
@@ -70,9 +76,7 @@ module.exports = {
             }
           });
 
-        }
-
-      });
+       
 
     } else {
       res.redirect("/sign-in");

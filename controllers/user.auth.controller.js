@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Vehicles = require('../models/Vehicles');
 const LoginHistory = require('../models/LoginHistory');
 const passport = require("passport");
 const ip = require('ip');
@@ -59,15 +60,29 @@ module.exports = {
               }
             });
           }
-          req.session.user = {
-            userName: req.user.name,
-            userPosition: req.user.position,
-            role: req.user.role,
-            company: req.user.company,
-            company_id: req.user.company_id
-          };
 
-          (req.user.role === 1) ? res.redirect("/owner-dashboard") : res.redirect("/");
+
+          Vehicles.find({ istimara_exdate: { $gte: new Date(new Date().setDate(new Date().getDate() - 2)) } }, (err, foundExIstimara) => {
+            if (err) {
+              res.json({ message: err.message, type: 'danger' });
+      
+            } else {
+              req.session.user = {
+                userName: req.user.name,
+                userPosition: req.user.position,
+                role: req.user.role,
+                company: req.user.company,
+                company_id: req.user.company_id,
+                exIstimara: foundExIstimara
+              };
+    
+              (req.user.role === 1) ? res.redirect("/owner-dashboard") : res.redirect("/");
+
+            }
+          })
+                        
+
+       
           
         });
 

@@ -20,7 +20,7 @@ const vehiclesSchema = new mongoose.Schema(
         required: true,
     },
     istimara_exdate: {
-        type:  String,
+        type:  Date,
         required: true,
     },
     istimara_file: {

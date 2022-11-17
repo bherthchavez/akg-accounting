@@ -245,16 +245,16 @@
                                       </div>
                                       <div class="col-lg-6">
                                         <div class="mb-1">
-                                          <label class="form-label">Istimara Expiration Date</label>
+                                          <label class="form-label">Istimara Expiration Date </label>
                                           <div class="input-icon mb-2">
                                             <input type="date" name="exDate" class="form-control "
                                               placeholder="Select istimara expiration date"
-                                              value="<%=vehicle.istimara_exdate%>" required />
+                                              value="<%= (vehicle.istimara_exdate).toISOString().slice(0, 10) %>" required />
                                           </div>
                                         </div>
                                         <div class="modal-body">
                                         <div class="mb-3">
-                                          <label class="form-label">Download Attachments</label>
+                                          <label class="form-label">Download Attachments </label>
                                           <div class="row">
                                             <div class="col">
                                               <a href="/download/<%=vehicle.istimara_file%>" class="btn btn-vk w-100 mb-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Download"> 
