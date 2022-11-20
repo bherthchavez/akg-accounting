@@ -33,12 +33,14 @@
                             <div class="form-label">Voucher For</div>
                             <select class="form-select" name="voucherFor" required>
                               <% foundVehicles.forEach(function(vehicle) { %>
+
                                 <option value="<%=vehicle._id%>"Ren <%=vehicleNo===vehicle.vehicle_no ? 'selected' : '' %>>
                                  Rent from <%=vehicle.make_model%> - <%=vehicle.vehicle_no%>
                                 </option>
+                                
                                 <% }) %>
 
-                                <option value="Others">Others</option>
+                                <option value="Others" <%=vehicleNo==='others' ? 'selected' : '' %>>Others</option>
                             </select>
 
 

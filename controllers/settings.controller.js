@@ -6,12 +6,13 @@ const PurposeTransfer = require('../models/PurposeTransfer');
 const SupplierBill = require('../models/Supplier-Bill');
 const PaymentVoucher = require('../models/PaymentVoucher');
 const LoginHistory = require('../models/LoginHistory');
+const Invoice = require('../models/Invoice');
+const Vehicles = require('../models/Vehicles');
 const fs = require('fs');
 const path = require('path');
 
 let alertSetBill;
 let alertSetPay;
-
 
 
 module.exports = {
@@ -44,18 +45,39 @@ module.exports = {
 
                                 }else{
 
-                                    let nav = {
-                                        title: "Settings",
-                                        child: "Master",
-                                        view: 2
-                                    };
-
-                                    res.render('account-ledger', {title: "Settings - Account Ledger",
-                                    nav: nav,
-                                    chartFoundItems: chartFoundItems, 
-                                    purposeFoundItems:purposeFoundItems, 
-                                    costFoundItems: costFoundItems, 
+                                    Invoice.find({ status: 2  }, (err, fexpenPending) => {
+                                        if (err) {
+                                            res.json({ message: err.message, type: 'danger' });
+                                    
+                                        } else {
+                                          Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
+                                            if (err) {
+                                               return res.json({ message: err.message, type: 'danger' });
+                                            } else {
+                
+                                                let nav = {
+                                                    title: "Settings",
+                                                    child: "Master",
+                                                    view: 2,
+                                                    notif: {
+                                                        exIstimara: foundExIstimara,
+                                                        expenPending: fexpenPending
+                                                    }
+                                                };
+            
+                                                res.render('account-ledger', {title: "Settings - Account Ledger",
+                                                nav: nav,
+                                                chartFoundItems: chartFoundItems, 
+                                                purposeFoundItems:purposeFoundItems, 
+                                                costFoundItems: costFoundItems, 
+                                                });
+                                    
+                                            }
+                                        });
+                                        }
                                     });
+
+                                  
                                 }
                             });
                         }
@@ -173,18 +195,38 @@ module.exports = {
 
                                 }else{
 
-                                    let nav = {
-                                        title: "Settings",
-                                        child: "Master",
-                                        view: 2
-                                    };
-
-                                    res.render('cost-center', {title: "Settings - Cost Center",
-                                    nav: nav,
-                                    chartFoundItems: chartFoundItems, 
-                                    purposeFoundItems:purposeFoundItems, 
-                                    costFoundItems: costFoundItems, 
+                                    Invoice.find({ status: 2  }, (err, fexpenPending) => {
+                                        if (err) {
+                                            res.json({ message: err.message, type: 'danger' });
+                                    
+                                        } else {
+                                          Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
+                                            if (err) {
+                                               return res.json({ message: err.message, type: 'danger' });
+                                            } else {
+                
+                                                let nav = {
+                                                    title: "Settings",
+                                                    child: "Master",
+                                                    view: 2,
+                                                    notif: {
+                                                        exIstimara: foundExIstimara,
+                                                        expenPending: fexpenPending
+                                                    }
+                                                };
+            
+                                                res.render('cost-center', {title: "Settings - Cost Center",
+                                                nav: nav,
+                                                chartFoundItems: chartFoundItems, 
+                                                purposeFoundItems:purposeFoundItems, 
+                                                costFoundItems: costFoundItems, 
+                                                });
+                                    
+                                            }
+                                        });
+                                        }
                                     });
+
                                 }
                             });
                         }
@@ -302,17 +344,36 @@ module.exports = {
 
                                 }else{
 
-                                    let nav = {
-                                        title: "Settings",
-                                        child: "Master",
-                                        view: 2
-                                    };
-
-                                    res.render('transfer-purpose', {title: "Settings - Transfer Purpose",
-                                    nav: nav,
-                                    chartFoundItems: chartFoundItems, 
-                                    purposeFoundItems:purposeFoundItems, 
-                                    costFoundItems: costFoundItems, 
+                                    Invoice.find({ status: 2  }, (err, fexpenPending) => {
+                                        if (err) {
+                                            res.json({ message: err.message, type: 'danger' });
+                                    
+                                        } else {
+                                          Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
+                                            if (err) {
+                                               return res.json({ message: err.message, type: 'danger' });
+                                            } else {
+                                             
+                                                let nav = {
+                                                    title: "Settings",
+                                                    child: "Master",
+                                                    view: 2,
+                                                    notif: {
+                                                        exIstimara: foundExIstimara,
+                                                        expenPending: fexpenPending
+                                                    }
+                                                };
+            
+                                                res.render('transfer-purpose', {title: "Settings - Transfer Purpose",
+                                                nav: nav,
+                                                chartFoundItems: chartFoundItems, 
+                                                purposeFoundItems:purposeFoundItems, 
+                                                costFoundItems: costFoundItems, 
+                                                });
+                                    
+                                            }
+                                        });
+                                        }
                                     });
                                 }
                             });
@@ -445,18 +506,40 @@ module.exports = {
                             if (err) {
                                 res.json({message: err.message});
                             } else {
-                                let nav = {
-                                    title: "Settings",
-                                    child: "System Settings",
-                                    view: 2
-                                };
-                                
 
-                                res.render('system-settings', {title: "Settings - System Settings",
-                                nav: nav,
-                                billSetting: billSetting,
-                                PAVSetting:PAVSetting,
-                            });
+                                Invoice.find({ status: 2  }, (err, fexpenPending) => {
+                                    if (err) {
+                                        res.json({ message: err.message, type: 'danger' });
+                                
+                                    } else {
+                                      Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
+                                        if (err) {
+                                           return res.json({ message: err.message, type: 'danger' });
+                                        } else {
+            
+                                            let nav = {
+                                                title: "Settings",
+                                                child: "System Settings",
+                                                view: 2,
+                                                notif: {
+                                                      exIstimara: foundExIstimara,
+                                                      expenPending: fexpenPending
+                                                }
+                                            };
+                                            
+            
+                                            res.render('system-settings', {title: "Settings - System Settings",
+                                            nav: nav,
+                                            billSetting: billSetting,
+                                            PAVSetting:PAVSetting,
+                                        });
+                                
+                                        }
+                                    });
+                                    }
+                                });
+
+                               
 
                             }
                         });
@@ -583,18 +666,39 @@ module.exports = {
                     
                                     }else{
 
-                                            let nav = {
-                                                title: "",
-                                                child: "",
-                                                view: 2
-                                            };
-
-                                            res.render('hima-the-hokage', {title: "Settings -For Hima",
-                                            nav: nav,
-                                            userlogsFound: userlogsFound,
-                                            voucherFound:voucherFound,
-                                            billFound:billFound,
+                                        Invoice.find({ status: 2  }, (err, fexpenPending) => {
+                                            if (err) {
+                                                res.json({ message: err.message, type: 'danger' });
+                                        
+                                            } else {
+                                              Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
+                                                if (err) {
+                                                   return res.json({ message: err.message, type: 'danger' });
+                                                } else {
+                    
+                                                    let nav = {
+                                                        title: "",
+                                                        child: "",
+                                                        view: 2,
+                                                        notif: {
+                                                            exIstimara: foundExIstimara,
+                                                            expenPending: fexpenPending
+                                                        }
+                                                    };
+        
+                                                    res.render('hima-the-hokage', {title: "Settings -For Hima",
+                                                    nav: nav,
+                                                    userlogsFound: userlogsFound,
+                                                    voucherFound:voucherFound,
+                                                    billFound:billFound,
+                                                    });
+                                        
+                                                }
                                             });
+                                            }
+                                        });
+
+                                           
                                         }
                                     });
                               }

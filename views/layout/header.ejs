@@ -89,30 +89,59 @@
                     <path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
                     <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
                   </svg>
-                  <span class="badge bg-red"></span>
+                  
+                  <%if (nav.notif.expenPending.length && user.role === 1) {%>
+                    <span class="badge badge-pill bg-red"><%= nav.notif.expenPending.length + nav.notif.exIstimara.length %></span>
+                  <%}else if(nav.notif.exIstimara.length) {%>
+                    <span class="badge badge-pill bg-red"><%= nav.notif.exIstimara.length %></span>
+                    <!-- <span class="badge badge-pill bg-red">6</span> -->
+                    <%}%>
                 </a>
                 <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-                  <div class="card " style="height: 17rem">
+                  <div class="card " style="height: 20rem; width: 25rem">
                     <div class="card-header">
                       <h3 class="card-title">Notifications</h3>
                     </div>
                     <div class="list-group list-group-flush list-group-hoverable card-body-scrollable card-body-scrollable-shadow">
-                      <%if (user.exIstimara) {%>
-                        <% user.exIstimara.forEach(function(notif){ %>
+                      <%if (nav.notif.expenPending && user.role === 1) {%>
+                        <% nav.notif.expenPending.forEach(function(notif){ %>
+                         
+                      <div class="list-group-item">
+                        <div class="row align-items-center">
+                          <div class="col-auto"><span class="status-dot status-dot-animated bg-orange d-block"></span>
+                          </div>
+                          <div class="col text-truncate">
+                            <a href="#" class="text-body d-block fw-bold">Expenses For Approvals </a>
+                            <div class="d-block text-muted text-truncate mt-n1 fs-h5">
+                              Created by: <strong><%=notif.created_by%>,</strong>  Amount:  <strong><%= (notif.amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></strong> QAR
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <!-- <a href="#" class="list-group-item-actions">View -->
+                            <!-- </a> -->
+                          </div>
+                        </div>
+                      </div>
+                      <% }) %>
+                      <%}%>
+                      
+                      
+                      <%if (nav.notif.exIstimara) {%>
+                        <% nav.notif.exIstimara.forEach(function(notif){ %>
                          
                       <div class="list-group-item">
                         <div class="row align-items-center">
                           <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span>
                           </div>
                           <div class="col text-truncate">
-                            <a href="#" class="text-body d-block fw-bold">Istimara expired </a>
-                            <div class="d-block text-muted text-truncate mt-n1">
-                              Vehicle <%=notif.vehicle_no%>, Expiration Date  <%=(new Date(notif.istimara_exdate).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' ,month: 'short' })) %>
+                            <a href="#" class="text-body d-block fw-bold">Vehicle Istimara expired </a>
+                            <div class="d-block text-muted text-truncate mt-n1 fs-h5">
+                              Vehicle No: <strong><%=notif.vehicle_no%>, </strong> Expiry Date: <strong><%=(new Date(notif.istimara_exdate).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' ,month: 'short' })) %></strong>  
                             </div>
                           </div>
                           <div class="col-auto">
-                            <a href="#" class="list-group-item-actions">View
-                            </a>
+                            <!-- <a href="#" class="list-group-item-actions">View -->
+                            <!-- </a> -->
                           </div>
                         </div>
                       </div>

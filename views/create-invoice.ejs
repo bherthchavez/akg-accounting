@@ -52,6 +52,7 @@
                               <div class="mb-3 vInput">
                                 <div class="form-label">Vehicle Model / Number</div>
                                 <select class="form-select" name="vehicleID">
+                                  <option>--</option>
                                   <% foundVehicles.forEach(function(vehicle) { %>
                                     <option value="<%=vehicle._id%>" <%=vehicleNo===vehicle.vehicle_no ? 'selected' : ''
                                       %>>
@@ -257,7 +258,9 @@
           cardDetails += ' <label class="form-label">Card Details</label>'
           cardDetails += ' <textarea class="form-control" name="cardDetails" rows="1" required></textarea>'
           cardDetails += ' </div>'
-          $("#paymentType").append(cardDetails);
+        
+             $("#paymentType").append(cardDetails);
+          
 
         } else {
           $('#cardDetails').remove();
@@ -272,7 +275,7 @@
 
           vInput += ' <div class="mb-3 vInput">'
           vInput += '<div class="form-label">Vehicle Model / Number</div>'
-          vInput += ' <select class="form-select" name="vehicleID">'
+          vInput += ' <select class="form-select" name="vehicleID"><option> -- </option>'
           vInput += ' <% foundVehicles.forEach(function(vehicle) { %>'
           vInput += ' <option value="<%=vehicle._id%>" <%=vehicleNo===vehicle.vehicle_no ? "selected" : "" %>>'
           vInput += '  <%=vehicle.make_model%> - <%=vehicle.vehicle_no%>'
@@ -284,7 +287,9 @@
         if (value === 'Others') {
           $('.vInput').remove();
         }else{
+          if (!$('.vEx').find('.vInput').length) {
           $(".vEx").append(vInput);
+          }
         }
       }
     </script>

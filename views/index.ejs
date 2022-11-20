@@ -18,13 +18,17 @@
               </button>
               <div class="dropdown-menu">
                 <a class="dropdown-item text-muted mt-1" data-bs-toggle="offcanvas" href="#offcanvasStart" role="button"
-                  aria-controls="offcanvasStart"> <i class="ti ti-file-invoice fs-h3 me-2"></i>
+                  aria-controls="offcanvasStart"> 
+                  <!-- <i class="ti ti-file-invoice fs-h3 me-2"></i> -->
+                  Rent Vehicle
+                </a>
+                <a href="create-voucher/others" class="dropdown-item text-muted mt-1" > 
+                  <!-- <i class="ti ti-file-invoice fs-h3 me-2"></i> -->
                   Create Voucher
                 </a>
-                <a class="dropdown-item text-muted mt-1" data-bs-toggle="offcanvas" href="#offcanvasStart2"
-                  role="button" aria-controls="offcanvasStart">
-                  <i class="ti ti-building-bank fs-h3 me-2"></i>
-                  Create Invoice
+                <a href="/create-invoice/others" class="dropdown-item text-muted mt-1" >
+                  <!-- <i class="ti ti-file-invoice fs-h3 me-2"></i> -->
+                  Create Expenses
                 </a>
               </div>
             </div>
@@ -45,26 +49,30 @@
               <form id="billForm" name="billForm">
 
                 <%vehicleFound.forEach(function(vehicle){%>
+                
+                  <% if(vehicle.status===1 ){ %>
                   <label class="form-selectgroup-item flex-fill">
-                    <input type="radio" name="supplier" value="<%=vehicle._id%>" class="form-selectgroup-input"
+                    <input type="radio" name="sVehicle" value="<%=vehicle._id%>" class="form-selectgroup-input"
                       required />
                     <div class="form-selectgroup-label d-flex align-items-center p-3">
                       <div class="me-3">
                         <span class="form-selectgroup-check"></span>
                       </div>
                       <div>
-                        <%=vehicle.vehicle_no%>
+                        <%=vehicle.make_model%> - <%=vehicle.vehicle_no%>
                       </div>
                     </div>
                   </label>
+                  <% } %>
                   <%})%>
                     <div class="mt-4 text-end">
 
-                      <a href="" class="btn btn-primary w-50 fs-h3 createBill"> Create bill <i
+                      <a href="" class="btn btn-primary w-50 fs-h3 createBill">Rent Vehicle <i
                           class="ti ti-chevron-right fs-h3 ms-2"></i></a>
 
                     </div>
               </form>
+
 
               <% } else { %>
 
@@ -492,8 +500,8 @@
     $(document).ready(function () {
 
       $("#billForm").on("click", function () {
-        var radVal = $("input[name='form-payment']:checked").val();
-        $("a.createBill").attr("href", "create-bill/" + radVal)
+        var radVal = $("input[name='sVehicle']:checked").val();
+        $("a.createBill").attr("href", "create-voucher/" + radVal)
 
       });
 

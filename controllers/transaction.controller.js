@@ -2,7 +2,7 @@ const Voucher = require('../models/Voucher');
 const Invoice = require('../models/Invoice');
 const Vehicles = require('../models/Vehicles');
 const Settings = require('../models/Settings');
-
+const { addListener } = require('nodemon');
 
 
 module.exports = {
@@ -12,37 +12,86 @@ module.exports = {
 
             let id = req.params.id
 
-            Vehicles.findById(id, (err, foundItem) => {
+            Vehicles.find({ status: 1 }).exec((err, foundVehicles) => {
                 if (err) {
                     res.json({ message: err.message, type: 'danger' });
                 } else {
 
-                    Vehicles.find({ status: 1 }).exec((err, foundVehicles) => {
+                    Settings.findOne({ name: "voucher_settings" }, (err, voucherSetting) => {
                         if (err) {
                             res.json({ message: err.message, type: 'danger' });
                         } else {
 
-                            Settings.findOne({ name: "voucher_settings" }, (err, voucherSetting) => {
+                            Invoice.find({ status: 2  }, (err, fexpenPending) => {
                                 if (err) {
                                     res.json({ message: err.message, type: 'danger' });
+                            
                                 } else {
-                                    let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
-                                    let nav = {
-                                        title: "Accounts",
-                                        child: "Vehicle",
-                                        view: 2
-                                    };
+                                  Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
+                                    if (err) {
+                                       return res.json({ message: err.message, type: 'danger' });
+                                    } else {
+        
 
-                                    res.render('create-voucher', {
-                                        title: "Create Voucher",
-                                        nav: nav,
-                                        vouNo: vouNo,
-                                        foundVehicles: foundVehicles,
-                                        vehicleNo: foundItem.vehicle_no,
+                                    if (id != 'others') {
 
-                                    });
+                                        Vehicles.findBy(id).exec((err, result) => {
+                                            if (err) {
+                                                res.json({ message: err.message, type: 'danger' });
+                                            } else {
+        
+                                                let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
+                                                let nav = {
+                                                    title: "Accounts",
+                                                    child: "Vehicle",
+                                                    view: 2,
+                                                    notif: {
+                                                        exIstimara: foundExIstimara,
+                                                        expenPending: fexpenPending
+                                                    }
+                                                };
+        
+                                                res.render('create-voucher', {
+                                                    title: "Create Voucher",
+                                                    nav: nav,
+                                                    vouNo: vouNo,
+                                                    foundVehicles: foundVehicles,
+                                                    vehicleNo: result.vehicle_no
+        
+                                                });
+        
+        
+                                            }
+                                        })
+        
+                                    } else {
+        
+                                        let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
+                                        let nav = {
+                                            title: "Accounts",
+                                            child: "Vehicle",
+                                            view: 2,
+                                            notif: {
+                                                exIstimara: foundExIstimara,
+                                                expenPending: fexpenPending
+                                            }
+                                        };
+        
+                                        res.render('create-voucher', {
+                                            title: "Create Voucher",
+                                            nav: nav,
+                                            vouNo: vouNo,
+                                            foundVehicles: foundVehicles,
+                                            vehicleNo: 'others'
+        
+                                        });
+                                    }
+                            
+                                    }
+                                });
                                 }
                             });
+                            
                         }
                     });
                 }
@@ -352,17 +401,38 @@ module.exports = {
                     res.json({ message: err.message });
                 } else {
 
-                    let nav = {
-                        title: "Accounts",
-                        child: "Vehicle",
-                        view: 2
-                    };
+                    Invoice.find({ status: 2  }, (err, fexpenPending) => {
+                        if (err) {
+                            res.json({ message: err.message, type: 'danger' });
+                    
+                        } else {
+                          Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
+                            if (err) {
+                               return res.json({ message: err.message, type: 'danger' });
+                            } else {
 
-                    res.render('update-voucher', {
-                        title: "Update Voucher",
-                        VoucherFound: foundVoucher,
-                        nav: nav
+                                let nav = {
+                                    title: "Accounts",
+                                    child: "Vehicle",
+                                    view: 2,
+                                    notif: {
+                                        exIstimara: foundExIstimara,
+                                                expenPending: fexpenPending
+                                    }
+                                };
+            
+                                res.render('update-voucher', {
+                                    title: "Update Voucher",
+                                    VoucherFound: foundVoucher,
+                                    nav: nav
+                                })
+                    
+                            }
+                        })
+                        }
                     })
+
+                   
                 }
             });
 
@@ -377,37 +447,86 @@ module.exports = {
 
             let id = req.params.id
 
-            Vehicles.findById(id, (err, foundItem) => {
+            Vehicles.find().exec((err, foundVehicles) => {
                 if (err) {
-                    res.json({ message: err.message, type: 'danger' });
+                    res.json({ message: err.message, type: 'danger' })
                 } else {
 
-                    Vehicles.find().exec((err, foundVehicles) => {
+                    Settings.findOne({ name: "invoice_settings" }, (err, voucherSetting) => {
                         if (err) {
-                            res.json({ message: err.message, type: 'danger' });
+                            res.json({ message: err.message, type: 'danger' })
                         } else {
 
-                            Settings.findOne({ name: "invoice_settings" }, (err, voucherSetting) => {
+                            Invoice.find({ status: 2  }, (err, fexpenPending) => {
                                 if (err) {
                                     res.json({ message: err.message, type: 'danger' });
+                            
                                 } else {
-                                    let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
-                                    let nav = {
-                                        title: "Accounts",
-                                        child: "Vehicle",
-                                        view: 2
-                                    };
+                                  Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
+                                    if (err) {
+                                       return res.json({ message: err.message, type: 'danger' });
+                                    } else {
+        
 
-                                    res.render('create-invoice', {
-                                        title: "Create Invoice",
-                                        nav: nav,
-                                        vouNo: vouNo,
-                                        foundVehicles: foundVehicles,
-                                        vehicleNo: foundItem.vehicle_no,
+                                    if (id != 'others') {
 
-                                    });
+                                        Vehicles.findBy(id).exec((err, result) => {
+                                            if (err) {
+                                                res.json({ message: err.message, type: 'danger' });
+                                            } else {
+        
+                                                let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
+                                                let nav = {
+                                                    title: "Accounts",
+                                                    child: "Vehicle",
+                                                    view: 2,
+                                                    notif: {
+                                                        exIstimara: foundExIstimara,
+                                                        expenPending: fexpenPending
+                                                    }
+                                                };
+        
+                                                res.render('create-invoice', {
+                                                    title: "Create Invoice",
+                                                    nav: nav,
+                                                    vouNo: vouNo,
+                                                    foundVehicles: foundVehicles,
+                                                    vehicleNo: result.vehicle_no
+        
+                                                });
+        
+        
+                                            }
+                                        })
+        
+                                    } else {
+        
+                                        let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
+                                        let nav = {
+                                            title: "Accounts",
+                                            child: "Vehicle",
+                                            view: 2,
+                                            notif: {
+                                                exIstimara: foundExIstimara,
+                                                expenPending: fexpenPending
+                                            }
+                                        };
+        
+                                        res.render('create-invoice', {
+                                            title: "Create Invoice",
+                                            nav: nav,
+                                            vouNo: vouNo,
+                                            foundVehicles: foundVehicles,
+                                            vehicleNo: 'others'
+        
+                                        });
+                                    }
+                            
+                                    }
+                                });
                                 }
                             });
+
                         }
                     });
                 }
@@ -465,50 +584,50 @@ module.exports = {
 
                         if (err) {
                             res.json({ message: err.message, type: 'danger' });
-                        }else{
-
-                        
-
-                        let totalExpenses = 0;
-
-                        (req.body.expensesFor) === 'vehicle' ? totalExpenses = foundVehicle.expenses : totalExpenses = 0;
-                        totalExpenses += amount;
-
-                        Vehicles.findOneAndUpdate({ _id: req.body.vehicleID },
-                            {
-                                $set: {
-                                    expenses: totalExpenses
-                                }
-                            }, (err) => {
-                                if (err) {
-                                    res.json({ message: err.message, type: 'danger' });
-                                }
-                            });
+                        } else {
 
 
-                        Settings.findOne({ name: "invoice_settings" }, (err, invSetting) => {
-                            let invNo = parseFloat(invSetting.starting_no) + 1;
-                            Settings.findOneAndUpdate({ name: "invoice_settings" },
-                                { $set: { starting_no: invNo } }, (err,) => {
+
+                            let totalExpenses = 0;
+
+                            (req.body.expensesFor) === 'vehicle' ? totalExpenses = foundVehicle.expenses : totalExpenses = 0;
+                            totalExpenses += amount;
+
+                            Vehicles.findOneAndUpdate({ _id: req.body.vehicleID },
+                                {
+                                    $set: {
+                                        expenses: totalExpenses
+                                    }
+                                }, (err) => {
                                     if (err) {
                                         res.json({ message: err.message, type: 'danger' });
                                     }
                                 });
-                        });
-
-                        let notifMsg;
-                        (req.body.expensesFor) === 'vehicle' ? notifMsg = 'Invoice for vehicle: ' + vNo : notifMsg = 'Invoice';
-
-                        req.session.message = {
-                            type: 'transac',
-                            tType: 'invoice',
-                            message: notifMsg + ' has been successfully created. Invoice No: ' + docs.inv_no + ' Total Amount: QAR ' + (amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
-                            transID: docs._id,
-                        };
 
 
-                        (req.body.expensesFor) === 'vehicle' ? res.redirect("/vehicle-list") : res.redirect("/");
-                      }
+                            Settings.findOne({ name: "invoice_settings" }, (err, invSetting) => {
+                                let invNo = parseFloat(invSetting.starting_no) + 1;
+                                Settings.findOneAndUpdate({ name: "invoice_settings" },
+                                    { $set: { starting_no: invNo } }, (err,) => {
+                                        if (err) {
+                                            res.json({ message: err.message, type: 'danger' });
+                                        }
+                                    });
+                            });
+
+                            let notifMsg;
+                            (req.body.expensesFor) === 'vehicle' ? notifMsg = 'Invoice for vehicle: ' + vNo : notifMsg = 'Invoice';
+
+                            req.session.message = {
+                                type: 'transac',
+                                tType: 'invoice',
+                                message: notifMsg + ' has been successfully created. Invoice No: ' + docs.inv_no + ' Total Amount: QAR ' + (amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
+                                transID: docs._id,
+                            };
+
+
+                            (req.body.expensesFor) === 'vehicle' ? res.redirect("/vehicle-list") : res.redirect("/");
+                        }
                     });
 
 
@@ -579,17 +698,40 @@ module.exports = {
                     res.json({ message: err.message });
                 } else {
 
-                    let nav = {
-                        title: "Accounts",
-                        child: "Vehicle",
-                        view: 2
-                    };
+                    Invoice.find({ status: 2  }, (err, fexpenPending) => {
+                        if (err) {
+                            res.json({ message: err.message, type: 'danger' });
+                    
+                        } else {
+                          Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
+                            if (err) {
+                               return res.json({ message: err.message, type: 'danger' });
+                            } else {
 
-                    res.render('update-invoice', {
-                        title: "Update Voucher",
-                        foundInv: foundInv,
-                        nav: nav
-                    })
+                              
+                             
+                                let nav = {
+                                    title: "Accounts",
+                                    child: "Vehicle",
+                                    view: 2,
+                                    notif: {
+                                        exIstimara: foundExIstimara,
+                                        expenPending: fexpenPending
+                                    }
+                                };
+            
+                                res.render('update-invoice', {
+                                    title: "Update Voucher",
+                                    foundInv: foundInv,
+                                    nav: nav
+                                })
+                    
+                            }
+                        });
+                        }
+                    });
+
+                  
                 }
             });
 
@@ -641,7 +783,7 @@ module.exports = {
                                 res.redirect("/");
                             } else {
 
-                                
+
 
                                 req.session.message = {
                                     type: 'transac',

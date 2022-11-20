@@ -1,6 +1,8 @@
 const Company = require('../models/Company');
 const Voucher = require('../models/Voucher');
 const User = require('../models/User');
+const Invoice = require('../models/Invoice');
+const Vehicles = require('../models/Vehicles');
 const passport = require("passport");
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
@@ -9,6 +11,8 @@ passport.deserializeUser(User.deserializeUser());
 
 const LocalStrategy = require('passport-local').Strategy;
 passport.use(new LocalStrategy(User.authenticate()));
+
+
 
 module.exports = {
 
@@ -21,15 +25,36 @@ module.exports = {
           res.json({ message: err.message });
         } else {
 
-          let nav = {
-            title: "Setup",
-            view: 1
-          };
-          res.render('company', {
-            title: "Company Setup",
-            nav: nav,
-            companyList: foundList
-          })
+          Invoice.find({ status: 2 }, (err, fexpenPending) => {
+            if (err) {
+              res.json({ message: err.message, type: 'danger' });
+
+            } else {
+              Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
+                if (err) {
+                  return res.json({ message: err.message, type: 'danger' });
+                } else {
+
+                  let nav = {
+                    title: "Setup",
+                    view: 1,
+                    notif: {
+                      exIstimara: foundExIstimara,
+                      expenPending: fexpenPending
+                    }
+                  };
+                  res.render('company', {
+                    title: "Company Setup",
+                    nav: nav,
+                    companyList: foundList
+                  })
+
+                }
+              });
+            }
+          });
+
+
         }
       });
 
@@ -161,16 +186,37 @@ module.exports = {
               res.json({ message: err.message });
             } else {
 
-              let nav = {
-                title: "User",
-                view: 1
-              };
-              res.render('user', {
-                title: "User Setup",
-                nav: nav,
-                userList: foundList,
-                foundCompany: foundCompany
-              })
+              Invoice.find({ status: 2 }, (err, fexpenPending) => {
+                if (err) {
+                  res.json({ message: err.message, type: 'danger' });
+
+                } else {
+                  Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
+                    if (err) {
+                      return res.json({ message: err.message, type: 'danger' });
+                    } else {
+
+                      let nav = {
+                        title: "User",
+                        view: 1,
+                        notif: {
+                          exIstimara: foundExIstimara,
+                          expenPending: fexpenPending
+                        }
+                      };
+                      res.render('user', {
+                        title: "User Setup",
+                        nav: nav,
+                        userList: foundList,
+                        foundCompany: foundCompany
+                      })
+
+                    }
+                  });
+                }
+              });
+
+
             }
           });
         }
@@ -186,39 +232,39 @@ module.exports = {
 
   addUserDev: async (req, res) => {
     const name = req.body.name
-      const username = req.body.username
-      const email = req.body.email
-      const company = req.body.company
-      const position = req.body.position
-      const role = + req.body.role
-      const status = + req.body.status
-      const password = req.body.password
+    const username = req.body.username
+    const email = req.body.email
+    const company = req.body.company
+    const position = req.body.position
+    const role = + req.body.role
+    const status = + req.body.status
+    const password = req.body.password
 
-     
 
-          User.register(new User({
-            name: name,
-            username: username,
-            email: email,
-            company:company,
-            company_id: 123131,
-            position: position,
-            role: role,
-            status: status,
-            created_by: 'hima'
-          }), password, (err, user) => {
-            if (err) {
 
-             
-                console.log("Your account could not be saved. Error: " + err,)
-              
-              res.redirect("/user-setup");
-            } else {
-              console.log('New user account added successfully!')
-              res.redirect("/");
-            }
+    User.register(new User({
+      name: name,
+      username: username,
+      email: email,
+      company: company,
+      company_id: 123131,
+      position: position,
+      role: role,
+      status: status,
+      created_by: 'hima'
+    }), password, (err, user) => {
+      if (err) {
 
-          });
+
+        console.log("Your account could not be saved. Error: " + err,)
+
+        res.redirect("/user-setup");
+      } else {
+        console.log('New user account added successfully!')
+        res.redirect("/");
+      }
+
+    });
   },
 
   addUser: async (req, res) => {
@@ -235,7 +281,7 @@ module.exports = {
       const status = + req.body.status
       const password = req.body.password
 
-      Company.findById({ _id:companyId }).exec((err, foundCompany) => {
+      Company.findById({ _id: companyId }).exec((err, foundCompany) => {
 
         if (err) {
 
@@ -289,12 +335,12 @@ module.exports = {
       let id = req.params.id;
       const companyId = req.body.company
 
-      Company.findOne({_id:companyId}).exec((err, foundCompany) => {
+      Company.findOne({ _id: companyId }).exec((err, foundCompany) => {
 
         if (err) {
           req.session.message = {
             type: 'danger',
-            message: "user account could not be saved. Error: " + err,
+            message: "User1 account could not be saved. Error: " + err,
           };
           res.redirect("/user-setup");
         } else {
@@ -313,7 +359,7 @@ module.exports = {
             if (err) {
               req.session.message = {
                 type: 'danger',
-                message: "user account could not be saved. Error: " + err,
+                message: "User2 account could not be saved. Error: " + err,
               };
               res.redirect("/user-setup");
             } else {
@@ -326,8 +372,8 @@ module.exports = {
               res.redirect('/user-setup')
             }
           });
-          }
-        })
+        }
+      })
 
     } else {
       res.redirect("/sign-in");

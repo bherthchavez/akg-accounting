@@ -1,9 +1,33 @@
 
 const Vehicles = require('../models/Vehicles');
 const Voucher = require('../models/Voucher');
-
+const Invoice = require('../models/Invoice');
 const fs = require('fs');
 const path = require('path');
+
+let expIstimata;
+let expenPending;
+
+
+Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
+    if (err) {
+        res.json({ message: err.message, type: 'danger' });
+
+    } else {
+        expIstimata = foundExIstimara
+    }
+});
+
+Invoice.find({ status: 2  }, (err, fexpenPending) => {
+    if (err) {
+        res.json({ message: err.message, type: 'danger' });
+
+    } else {
+        expenPending = fexpenPending
+    }
+});
+
+
 
 module.exports = {
 
@@ -48,17 +72,42 @@ module.exports = {
                     res.json({ message: err.message });
                 } else {
 
-                    let nav = {
-                        title: "Accounts",
-                        child: "Vehicle",
-                        view: 2
-                    };
+                    Invoice.find({ status: 2  }, (err, fexpenPending) => {
+                        if (err) {
+                            res.json({ message: err.message, type: 'danger' });
+                    
+                        } else {
+                          Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
+                            if (err) {
+                               return res.json({ message: err.message, type: 'danger' });
+                            } else {
 
-                    res.render('vehicle', {
-                        title: "Vehicle List",
-                        vehicleList: foundVehicles,
-                        nav: nav
-                    })
+                              
+                             
+                            let nav = {
+                                title: "Accounts",
+                                child: "Vehicle",
+                                view: 2,
+                                notif: {
+                                    exIstimara: foundExIstimara,
+                                    expenPending: fexpenPending
+                                }
+                            };
+
+                            res.render('vehicle', {
+                                title: "Vehicle List",
+                                vehicleList: foundVehicles,
+                                nav: nav
+                            })
+                    
+                            }
+                        });
+                        }
+                    });
+
+
+
+                       
                 }
             });
 
@@ -72,7 +121,7 @@ module.exports = {
         if (req.isAuthenticated()) {
 
             let id = req.params.id;
-           
+
             Vehicles.findByIdAndUpdate(id, {
                 vehicle_no: req.body.vehicleNo,
                 make_model: req.body.makeModel,
@@ -85,34 +134,34 @@ module.exports = {
                     res.json({ message: err.message, type: 'danger' });
                 } else {
 
-                    if(req.files['istimaraFile']){ // new istimara
+                    if (req.files['istimaraFile']) { // new istimara
                         const filePath = path.join(__dirname, '../public/attachment/' + result.istimara_file);
                         fs.unlink(filePath, (err) => { // remove old istimara
                             if (err) {
-                                res.json({message: err.message});
-                            }else{ //update new istimara to db
+                                res.json({ message: err.message });
+                            } else { //update new istimara to db
                                 Vehicles.findByIdAndUpdate(id, {
                                     istimara_file: req.files['istimaraFile'][0].filename
                                 }, (err) => {
-                                    (err) && res.json({message: err.message});
+                                    (err) && res.json({ message: err.message });
                                 })
                             }
-                            })
+                        })
                     }
 
-                    if(req.files['insuranceFile']){ // new  insurance
+                    if (req.files['insuranceFile']) { // new  insurance
                         const filePath = path.join(__dirname, '../public/attachment/' + result.insurance_file);
                         fs.unlink(filePath, (err) => { // remove old  insurance
                             if (err) {
-                                res.json({message: err.message});
-                            }else{ //update new  insurance to db
+                                res.json({ message: err.message });
+                            } else { //update new  insurance to db
                                 Vehicles.findByIdAndUpdate(id, {
                                     insurance_file: req.files['insuranceFile'][0].filename
                                 }, (err) => {
-                                    (err) && res.json({message: err.message});
+                                    (err) && res.json({ message: err.message });
                                 })
                             }
-                            })
+                        })
                     }
 
                     req.session.message = {
@@ -124,7 +173,7 @@ module.exports = {
                 }
             });
 
-            
+
         } else {
             res.redirect("/sign-in");
         }
@@ -235,7 +284,7 @@ module.exports = {
                     let nav = {
                         title: "Accounts",
                         child: "Vehicle",
-                         view: 2
+                        view: 2
                     };
 
                     res.render('return-vehicle', {
@@ -289,28 +338,28 @@ module.exports = {
         }
     },
 
-    dlAttachment: async (req, res) =>{
-        if (req.isAuthenticated()){
+    dlAttachment: async (req, res) => {
+        if (req.isAuthenticated()) {
 
             const filePath = path.join(__dirname, '../public/attachment/' + req.params.filename);
             console.log(filePath)
 
             res.download(
-                filePath, 
+                filePath,
                 req.params.filename, // Remember to include file extension
-               
-                (err) => {
-        
-                if (err) {
 
-                    res.json({message: err.message});
-                
-                }else{
-                    console.log(filePath)
-                }
-        
-            });
-        }else{
+                (err) => {
+
+                    if (err) {
+
+                        res.json({ message: err.message });
+
+                    } else {
+                        console.log(filePath)
+                    }
+
+                });
+        } else {
             res.redirect("/sign-in");
         }
     },

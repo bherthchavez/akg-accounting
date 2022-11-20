@@ -244,22 +244,21 @@
                                         </div>
                                         <div class="mb-3">
                                           <label class="form-label">Email Address</label>
-                                          <input type="email" name="email" class="form-control" value=" <%=user.email%>" required />
+                                          <input type="email" name="email" class="form-control" value="<%=user.email%>" required />
                                         </div>
                                       </div>
                                       <div class="col-lg-6">
                                         <div class="mb-3">
                                           <div class="form-label">Company</div>
                                              <select class="form-select" name="company" required>
-                                            <option>--</option>
                                             <% foundCompany.forEach(function(company){ %>
-                                              <option value="<%=company._id%>" <%=user.company===company.commercial_name ? 'selected' : '' %>><%=company.commercial_name%></option>
+                                              <option value="<%=company._id%>"<%=user.company===company.commercial_name ? 'selected' : '' %>><%=company.commercial_name%></option>
                                               <%})%>
                                           </select>
                                         </div>
                                         <div class="mb-3">
                                           <label class="form-label">Pisition</label>
-                                          <input type="text" name="position"  class="form-control" value=" <%=user.position%>" required>
+                                          <input type="text" name="position"  class="form-control" value="<%=user.position%>" required>
                                         </div>
                                     </div>
                                   </div>
