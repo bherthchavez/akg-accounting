@@ -3,8 +3,9 @@ const dashboard = require('../controllers/dashboard.controller');
 const settings = require('../controllers/settings.controller');
 const setup = require('../controllers/setup.controller');
 const bankAccController = require('../controllers/bank.account.controller');
-const vehiclesController = require('../controllers/vehicle.controller');
 const transactionController = require('../controllers/transaction.controller');
+const vehiclesController = require('../controllers/vehicle.controller');
+const employee = require('../controllers/employee.controller');
 const user = require('../controllers/user.auth.controller');
 const upload  = require('../middleware/upload.middleware')
 
@@ -64,6 +65,13 @@ router.post('/update/vehicle/:id',upload, vehiclesController.updateVehicles)
 router.get('/delete/vehicle/:id', vehiclesController.deleteVehicle);
 
 router.get('/download/:filename', vehiclesController.dlAttachment);
+
+router.get('/employee-list', employee.viewEmployee);
+router.post('/add/employee',upload, employee.addEmployee );
+router.post('/update/employee/:id',upload, employee.updateEmployee)
+router.get('/delete/employee/:id', employee.deleteEmployee);
+
+router.get('/download/qid/:filename', employee.dlQID);
 
 router.get('/create-voucher/:id', transactionController.createVoucher); 
 router.post('/transaction-voucher', transactionController.saveVoucher);

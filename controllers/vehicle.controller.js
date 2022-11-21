@@ -5,29 +5,7 @@ const Invoice = require('../models/Invoice');
 const fs = require('fs');
 const path = require('path');
 
-let expIstimata;
-let expenPending;
-
-
-Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
-    if (err) {
-        res.json({ message: err.message, type: 'danger' });
-
-    } else {
-        expIstimata = foundExIstimara
-    }
-});
-
-Invoice.find({ status: 2  }, (err, fexpenPending) => {
-    if (err) {
-        res.json({ message: err.message, type: 'danger' });
-
-    } else {
-        expenPending = fexpenPending
-    }
-});
-
-
+const Notif = require('../middleware/notif.middleware');
 
 module.exports = {
 
@@ -72,42 +50,31 @@ module.exports = {
                     res.json({ message: err.message });
                 } else {
 
-                    Invoice.find({ status: 2  }, (err, fexpenPending) => {
-                        if (err) {
-                            res.json({ message: err.message, type: 'danger' });
-                    
-                        } else {
-                          Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
-                            if (err) {
-                               return res.json({ message: err.message, type: 'danger' });
-                            } else {
+                    Notif.getINV((err, dataINV) => {
+                        Notif.getVehicle((err, dataVehicle) => {
+                            Notif.getEmployee((err, dataEmployee) => {
+                                let nav = {
+                                    title: "Accounts",
+                                    child: "Vehicle",
+                                    view: 2,
+                                    notif: {
+                                        exIstimara: dataVehicle,
+                                        expenPending: dataINV,
+                                        exQID: dataEmployee
+                                    }
+                                };
 
-                              
-                             
-                            let nav = {
-                                title: "Accounts",
-                                child: "Vehicle",
-                                view: 2,
-                                notif: {
-                                    exIstimara: foundExIstimara,
-                                    expenPending: fexpenPending
-                                }
-                            };
+                                res.render('vehicle', {
+                                    title: "Vehicle List",
+                                    vehicleList: foundVehicles,
+                                    nav: nav
+                                })
 
-                            res.render('vehicle', {
-                                title: "Vehicle List",
-                                vehicleList: foundVehicles,
-                                nav: nav
-                            })
-                    
-                            }
+                            });
                         });
-                        }
                     });
 
 
-
-                       
                 }
             });
 

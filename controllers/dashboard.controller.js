@@ -4,7 +4,7 @@ const Company = require('../models/Company');
 const Voucher = require('../models/Voucher');
 const Invoice = require('../models/Invoice');
 const Vehicles = require('../models/Vehicles');
-
+const Notif = require('../middleware/notif.middleware');
 
 
 module.exports = {
@@ -53,44 +53,32 @@ module.exports = {
                       res.json({ message: errbill.message, type: 'danger' });
                     } else {
 
+                      Notif.getINV((err, dataINV) => {
+                        Notif.getVehicle((err, dataVehicle) => {
+                          Notif.getEmployee((err, dataEmployee) => {
 
-                      Invoice.find({ status: 2 }, (err, fexpenPending) => {
-                        if (err) {
-                          res.json({ message: err.message, type: 'danger' });
+                            let nav = {
+                              title: "Dashboard",
+                              view: 2,
+                              notif: {
+                                exIstimara: dataVehicle,
+                                expenPending: dataINV,
+                                exQID: dataEmployee
+                              }
+                            };
 
-                        } else {
-                          Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
-                            if (err) {
-                              return res.json({ message: err.message, type: 'danger' });
-                            } else {
+                            res.render('index', {
+                              title: "AKG - Accounting - Dashboard",
+                              nav: nav,
+                              vehicleFound: vehicleFound,
+                              vouFound: vouFound,
+                              foundcC: foundcC,
+                              invItems: foundInv
+                            })
 
-                              let nav = {
-                                title: "Dashboard",
-                                view: 2,
-                                notif: {
-                                  exIstimara: foundExIstimara,
-                                  expenPending: fexpenPending
-                                }
-                              };
-
-                              res.render('index', {
-                                title: "AKG - Accounting - Dashboard",
-                                nav: nav,
-                                vehicleFound: vehicleFound,
-                                vouFound: vouFound,
-                                foundcC: foundcC,
-                                invItems: foundInv
-                              });
-
-
-                            }
-                          });
-                        }
-                      });
-
-
-
-
+                          })
+                        })
+                      })
                     }
                   })
 
@@ -130,38 +118,30 @@ module.exports = {
                     if (err) {
                       res.json({ message: errbill.message, type: 'danger' });
                     } else {
+                      Notif.getINV((err, dataINV) => {
+                        Notif.getVehicle((err, dataVehicle) => {
+                          Notif.getEmployee((err, dataEmployee) => {
+                            let nav = {
+                              title: "Dashboard",
+                              view: 1,
+                              notif: {
+                                exIstimara: dataVehicle,
+                                expenPending: dataINV,
+                                exQID: dataEmployee
+                              }
+                            };
 
-                      Invoice.find({ status: 2 }, (err, fexpenPending) => {
-                        if (err) {
-                          res.json({ message: err.message, type: 'danger' });
+                            res.render('owner-dashboard', {
+                              title: "AKG - Accounting - Dashboard",
+                              nav: nav,
+                              CompanyFound: CompanyFound,
+                              vehicleFound: vehicleFound,
+                              vouFound: vouFound,
+                              invItems: foundInv
+                            });
 
-                        } else {
-                          Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
-                            if (err) {
-                              return res.json({ message: err.message, type: 'danger' });
-                            } else {
-
-                              let nav = {
-                                title: "Dashboard",
-                                view: 1,
-                                notif: {
-                                  exIstimara: foundExIstimara,
-                                  expenPending: fexpenPending
-                                }
-                              };
-
-                              res.render('owner-dashboard', {
-                                title: "AKG - Accounting - Dashboard",
-                                nav: nav,
-                                CompanyFound: CompanyFound,
-                                vehicleFound: vehicleFound,
-                                vouFound: vouFound,
-                                invItems: foundInv
-                              });
-
-                            }
                           });
-                        }
+                        });
                       });
 
                     }

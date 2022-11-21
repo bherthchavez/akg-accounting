@@ -22,6 +22,10 @@ var upload = multer({
         {
             name: 'insuranceFile',
             maxCount: 1
+        },
+        {
+            name: 'qidFile',
+            maxCount: 1
         }
     ]
 );

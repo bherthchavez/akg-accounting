@@ -4,6 +4,7 @@ const Vehicles = require('../models/Vehicles');
 const Settings = require('../models/Settings');
 const { addListener } = require('nodemon');
 
+const Notif = require('../middleware/notif.middleware');
 
 module.exports = {
 
@@ -22,76 +23,73 @@ module.exports = {
                             res.json({ message: err.message, type: 'danger' });
                         } else {
 
-                            Invoice.find({ status: 2  }, (err, fexpenPending) => {
-                                if (err) {
-                                    res.json({ message: err.message, type: 'danger' });
-                            
-                                } else {
-                                  Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
-                                    if (err) {
-                                       return res.json({ message: err.message, type: 'danger' });
-                                    } else {
-        
+                            Notif.getINV((err, dataINV) => {
+                                Notif.getVehicle((err, dataVehicle) => {
+                                    Notif.getEmployee((err, dataEmployee) => {
 
-                                    if (id != 'others') {
+                                        if (id != 'others') {
 
-                                        Vehicles.findBy(id).exec((err, result) => {
-                                            if (err) {
-                                                res.json({ message: err.message, type: 'danger' });
-                                            } else {
-        
-                                                let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
-                                                let nav = {
-                                                    title: "Accounts",
-                                                    child: "Vehicle",
-                                                    view: 2,
-                                                    notif: {
-                                                        exIstimara: foundExIstimara,
-                                                        expenPending: fexpenPending
-                                                    }
-                                                };
-        
-                                                res.render('create-voucher', {
-                                                    title: "Create Voucher",
-                                                    nav: nav,
-                                                    vouNo: vouNo,
-                                                    foundVehicles: foundVehicles,
-                                                    vehicleNo: result.vehicle_no
-        
-                                                });
-        
-        
-                                            }
-                                        })
-        
-                                    } else {
-        
-                                        let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
-                                        let nav = {
-                                            title: "Accounts",
-                                            child: "Vehicle",
-                                            view: 2,
-                                            notif: {
-                                                exIstimara: foundExIstimara,
-                                                expenPending: fexpenPending
-                                            }
-                                        };
-        
-                                        res.render('create-voucher', {
-                                            title: "Create Voucher",
-                                            nav: nav,
-                                            vouNo: vouNo,
-                                            foundVehicles: foundVehicles,
-                                            vehicleNo: 'others'
-        
-                                        });
-                                    }
-                            
-                                    }
-                                });
-                                }
-                            });
-                            
+                                            Vehicles.findById(id).exec((err, result) => {
+                                                if (err) {
+                                                    res.json({ message: err.message, type: 'danger' });
+                                                } else {
+
+                                                    let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
+
+
+
+                                                    let nav = {
+                                                        title: "Accounts",
+                                                        child: "Vehicle",
+                                                        view: 2,
+                                                        notif: {
+                                                            exIstimara: dataVehicle,
+                                                            expenPending: dataINV,
+                                                            exQID: dataEmployee
+                                                        }
+                                                    };
+
+                                                    res.render('create-voucher', {
+                                                        title: "Create Voucher",
+                                                        nav: nav,
+                                                        vouNo: vouNo,
+                                                        foundVehicles: foundVehicles,
+                                                        vehicleNo: result.vehicle_no
+
+                                                    })
+
+
+                                                }
+                                            })
+
+                                        } else {
+
+                                            let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
+                                            let nav = {
+                                                title: "Accounts",
+                                                child: "Vehicle",
+                                                view: 2,
+                                                notif: {
+                                                    exIstimara: dataVehicle,
+                                                    expenPending: dataINV,
+                                                    exQID: dataEmployee
+                                                }
+                                            };
+
+                                            res.render('create-voucher', {
+                                                title: "Create Voucher",
+                                                nav: nav,
+                                                vouNo: vouNo,
+                                                foundVehicles: foundVehicles,
+                                                vehicleNo: 'others'
+
+                                            });
+                                        }
+
+                                    })
+                                })
+                            })
+
                         }
                     });
                 }
@@ -345,7 +343,7 @@ module.exports = {
 
                                 req.session.message = {
                                     type: 'transac',
-                                    tType: 'voucher',
+                                    tType: 'voucherU',
                                     message: 'Voucher for vehicle no. ' + req.body.vehicleNo + ' has been successfully return. Voucher No: ' + req.body.vouNo + ' Total Amount: QAR ' + req.body.totalRent,
                                     transID: result._id
                                 };
@@ -370,7 +368,7 @@ module.exports = {
 
                                 req.session.message = {
                                     type: 'transac',
-                                    tType: 'voucher',
+                                    tType: 'voucherU',
                                     message: 'Voucher has been successfully updated. Voucher No: ' + result.voucher_no + ' Total Amount: QAR ' + result.total_rent,
                                     transID: result._id
                                 };
@@ -400,39 +398,30 @@ module.exports = {
                 if (err) {
                     res.json({ message: err.message });
                 } else {
-
-                    Invoice.find({ status: 2  }, (err, fexpenPending) => {
-                        if (err) {
-                            res.json({ message: err.message, type: 'danger' });
-                    
-                        } else {
-                          Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
-                            if (err) {
-                               return res.json({ message: err.message, type: 'danger' });
-                            } else {
+                    Notif.getINV((err, dataINV) => {
+                        Notif.getVehicle((err, dataVehicle) => {
+                            Notif.getEmployee((err, dataEmployee) => {
 
                                 let nav = {
                                     title: "Accounts",
                                     child: "Vehicle",
                                     view: 2,
                                     notif: {
-                                        exIstimara: foundExIstimara,
-                                                expenPending: fexpenPending
+                                        exIstimara: dataVehicle,
+                                        expenPending: dataINV,
+                                        exQID: dataEmployee
                                     }
                                 };
-            
+
                                 res.render('update-voucher', {
                                     title: "Update Voucher",
                                     VoucherFound: foundVoucher,
                                     nav: nav
                                 })
-                    
-                            }
+                            })
                         })
-                        }
                     })
 
-                   
                 }
             });
 
@@ -457,80 +446,75 @@ module.exports = {
                             res.json({ message: err.message, type: 'danger' })
                         } else {
 
-                            Invoice.find({ status: 2  }, (err, fexpenPending) => {
-                                if (err) {
-                                    res.json({ message: err.message, type: 'danger' });
-                            
-                                } else {
-                                  Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
-                                    if (err) {
-                                       return res.json({ message: err.message, type: 'danger' });
-                                    } else {
-        
+                            Notif.getINV((err, dataINV) => {
+                                Notif.getVehicle((err, dataVehicle) => {
+                                    Notif.getEmployee((err, dataEmployee) => {
 
-                                    if (id != 'others') {
+                                        if (id != 'others') {
 
-                                        Vehicles.findBy(id).exec((err, result) => {
-                                            if (err) {
-                                                res.json({ message: err.message, type: 'danger' });
-                                            } else {
-        
-                                                let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
-                                                let nav = {
-                                                    title: "Accounts",
-                                                    child: "Vehicle",
-                                                    view: 2,
-                                                    notif: {
-                                                        exIstimara: foundExIstimara,
-                                                        expenPending: fexpenPending
-                                                    }
-                                                };
-        
-                                                res.render('create-invoice', {
-                                                    title: "Create Invoice",
-                                                    nav: nav,
-                                                    vouNo: vouNo,
-                                                    foundVehicles: foundVehicles,
-                                                    vehicleNo: result.vehicle_no
-        
-                                                });
-        
-        
-                                            }
-                                        })
-        
-                                    } else {
-        
-                                        let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
-                                        let nav = {
-                                            title: "Accounts",
-                                            child: "Vehicle",
-                                            view: 2,
-                                            notif: {
-                                                exIstimara: foundExIstimara,
-                                                expenPending: fexpenPending
-                                            }
-                                        };
-        
-                                        res.render('create-invoice', {
-                                            title: "Create Invoice",
-                                            nav: nav,
-                                            vouNo: vouNo,
-                                            foundVehicles: foundVehicles,
-                                            vehicleNo: 'others'
-        
-                                        });
-                                    }
-                            
-                                    }
-                                });
-                                }
-                            });
+                                            Vehicles.findById(id).exec((err, result) => {
+                                                if (err) {
+                                                    res.json({ message: err.message, type: 'danger' });
+                                                } else {
+
+                                                    let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
+                                                    let nav = {
+                                                        title: "Accounts",
+                                                        child: "Vehicle",
+                                                        view: 2,
+                                                        notif: {
+                                                            exIstimara: dataVehicle,
+                                                            expenPending: dataINV,
+                                                            exQID: dataEmployee
+                                                        }
+                                                    };
+
+                                                    res.render('create-invoice', {
+                                                        title: "Create Invoice",
+                                                        nav: nav,
+                                                        vouNo: vouNo,
+                                                        foundVehicles: foundVehicles,
+                                                        vehicleNo: result.vehicle_no
+
+                                                    });
+
+
+                                                }
+                                            })
+
+                                        } else {
+
+                                            let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
+                                            let nav = {
+                                                title: "Accounts",
+                                                child: "Vehicle",
+                                                view: 2,
+                                                notif: {
+                                                    exIstimara: dataVehicle,
+                                                    expenPending: dataINV,
+                                                    exQID: dataEmployee
+                                                }
+                                            };
+
+                                            res.render('create-invoice', {
+                                                title: "Create Invoice",
+                                                nav: nav,
+                                                vouNo: vouNo,
+                                                foundVehicles: foundVehicles,
+                                                vehicleNo: 'others'
+
+                                            });
+                                        }
+
+                                    })
+                                })
+                            })
+
 
                         }
-                    });
+                    })
                 }
-            });
+            })
 
         } else {
             res.redirect("/sign-in");
@@ -697,41 +681,30 @@ module.exports = {
                 if (err) {
                     res.json({ message: err.message });
                 } else {
+                    Notif.getINV((err, dataINV) => {
+                        Notif.getVehicle((err, dataVehicle) => {
+                            Notif.getEmployee((err, dataEmployee) => {
 
-                    Invoice.find({ status: 2  }, (err, fexpenPending) => {
-                        if (err) {
-                            res.json({ message: err.message, type: 'danger' });
-                    
-                        } else {
-                          Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
-                            if (err) {
-                               return res.json({ message: err.message, type: 'danger' });
-                            } else {
-
-                              
-                             
                                 let nav = {
                                     title: "Accounts",
                                     child: "Vehicle",
                                     view: 2,
                                     notif: {
-                                        exIstimara: foundExIstimara,
-                                        expenPending: fexpenPending
+                                        exIstimara: dataVehicle,
+                                        expenPending: dataINV,
+                                        exQID: dataEmployee
                                     }
                                 };
-            
+
                                 res.render('update-invoice', {
                                     title: "Update Voucher",
                                     foundInv: foundInv,
                                     nav: nav
                                 })
-                    
-                            }
-                        });
-                        }
-                    });
+                            })
+                        })
+                    })
 
-                  
                 }
             });
 

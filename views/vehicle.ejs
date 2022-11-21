@@ -11,7 +11,7 @@
               Accounts
             </div>
             <h2 class="page-title">
-              Vehicle List
+              Vehicles
             </h2>
           </div>
           <!-- Page title actions -->
@@ -121,9 +121,10 @@
                                 <%=vehicle.registered_owner%>
                               </div>
 
-                              <div class="details-header"> Registered Date </div>
-                              <div>
-                                <%=vehicle.registered_date%>
+
+                              <div class="details-header"> Istimara Expiry Date <%- (new Date() >= vehicle.istimara_exdate) && '<span class="badge bg-red-lt">Expired</span>' %> </div>
+                              <div class="<%- (new Date() >= vehicle.istimara_exdate) && 'text-red' %>">
+                                <%=((vehicle.istimara_exdate).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' , month: 'long' })) %>
                               </div>
                             </td>
                             <td>
@@ -245,9 +246,10 @@
                                       </div>
                                       <div class="col-lg-6">
                                         <div class="mb-1">
-                                          <label class="form-label">Istimara Expiration Date </label>
+                                         
+                                          <label class="form-label">Istimara Expiration Date <%- (new Date() >= vehicle.istimara_exdate) && '<span class="badge bg-red-lt fs-h6">Expired</span>' %> </label> 
                                           <div class="input-icon mb-2">
-                                            <input type="date" name="exDate" class="form-control "
+                                            <input type="date" name="exDate" class="form-control  <%- (new Date() >= vehicle.istimara_exdate) && 'is-invalid' %>"
                                               placeholder="Select istimara expiration date"
                                               value="<%= (vehicle.istimara_exdate).toISOString().slice(0, 10) %>" required />
                                           </div>
@@ -267,6 +269,7 @@
                                                 <i class="ti ti-download icon"></i> 
                                                 Insurance
                                               </a>
+                                              
                                             </div>
                                           </div>
                                       
@@ -390,15 +393,6 @@
                               Cancel
                             </a>
                             <button type="submit" class="btn btn-primary ms-auto">
-                              <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy"
-                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
-                                <circle cx="12" cy="14" r="2"></circle>
-                                <polyline points="14 4 14 8 8 8 8 4"></polyline>
-                              </svg>
                               Save
                             </button>
                           </div>

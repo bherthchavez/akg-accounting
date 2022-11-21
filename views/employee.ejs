@@ -1,0 +1,483 @@
+<%- include('layout/header') %>
+
+  <div class="page-wrapper">
+    <div class="container-xl">
+      <!-- Page title -->
+      <div class="page-header d-print-none">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+            <!-- Page pre-title -->
+            <div class="page-pretitle">
+              Accounts
+            </div>
+            <h2 class="page-title">
+              Employees
+            </h2>
+          </div>
+          <!-- Page title actions -->
+          <div class="col-12 col-md-auto ms-auto d-print-none">
+            <div class="btn-list">
+
+              <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                data-bs-target="#modal-employeeAccount">
+                <i class="ti ti-plus fs-h3 fw-light me-2"> </i>
+                Add Employee
+              </a>
+              <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
+                data-bs-target="#modal-employeeAccount" aria-label="Create new bank account">
+                <i class="ti ti-plus fs-h4 fw-light"> </i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="container-xl">
+        <div class="row row-deck row-cards">
+
+
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header hd-right">
+                <div class="row row-cards">
+                  <div class="d-flex">
+                    <h3>Manage Employees</h3>
+                    <div class="ms-auto text-muted">
+                      <div class="input-icon">
+                        <span class="input-icon-addon">
+                          <i class="ti ti-search"></i>
+                        </span>
+                        <input type="text" id="searchSA" class="form-control" placeholder="Search…"
+                          aria-label="Search in website">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class=" card-table table-responsive">
+                <div class="table-responsive" style="max-height: 45rem">
+                  <% if (employeeList !='' ) { %>
+                    <table class="table card-table table-vcenter text-nowrap datatable">
+                      <thead>
+                        <tr>
+                          <th class="w-1">Action</th>
+                          <th>Name</th>
+                          <th>QID Details</th>
+                          <th>Salary</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="suppAcc">
+                        <% employeeList.forEach(function(employee){ %>
+                          <tr>
+                            <td>
+                              <div class="col-auto">
+                                <div class="dropdown">
+                                  <a class="btn btn-action" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="ti ti-dots-vertical fs-h3"></i>
+                                  </a>
+                                  <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" data-bs-toggle="modal"
+                                      data-bs-target="#modal-employeeUp<%=employee._id%>">Edit / View</a>
+                                    <a class="dropdown-item text-danger" data-bs-toggle="modal"
+                                      data-bs-target="#modal-deleteEmployee<%=employee._id%>">Delete</a>
+
+                                  </div>
+
+                                </div>
+                              </div>
+
+                            </td>
+                            <td>
+                              <div class="row">
+                                <div class="col-auto">
+                                  <a href="#" data-bs-toggle="modal"
+                                  data-bs-target="#modal-employeeUp<%=employee._id%>">
+                                    <span class="avatar avatar-md"
+                                      style="background-image: url(../static/avatars/user-avatar.png)"></span>
+                                  </a>
+                                </div>
+                                <div class="col text-truncate mt-2">
+                                  <a href="#" data-bs-toggle="modal"
+                                  data-bs-target="#modal-employeeUp<%=employee._id%>" class="text-body d-block fs-h3 fw-bold text-black">
+                                    <%=employee.fname%>
+                                      <%=employee.mname%>
+                                        <%=employee.lname%>
+                                  </a>
+                                  <div class="text-muted text-truncate mt-n1 ">
+                                    <%=employee.email%>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="details-header"> QID</div>
+                              <div >
+                                <%=employee.qid%>
+                              </div>
+
+                              <div class="details-header"> Expiry Date <%- (new Date() >= employee.ex_qid) && '<span class="badge bg-red-lt">Expired</span>' %> </div>
+                              <div class="<%- (new Date() >= employee.ex_qid) && 'text-red' %>">
+                                <%=((employee.ex_qid).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' ,
+                                  month: 'long' })) %>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="currency-formated">QAR</div>
+                              <div class="number-formated-tbl text-warning">
+                                <%= (employee.salary).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' )%>
+                              </div>
+                            </td>
+                            <td>
+                              <span class="status fs-h4 <%-(employee.status === 1)  ? 'status-green' : 'status-red'%>">
+                                <% if (employee.status===1){%>
+                                  Active
+                                  <%}else{%>
+                                    Inactive
+                                    <%}%>
+                              </span>
+                            </td>
+                          </tr>
+
+                          <!-- Delete employee -->
+                          <div class="modal modal-blur fade" id="modal-deleteEmployee<%=employee._id%>" tabindex="-1"
+                            role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                  aria-label="Close"></button>
+                                <div class="modal-status bg-danger"></div>
+                                <div class="modal-body text-center py-4">
+                                  <i class="ti ti-alert-triangle fs--h1 text-danger"></i>
+                                  <h3>
+                                    <%=employee.fname%>
+                                      <%=employee.lname%>
+                                  </h3>
+                                  <div class="text-muted">Do you really want to delete this employee?</div>
+                                </div>
+                                <div class="modal-footer">
+                                  <div class="w-100">
+                                    <div class="row">
+                                      <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                          Cancel
+                                        </a></div>
+                                      <div class="col">
+                                        <a href="/delete/employee/<%=employee._id%>"
+                                          class="btn btn-danger w-100">Yes</a>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Update employee -->
+                          <div class="modal modal-blur fade" id="modal-employeeUp<%=employee._id%>" tabindex="-1"
+                            role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg role=" document">
+                              <div class="modal-content">
+                                <form action="/update/employee/<%=employee._id%>" method="post"
+                                  enctype="multipart/form-data">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title">Update Employee</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                      aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <div class="row">
+                                      <div class="col-lg-6">
+                                        <div class="mb-3">
+                                          <label class="form-label">First Name</label>
+                                          <div class="input-group input-group-flat">
+                                            <input type="text" name="fName" class="form-control"
+                                              value="<%=employee.fname%>" required />
+                                          </div>
+                                        </div>
+                                        <div class="mb-3">
+                                          <label class="form-label">Middle Name</label>
+                                          <input type="text" name="mName" class="form-control"
+                                            value="<%=employee.mname%>" required />
+                                        </div>
+                                        <div class="mb-3">
+                                          <label class="form-label">Last Name</label>
+                                          <input type="text" name="lName" class="form-control"
+                                            value="<%=employee.lname%>" required />
+                                        </div>
+                                      </div>
+                                      <div class="col-lg-6">
+                                        <div class="mb-3">
+                                          <label class="form-label">Gender</label>
+                                          <select class="form-select" name="gender" id="floatingSelect"
+                                            aria-label="Floating label select example" required>
+                                            <option value="Male" <%=employee.gender==='Male' ? 'selected' : '' %>>Male
+                                            </option>
+                                            <option value="Female" <%=employee.gender==='Female' ? 'selected' : '' %>
+                                              >Female</option>
+                                          </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                          <label class="form-label">Email</label>
+                                          <input type="email" name="email" class="form-control"
+                                            value="<%=employee.email%>" required />
+                                        </div>
+
+                                        <div class="mb-3">
+                                          <label class="form-label">Contact Number</label>
+                                          <input type="text" name="cNo" class="form-control"
+                                            value="<%=employee.contact_no%>" required />
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                    <div class="row">
+                                      <label class="form-label">Address</label>
+                                      <textarea class="form-control" name="address"
+                                        rows="2"><%=employee.address%></textarea>
+                                    </div>
+                                  </div>
+                                  <div class="modal-body">
+                                    <div class="row">
+                                      <div class="col-lg-6">
+                                        <div class="mb-3">
+                                          <div class="row">
+                                            <div class="col">
+                                              <label class="form-label">QID No.</label>
+                                            </div>
+                                            <div class="col">
+                                              <a href="/download/qid/<%=employee.qid_file%>"
+                                                class="btn btn-icon btn-sm btn-primary  fs-h5 w-100 fw-normal"
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-custom-class="custom-tooltip" data-bs-title="Download QID">
+                                                <i class="ti ti-download pe-2"></i>
+                                                Download QID
+                                              </a>
+                                            </div>
+                                          </div>
+
+
+                                          <!-- <label class="form-label">QID No.</label> -->
+                                          <input type="text" name="qid" class="form-control" value="<%=employee.qid%>"
+                                            required />
+                                        </div>
+
+                                        <div class="mb-3">
+                                          <label class="form-label">QID Expiry Date <%- (new Date() >= employee.ex_qid) && '<span class="badge bg-red-lt fs-h6">Expired</span>' %></label>
+                                          <input type="date" name="exQID" class="form-control <%- (new Date() >= employee.ex_qid) && 'is-invalid' %>"
+                                            value="<%=(employee.ex_qid).toISOString().slice(0, 10)%>" required />
+                                        </div>
+
+                                        <div class="mb-3">
+                                          <label class="form-label">Upload QID to replace</label>
+                                          <input type="file" name="qidFile" class="form-control"
+                                            accept="image/*,.pdf" />
+                                        </div>
+                                      </div>
+
+                                      <div class="col-lg-6">
+                                        <div class="mb-3">
+                                          <label class="form-label">Bank Name</label>
+                                          <input type="text" name="bankName" class="form-control"
+                                            value="<%=employee.bank_name%>" required />
+                                        </div>
+                                        <div class="mb-3">
+                                          <label class="form-label">IBAN</label>
+                                          <input type="text" name="iban" class="form-control" value="<%=employee.iban%>"
+                                            required />
+                                        </div>
+                                        <div class="mb-3">
+                                          <label class="form-label">Salary</label>
+                                          <div class="input-group mb-2">
+                                            <span class="input-group-text fs-h5">
+                                              QAR
+                                            </span>
+                                            <input type="text" class="form-control text-danger" name="salary"
+                                              value="<%=employee.salary%>" required>
+                                          </div>
+                                        </div>
+
+                                      </div>
+
+                                    </div>
+                                  </div>
+
+
+                                  <div class="modal-footer">
+                                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                                      Cancel
+                                    </a>
+                                    <button type="submit" class="btn btn-secondary ms-auto">
+                                      Save
+                                    </button>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+
+
+                          <% }) %>
+                      </tbody>
+                    </table>
+                    <% } else { %>
+                      <div class="text-center  my-5">
+                        <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
+                        <h1 class="text-secondary">Ohh!</h1>
+                        <p class="text-secondary"> No vehicles found in the database!</p>
+                      </div>
+                      <% } %>
+                </div>
+                <div class="card-footer d-flex align-items-center">
+                  <!-- Create Vehicle  -->
+                  <div class="modal modal-blur fade" id="modal-employeeAccount" tabindex="-1" role="dialog"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg role=" document">
+                      <div class="modal-content">
+                        <form action="/add/employee" method="post" enctype="multipart/form-data">
+                          <div class="modal-header">
+                            <h5 class="modal-title">New Employee</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="row">
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">First Name</label>
+                                  <div class="input-group input-group-flat">
+                                    <input type="text" name="fName" class="form-control" required />
+                                  </div>
+                                </div>
+                                <div class="mb-3">
+                                  <label class="form-label">Middle Name</label>
+                                  <input type="text" name="mName" class="form-control" required />
+                                </div>
+                                <div class="mb-3">
+                                  <label class="form-label">Last Name</label>
+                                  <input type="text" name="lName" class="form-control" required />
+                                </div>
+                              </div>
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Gender</label>
+                                  <select class="form-select" name="gender" id="floatingSelect"
+                                    aria-label="Floating label select example" required>
+                                    <option>--</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                  </select>
+                                </div>
+
+                                <div class="mb-3">
+                                  <label class="form-label">Email</label>
+                                  <input type="email" name="email" class="form-control" required />
+                                </div>
+
+                                <div class="mb-3">
+                                  <label class="form-label">Contact Number</label>
+                                  <input type="text" name="cNo" class="form-control" required />
+                                </div>
+                              </div>
+
+                            </div>
+                            <div class="row">
+                              <label class="form-label">Address</label>
+                              <textarea class="form-control" name="address" rows="2"></textarea>
+                            </div>
+                          </div>
+                          <div class="modal-body">
+                            <div class="row">
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">QID No.</label>
+                                  <input type="text" name="qid" class="form-control" required />
+                                </div>
+
+                                <div class="mb-3">
+                                  <label class="form-label">QID Expiry Date</label>
+                                  <div class="input-icon mb-2">
+                                    <input name="exQID" class="form-control " placeholder="Select qid expiration date"
+                                      id="datepicker-qid" required />
+                                    <span class="input-icon-addon">
+                                      <i class="ti ti-calendar"></i>
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div class="mb-3">
+                                  <label class="form-label">Upload QID</label>
+                                  <input type="file" name="qidFile" class="form-control" accept="image/*,.pdf"
+                                    required />
+                                </div>
+                              </div>
+
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Bank Name</label>
+                                  <input type="text" name="bankName" class="form-control" required />
+                                </div>
+                                <div class="mb-3">
+                                  <label class="form-label">IBAN</label>
+                                  <input type="text" name="iban" class="form-control" required />
+                                </div>
+                                <div class="mb-3">
+                                  <label class="form-label">Salary</label>
+                                  <div class="input-group mb-2">
+                                    <span class="input-group-text fs-h5">
+                                      QAR
+                                    </span>
+                                    <input type="text" class="form-control text-danger" name="salary" placeholder="0.00"
+                                      required>
+                                  </div>
+                                </div>
+
+                              </div>
+
+                            </div>
+                          </div>
+
+
+                          <div class="modal-footer">
+                            <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                              Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary ms-auto">
+                              Save
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <script>
+      $(document).ready(function () {
+        $("#searchSA").on("keyup", function () {
+          var value = $(this).val().toLowerCase();
+          $("#suppAcc tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+      });
+    </script>
+
+
+    <%- include('layout/modals') %>
+      <%- include('layout/footer') %>

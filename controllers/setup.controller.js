@@ -4,6 +4,8 @@ const User = require('../models/User');
 const Invoice = require('../models/Invoice');
 const Vehicles = require('../models/Vehicles');
 const passport = require("passport");
+const Notif = require('../middleware/notif.middleware');
+
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -25,38 +27,31 @@ module.exports = {
           res.json({ message: err.message });
         } else {
 
-          Invoice.find({ status: 2 }, (err, fexpenPending) => {
-            if (err) {
-              res.json({ message: err.message, type: 'danger' });
+          Notif.getINV((err, dataINV) => {
+            Notif.getVehicle((err, dataVehicle) => {
+              Notif.getEmployee((err, dataEmployee) => {
 
-            } else {
-              Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
-                if (err) {
-                  return res.json({ message: err.message, type: 'danger' });
-                } else {
-
-                  let nav = {
-                    title: "Setup",
-                    view: 1,
-                    notif: {
-                      exIstimara: foundExIstimara,
-                      expenPending: fexpenPending
-                    }
-                  };
-                  res.render('company', {
-                    title: "Company Setup",
-                    nav: nav,
-                    companyList: foundList
-                  })
-
-                }
-              });
-            }
-          });
+                let nav = {
+                  title: "Setup",
+                  view: 1,
+                  notif: {
+                    exIstimara: dataVehicle,
+                    expenPending: dataINV,
+                    exQID: dataEmployee
+                  }
+                };
+                res.render('company', {
+                  title: "Company Setup",
+                  nav: nav,
+                  companyList: foundList
+                })
+              })
+            })
+          })
 
 
         }
-      });
+      })
 
 
 
@@ -186,36 +181,28 @@ module.exports = {
               res.json({ message: err.message });
             } else {
 
-              Invoice.find({ status: 2 }, (err, fexpenPending) => {
-                if (err) {
-                  res.json({ message: err.message, type: 'danger' });
+              Notif.getINV((err, dataINV) => {
+                Notif.getVehicle((err, dataVehicle) => {
+                  Notif.getEmployee((err, dataEmployee) => {
 
-                } else {
-                  Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 1)) } }, (err, foundExIstimara) => {
-                    if (err) {
-                      return res.json({ message: err.message, type: 'danger' });
-                    } else {
-
-                      let nav = {
-                        title: "User",
-                        view: 1,
-                        notif: {
-                          exIstimara: foundExIstimara,
-                          expenPending: fexpenPending
-                        }
-                      };
-                      res.render('user', {
-                        title: "User Setup",
-                        nav: nav,
-                        userList: foundList,
-                        foundCompany: foundCompany
-                      })
-
-                    }
-                  });
-                }
-              });
-
+                    let nav = {
+                      title: "User",
+                      view: 1,
+                      notif: {
+                        exIstimara: dataVehicle,
+                        expenPending: dataINV,
+                        exQID: dataEmployee
+                      }
+                    };
+                    res.render('user', {
+                      title: "User Setup",
+                      nav: nav,
+                      userList: foundList,
+                      foundCompany: foundCompany
+                    })
+                  })
+                })
+              })
 
             }
           });
