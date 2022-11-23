@@ -289,7 +289,7 @@
                 <% } else { %>
                   <div class="text-center  my-5">
                     <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
-                    <h3 class="text-secondary"> No bill created!</h3>
+                    <h3 class="text-secondary"> No employee found in the database!</h3>
                   </div>
                   <% } %>
             </div>
@@ -440,7 +440,6 @@
                               data-bs-title="View Invoice">
                               <%=item.inv_no%>
                             </a>
-
                           </td>
                           <td>
                             <% if(item.payee.length > 15) {%>
@@ -465,11 +464,13 @@
                           </td>
                           <td>
                             <span
-                              class="status fs-h5 <%-(item.status) === 1 && 'status-green'%> <%-(item.status) === 2 && 'status-red' %> ">
+                              class="status fs-h5 <%-(item.status) === 1 && 'status-green'%> <%-(item.status) === 2 && 'status-warning' %>  <%-(item.status) === 3 && 'status-red' %> ">
                               <% if (item.status===1){%>
                                 Approved
-                                <%}else{%>
+                                <% }else if (item.status===2){%>
                                   Pending
+                                <%}else{%>
+                                  Rejected
                                   <%}%>
                             </span>
                           </td>

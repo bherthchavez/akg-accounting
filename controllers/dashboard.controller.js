@@ -1,4 +1,4 @@
-let PaymentVoucher = require('../models/PaymentVoucher');
+
 const CostCenter = require('../models/CostCenter');
 const Company = require('../models/Company');
 const Voucher = require('../models/Voucher');

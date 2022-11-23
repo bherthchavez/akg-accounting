@@ -746,6 +746,7 @@ module.exports = {
                             month: req.body.forMonth,
                             remarks: req.body.remarks,
                             amount: amount,
+                            updated_by: req.user.name
 
                         }, (err, result) => {
                             if (err) {
@@ -783,6 +784,7 @@ module.exports = {
                             month: req.body.forMonth,
                             remarks: req.body.remarks,
                             amount: amount,
+                            updated_by: req.user.name
 
                         }, (err, result) => {
                             if (err) {
@@ -815,6 +817,101 @@ module.exports = {
             res.redirect("/sign-in");
         }
     },
+
+    viewPendingINV: async (req, res) => {
+        if (req.isAuthenticated()) {
+
+            if (req.user.role === 1) {
+
+                Invoice.find({ status: 2 }, (err, resultINV) => {
+                    if (err || !resultINV) {
+
+                        req.session.message = {
+                            type: 'danger',
+                            message: "Pending expenses cannot view. Error: " + err,
+                        };
+                        res.redirect("/");
+
+                    } else {
+
+                        Notif.getINV((err, dataINV) => {
+                            Notif.getVehicle((err, dataVehicle) => {
+                                Notif.getEmployee((err, dataEmployee) => {
+
+                                    let nav = {
+                                        title: "Notifications",
+                                        child: "Pending Expenses",
+                                        view: 2,
+                                        notif: {
+                                            exIstimara: dataVehicle,
+                                            expenPending: dataINV,
+                                            exQID: dataEmployee
+                                        }
+                                    };
+
+                                    res.render('pending-expenses', {
+                                        title: "Expenses Approval List",
+                                        nav: nav,
+                                        pendingINV: resultINV
+
+                                    })
+                                })
+                            })
+                        })
+
+                    }
+                })
+            }else{
+                res.redirect("/");
+            }
+
+           
+
+        } else {
+            res.redirect("/sign-in");
+        }
+    },
+
+    saveApprovalInv: async (req, res) => {
+        if (req.isAuthenticated()) {
+
+            let id = req.params.id;
+
+            if (req.user.role === 1) {
+                Invoice.findByIdAndUpdate(id, {
+                    status: + req.body.ans,
+                    approval_rsn: req.body.reason_approval,
+                    updated_by: req.user.name
+
+                }, (err, result) => {
+                    if (err) {
+                        req.session.message = {
+                            type: 'danger',
+                            message: "Transaction cannot save. Error: " + err,
+                        };
+                        console.log(err)
+                        res.redirect("/");
+                    } else {
+
+                        req.session.message = {
+                            type: (parseInt(req.body.ans) === 1) ? 'success' : 'warning',
+                            message: (parseInt(req.body.ans) === 1) ? `Invoice ${result.inv_no} approved!` : `Invoice ${result.inv_no} rejected!`
+                        };
+
+                        res.redirect("/pending-expenses");
+
+                    }
+                });
+            }else{
+                res.redirect("/");
+            }
+
+
+        } else {
+            res.redirect("/sign-in");
+        }
+    },
+
 
 
 }

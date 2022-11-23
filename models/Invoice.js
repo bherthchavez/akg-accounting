@@ -63,9 +63,15 @@ const invoiceSchema = new mongoose.Schema(
             type: Number,
             required: true
         },
+        approval_rsn: {
+            type: String
+        },
         created_by: {
             type: String,
             required: true
+        },
+        updated_by: {
+            type: String
         },
         company_id: {
             type: String,

@@ -122,7 +122,7 @@
                               </div>
 
 
-                              <div class="details-header"> Istimara Expiry Date <%- (new Date() >= vehicle.istimara_exdate) && '<span class="badge bg-red-lt">Expired</span>' %> </div>
+                              <div class="details-header"> Istimara Expiry Date <%- (new Date() >= vehicle.istimara_exdate) ? '<span class="badge bg-red-lt">Expired</span>' :'' %> </div>
                               <div class="<%- (new Date() >= vehicle.istimara_exdate) && 'text-red' %>">
                                 <%=((vehicle.istimara_exdate).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' , month: 'long' })) %>
                               </div>
@@ -247,7 +247,7 @@
                                       <div class="col-lg-6">
                                         <div class="mb-1">
                                          
-                                          <label class="form-label">Istimara Expiration Date <%- (new Date() >= vehicle.istimara_exdate) && '<span class="badge bg-red-lt fs-h6">Expired</span>' %> </label> 
+                                          <label class="form-label">Istimara Expiration Date <%- (new Date() >= vehicle.istimara_exdate) ? '<span class="badge bg-red-lt fs-h6">Expired</span>' : '' %> </label> 
                                           <div class="input-icon mb-2">
                                             <input type="date" name="exDate" class="form-control  <%- (new Date() >= vehicle.istimara_exdate) && 'is-invalid' %>"
                                               placeholder="Select istimara expiration date"

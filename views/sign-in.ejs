@@ -2,6 +2,7 @@
 
 <html lang="en">
   <head>
+    <link rel="icon" href="../static/favicon.ico" />
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
@@ -20,59 +21,49 @@
       }
     </style>
   </head>
-  <body  class=" border-top-wide border-primary d-flex flex-column">
+  <body  class=" d-flex flex-column bg-white">
     <script src="../dist/js/demo-theme.min.js"></script>
-    <div class="page page-center">
-      <div class="container container-normal py-4">
-        <div class="row align-items-center g-4">
-          <div class="col-lg">
-            <div class="container-tight">
-              <div class="text-center mb-4">
-                <img src="../static/illustrations/EL.png" height="200" class="d-block mx-auto my-3" alt="">
-                <h3 class="fw-bolder text-muted">AL KATHIRI GROUPS</h3>
-               
-                <!-- <div class="h2 fw-bolder"> مجـــــمـــــوعـــــة الــــــنــــــائــــــل الــــــقــــــابــــــضـــــة ذ.م.م</div> 
-                <div class="h1 fw-bolder">EL NAAEL GROUP HOLDING CO. W.L.L</div>  -->
+   
 
-              </div>
-              <div class="card card-md">
-                <form action="/sign-in" method="post">
-                  <div class="card-body">
-                    <div class="h3 text-center mb-4">Login to your account</div>
-                 
-                    <!-- <h2 class="card-title text-center mb-3 text-muted">Login to your account</h2> -->
-                  
-                    <% if (message) { %>
-                      <div class="alert alert-<%= message.type %> alert-dismissible" role="alert">
-                        <div class="d-flex">
-                          <div>
-                            <h4 class="alert-title"><%= message.message %></h4>
-                          </div>
-                        </div>
-                        <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                      </div>
-                    <% } %>
-                    <div class="form-floating mb-3">
-                      <input type="text"  name="username" class="form-control" id="floating-input" required autofocus>
-                      <label for="floating-input">User Name</label>
-                    </div>
-                    <div class="form-floating ">
-                      <input type="password" name="password" class="form-control" id="floating-password" required autocomplete="off">
-                      <label for="floating-password">Password</label>
-                    </div>
-                    <div class="form-footer">
-                      <button type="submit" class="btn btn-primary w-100 signIn">Sign in</button>
-                    </div>
+    <div class="row g-0 flex-fill">
+      <div class="col-12 col-lg-6 col-xl-6 border-top-wide border-primary d-flex flex-column justify-content-center">
+        <div class="container container-tight my-5 px-lg-5">
+          <div class="text-center mb-4">
+            <img src="../static/illustrations/EL.png" height="180" class="d-block mx-auto my-3" alt="">
+            <h4 class="fw-bolder text-muted text-primary">AL KATHIRI GROUPS</h4>          
+          </div>
+          <h2 class="h2 text-center mb-3">
+            Login to your account
+          </h2>
+          <form  action="/sign-in" method="post">
+            <% if (message) { %>
+              <div class="alert alert-<%= message.type %> alert-dismissible" role="alert">
+                <div class="d-flex">
+                  <div>
+                    <h4 class="alert-title"><%= message.message %></h4>
                   </div>
-                </form>
-              
+                </div>
+                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+              </div>
+            <% } %>
+            <div class="form-floating mb-3">
+              <input type="text"  name="username" class="form-control" id="floating-input" required autofocus>
+              <label for="floating-input">User Name</label>
+            </div>
+            <div class="mb-2">
+              <div class="form-floating ">
+                <input type="password" name="password" class="form-control" id="floating-password" required autocomplete="off">
+                <label for="floating-password">Password</label>
               </div>
             </div>
+            <div class="form-footer">
+              <button type="submit" class="btn btn-primary btn-lg w-100 signIn fs-h3 text-white" style="background-color: #bb9446">Sign in</button>
+            </div>
+          </form>
         </div>
-          <div class="col-lg d-none d-lg-block">
-            <img src="../static/illustrations/Admin-Control-Panel.svg" height="500" class="d-block mx-auto" alt="">
-          </div>
-        </div>
+      </div>
+      <div class="col-12 col-lg-6 col-xl-6 d-none d-lg-block">
+        <div class="bg-cover h-100 min-vh-100" style="background-image: url(./static/illustrations/bg-login.jpg)"></div>
       </div>
     </div>
 

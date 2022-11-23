@@ -10,6 +10,7 @@
 <html lang="en">
 
 <head>
+  <link rel="icon" href="../static/favicon.ico" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -86,7 +87,7 @@
                   
                   <%if (nav.notif.expenPending.length && user.role === 1) {%>
                     <span class="badge badge-pill bg-red"><%= nav.notif.expenPending.length + nav.notif.exIstimara.length + nav.notif.exQID.length %></span>
-                  <%}else if(nav.notif.exIstimara.length) {%>
+                  <%}else if(nav.notif.exIstimara.length || nav.notif.exQID.length) {%>
                     <span class="badge badge-pill bg-red"><%= nav.notif.exIstimara.length + nav.notif.exQID.length %></span>
                     <!-- <span class="badge badge-pill bg-red">6</span> -->
                     <%}%>
@@ -105,7 +106,7 @@
                           <div class="col-auto"><span class="status-dot status-dot-animated bg-orange d-block"></span>
                           </div>
                           <div class="col text-truncate">
-                            <a href="#" class="text-body d-block fw-bold">Expenses For Approvals </a>
+                            <a href="/pending-expenses" class="text-body d-block fw-bold">Expenses For Approvals </a>
                             <div class="d-block text-muted text-truncate mt-n1 fs-h5">
                               Created by: <strong><%=notif.created_by%>,</strong>  Amount:  <strong><%= (notif.amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></strong> QAR
                             </div>

@@ -166,11 +166,22 @@ module.exports = {
   },
 
   devRegister: async (req, res) => {
-    res.render('register')
+
+    res.render('auth-lock')
+
+  },
+  devRegisterUnlock: async (req, res) => {
+   
+
+        (req.body.password === 'himaChan') ? res.render('register') : res.redirect('/');
+     
+
+   
 
   },
   userSetup: async (req, res) => {
     if (req.isAuthenticated()) {
+
       User.find().exec((err, foundList) => {
         if (err) {
           res.json({ message: err.message });
@@ -205,9 +216,9 @@ module.exports = {
               })
 
             }
-          });
+          })
         }
-      });
+      })
 
 
 
@@ -218,6 +229,7 @@ module.exports = {
   },
 
   addUserDev: async (req, res) => {
+
     const name = req.body.name
     const username = req.body.username
     const email = req.body.email
@@ -252,6 +264,8 @@ module.exports = {
       }
 
     });
+
+
   },
 
   addUser: async (req, res) => {

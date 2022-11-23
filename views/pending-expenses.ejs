@@ -1,0 +1,245 @@
+<%- include('layout/header') %>
+
+  <div class="page-wrapper">
+    
+    <div class="page-body">
+      <div class="container-xl">
+        <div class="row row-deck row-cards">
+
+
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header hd-right">
+                <div class="row row-cards">
+                  <div class="d-flex">
+                    <h3> Expenses Approval List</h3>
+                    <div class="ms-auto text-muted">
+                      <div class="input-icon">
+                        <span class="input-icon-addon">
+                          <i class="ti ti-search"></i>
+                        </span>
+                        <input type="text" id="searchSA" class="form-control" placeholder="Search…"
+                          aria-label="Search in website">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class=" card-table table-responsive">
+                <div class="table-responsive" style="max-height: 45rem">
+                  <% if (pendingINV !='' ) { %>
+                    <table class="table card-table table-vcenter text-nowrap datatable">
+                      <thead>
+                        <tr>
+                          <th>Invoice No</th>
+                          <th>Payee</th>
+                          <th>Date</th>
+                          <th>Amount</th>
+                          <th>Created By</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody id="suppAcc">
+                        <% pendingINV.forEach(function(inv){ %>
+                          <tr>
+                            <td>
+                              <span data-bs-toggle="modal"data-bs-target="#modal-viewInvoice<%= inv._id %>">
+                              <a href="#" class="btn btn-outline-secondary w-70 btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip"
+                                data-bs-title="View More Details">
+                                <%=inv.inv_no%>
+                              </a>
+                            </span>
+                            </td>
+                            <td>
+                              <%=inv.payee%>
+                            </td>
+                            <td>
+                              <%=(new Date(inv.date).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' ,
+                              month: 'long' })) %>
+                            </td>
+                            <td class="text-nowrap text-muted fs-h5">
+                              QAR
+                              <div class="text-warning d-md-inline-flex fs-h3 ms-1">
+                                <%= (inv.amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' )%>
+                              </div>
+                            </td>
+                            <td>
+                              <%=inv.created_by%>
+                            </td>
+                            <td class="text-end">
+                              <a href="#" class="btn btn-pill btn-outline-success btn-sm" data-bs-toggle="modal"data-bs-target="#modal-approveINV<%=inv._id%>">
+                                <i class="ti ti-check icon fs-h4"></i> Approval
+                              </a>
+                              <a href="#" class="btn btn-pill btn-outline-warning btn-sm" data-bs-toggle="modal"data-bs-target="#modal-rejectINV<%=inv._id%>">
+                                <i class="ti ti-x icon fs-h4"></i>   Reject
+                              </a>
+                            </td>
+                          </tr>
+
+                          <!-- Approved  -->
+                          <div class="modal modal-blur fade" id="modal-approveINV<%=inv._id%>" tabindex="-1"
+                            role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                  aria-label="Close"></button>
+                                <div class="modal-status bg-success"></div>
+                                <div class="modal-body text-center py-4">
+                                  <!-- <i class="ti ti-alert-triangle fs--h1 text-danger"></i> -->
+                                  <h3>
+                                    <%=inv.inv_no%>
+                                  </h3>
+                                  <div class="text-muted"> Are you sure you want to approve this expenses request?</div>
+                                </div>
+                                <div class="modal-footer">
+                                  <div class="w-100">
+                                    <div class="row">
+                                      <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                          Cancel
+                                        </a></div>
+                                      <div class="col">
+                                        <form action="/approval-inv/<%=inv._id%>" method="post">
+                                          <button type="submit" name="ans" value="1"   class="btn btn-success w-100">Yes</button>
+                                        </form>
+                                       
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Reject -->
+                          <div class="modal modal-blur fade" id="modal-rejectINV<%=inv._id%>" tabindex="-1"
+                            role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <form action="/approval-inv/<%=inv._id%>" method="post">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                  aria-label="Close"></button>
+                                <div class="modal-status bg-warning"></div>
+                                <div class="modal-body text-center py-4">
+                                  <!-- <i class="ti ti-alert-triangle fs--h1 text-danger"></i> -->
+                                  <h3>
+                                    <%=inv.inv_no%>
+                                  </h3>
+                                  <div class="text-muted"> Are you sure you want to reject this expenses request?</div>
+                                  <div class="mt-2">
+                                    <textarea class="form-control" name="reason_approval"  rows="5" placeholder="Why you are rejecting.." autofocus></textarea>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <div class="w-100">
+                                    <div class="row">
+                                      <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                          Cancel
+                                        </a></div>
+                                      <div class="col">
+                                      
+                                          <button type="submit" name="ans" value="3" class="btn btn-warning w-100">Submit</button>
+                                       
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                              </div>
+                            </div>
+                          </div>
+
+                           <!-- View More Details -->
+                          <div class="modal modal-blur fade" id="modal-viewInvoice<%= inv._id%>" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-body">
+                                      <div class="card-header">
+                                        <dt class="col-5">Invoice No:</dt>
+                                        <dd class="col-7 mt-2"><%= inv.inv_no %></dd>
+                                      </div>
+                                      <div class="card-body">
+                                        <dl class="row">
+                                          <% if (inv.expenses_for!='Others'){%>
+                                          <dt class="col-5 mt-2">Vehicle No:</dt>
+                                          <dd class="col-7 mt-2"><%= inv.vehicle_no %></dd>
+                                          <%}%>
+                                          <dt class="col-5 mt-2">Date:</dt>
+                                          <dd class="col-7 mt-2"><%= inv.date %></dd>
+                                          <dt class="col-5 mt-2">Invoice Date:</dt>
+                                          <dd class="col-7 mt-2"><%= inv.inv_date %></dd>
+                                          <dt class="col-5">Payee:</dt>
+                                          <dd class="col-7"><%= inv.payee %></dd>
+                                          <dt class="col-5">Expenses Type:</dt>
+                                          <dd class="col-7"><%= inv.expenses_type %></dd>
+                                          <dt class="col-5">Description:</dt>
+                                          <dd class="col-7"><%= inv.description %></dd>
+                        
+                                          <dt class="col-5 mt-2">Payment Type:</dt>
+                                          <dd class="col-7 mt-2"><%= inv.payment_type %></dd>
+                                          <dt class="col-5">Month:</dt>
+                                          <dd class="col-7"><%= inv.month %></dd>
+                                          <dt class="col-5">Remarks:</dt>
+                                          <dd class="col-7"><%= inv.remarks %></dd>
+                                          <dt class="col-5">Created By:</dt>
+                                          <dd class="col-7"><%= inv.created_by %></dd>
+                                          <dt class="col-5 mt-2">Status:</dt>
+                                          <dd class="col-7 mt-2 fw-bold <%-(inv.status) === 1 && 'text-green'%> <%-(inv.status) === 2 && 'text-red' %> <%-(inv.status) === 3 && 'text-orange' %>">
+                                            <% if (inv.status===1){%>
+                                              Approved
+                                              <%}else if (inv.status===2){%>
+                                                Pending
+                                               <%}else{%>
+                                                 Rejected
+                                                 <%}%>
+                                          </dd>
+                                          <dt class="col-5 mt-2">Amount:</dt>
+                                          <dd class="col-7 text-danger mt-2"><div class="currency-formated">QAR</div><%= (inv.amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
+                                          
+                                         </dl>
+                                      </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+
+
+                          <% }) %>
+                      </tbody>
+                    </table>
+                    <% } else { %>
+                      <div class="text-center  my-5">
+                        <div class="fs--h1 text-muted"><i class="ti ti-mood-happy"></i></div>
+                        <!-- <h1 class="text-secondary">No expenses pending!</h1> -->
+                        <p class="text-secondary"> No expenses pending</p>
+                      </div>
+                      <% } %>
+                </div>
+                <div class="card-footer d-flex align-items-center">
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+        <script>
+          $(document).ready(function () {
+            $("#searchSA").on("keyup", function () {
+              var value = $(this).val().toLowerCase();
+              $("#suppAcc tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+              });
+            });
+          });
+        </script>
+
+          <%- include('layout/footer') %>

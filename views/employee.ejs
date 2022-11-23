@@ -121,10 +121,10 @@
                                 <%=employee.qid%>
                               </div>
 
-                              <div class="details-header"> Expiry Date <%- (new Date() >= employee.ex_qid) && '<span class="badge bg-red-lt">Expired</span>' %> </div>
+                              <div class="details-header"> Expiry Date <%- (new Date() >= employee.ex_qid) ? '<span class="badge bg-red-lt fs-h6">Expired</span>' : '' %> </div>
                               <div class="<%- (new Date() >= employee.ex_qid) && 'text-red' %>">
                                 <%=((employee.ex_qid).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' ,
-                                  month: 'long' })) %>
+                                  month: 'long' })) %> 
                               </div>
                             </td>
                             <td>
@@ -269,7 +269,7 @@
                                         </div>
 
                                         <div class="mb-3">
-                                          <label class="form-label">QID Expiry Date <%- (new Date() >= employee.ex_qid) && '<span class="badge bg-red-lt fs-h6">Expired</span>' %></label>
+                                          <label class="form-label">QID Expiry Date <%- (new Date() >= employee.ex_qid) ? '<span class="badge bg-red-lt fs-h6">Expired</span>' : '' %></label>
                                           <input type="date" name="exQID" class="form-control <%- (new Date() >= employee.ex_qid) && 'is-invalid' %>"
                                             value="<%=(employee.ex_qid).toISOString().slice(0, 10)%>" required />
                                         </div>

@@ -2,7 +2,6 @@ const router = require('express').Router();
 const dashboard = require('../controllers/dashboard.controller');
 const settings = require('../controllers/settings.controller');
 const setup = require('../controllers/setup.controller');
-const bankAccController = require('../controllers/bank.account.controller');
 const transactionController = require('../controllers/transaction.controller');
 const vehiclesController = require('../controllers/vehicle.controller');
 const employee = require('../controllers/employee.controller');
@@ -23,8 +22,8 @@ router.post('/update-company/:id', setup.updateCompany);
 router.get('/delete-company/:id', setup.deleteCompany);
 
 router.get('/register', setup.devRegister); //for development
+router.post('/register-unlock', setup.devRegisterUnlock); //for development
 router.post('/add-userDev', setup.addUserDev);  //for development
-
 
 router.get('/user-setup', setup.userSetup);
 router.post('/add-user', setup.addUser);
@@ -37,7 +36,6 @@ router.get('/delete-attachment/:filename', settings.deleteHima);
 
 router.get('/system-settings', settings.viewSysSettings);
 router.post('/update-system-settings', settings.updateSysSettings);
-
 
 router.get('/master', settings.viewChartAcc);
 router.post('/add/account-ledger', settings.addChartAcc );
@@ -53,11 +51,6 @@ router.get('/purpose-transfer', settings.viewPurpose);
 router.post('/add/purpose-transfer', settings.addPurpose );
 router.post('/update/purpose/:id', settings.updatePurpose)
 router.get('/delete/purpose/:id', settings.deletePurpose);
-
-router.get('/bank-accounts', bankAccController.viewBankAcc);
-router.post('/add/bank-accounts/', bankAccController.addBankAcc );
-router.post('/update/bank-accounts/:id', bankAccController.updateBankAcc)
-router.get('/delete/bank-account/:id', bankAccController.deleteBankAcc);
 
 router.get('/vehicle-list', vehiclesController.viewVehicles);
 router.post('/add/vehicle',upload, vehiclesController.addVehicle );
@@ -84,11 +77,13 @@ router.post('/transaction-invoice', transactionController.saveInvoice);
 router.get('/view-invoice/:id', transactionController.viewInvoice);
 router.get('/update-invoice/:id', transactionController.updateInvoice);
 router.post('/save/update-invoice/:id', transactionController.saveUpdateInv);
+router.get('/pending-expenses', transactionController.viewPendingINV);
+router.post('/approval-inv/:id', transactionController.saveApprovalInv);
 
 router.get('/rent-info/:id', vehiclesController.viewRentInfo);
 router.get('/return/:id', vehiclesController.returnVehicle);
 router.post('/return-vehicle/:id', vehiclesController.returnSave);
-
+    
 
 
 

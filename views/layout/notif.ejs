@@ -106,9 +106,11 @@
                   <dt class="col-5 mt-2">Status:</dt>
                   <dd class="col-7 mt-2 fw-bold <%-(message.status) === 1 && 'text-green'%> <%-(message.status) === 2 && 'text-red' %> <%-(message.status) === 3 && 'text-orange' %>">
                     <% if (message.status===1){%>
-                      Approved   
+                      Approved
+                      <%}else if (message.status===2){%>
+                        Pending
                        <%}else{%>
-                         Pending
+                         Rejected
                          <%}%>
                   </dd>
                   <dt class="col-5 mt-2">Amount:</dt>
