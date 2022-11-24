@@ -68,7 +68,7 @@ module.exports = {
                             };
 
                             res.render('index', {
-                              title: "AKG - Accounting - Dashboard",
+                              title: "AL KATHIRI GROUPS ACCOUNTING",
                               nav: nav,
                               vehicleFound: vehicleFound,
                               vouFound: vouFound,
@@ -132,7 +132,7 @@ module.exports = {
                             };
 
                             res.render('owner-dashboard', {
-                              title: "AKG - Accounting - Dashboard",
+                              title: "AL KATHIRI GROUPS ACCOUNTING",
                               nav: nav,
                               CompanyFound: CompanyFound,
                               vehicleFound: vehicleFound,

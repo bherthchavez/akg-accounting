@@ -1,6 +1,4 @@
-const Vehicles = require('../models/Vehicles');
-const Voucher = require('../models/Voucher');
-const Invoice = require('../models/Invoice');
+
 const Employee = require('../models/Employee');
 const fs = require('fs');
 const path = require('path');
@@ -154,11 +152,17 @@ module.exports = {
 
             Employee.findByIdAndRemove(id, (err, result) => {
 
-
-
                 if (err) {
                     res.json({ message: err.message });
                 } else {
+
+                    const filePath = path.join(__dirname, '../public/attachment/' + result.qid_file);
+                        fs.unlink(filePath, (err) => { // remove old istimara
+                            if (err) {
+                                res.json({ message: err.message });
+                            }
+                        })
+
                     req.session.message = {
                         type: 'info',
                         message: 'Employee deleted successfully!',

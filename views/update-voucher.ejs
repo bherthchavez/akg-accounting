@@ -49,11 +49,12 @@
                                 <dt class="col-5">Particulars:</dt>
                                 <dd class="col-7"><%= VoucherFound.particulars %></dd>
                                 <dt class="col-5 mt-2">Total Rent <div class="currency-formated fs-h6">(QAR)</div>:</dt>
-                                <dd id="totalR" class="col-7 text-danger mt-2"><%= (VoucherFound.total_rent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
-                                <dt class="col-5">Total Bills <div class="currency-formated fs-h6">(QAR)</div>:</dt>
-                                <dd id="totalB" class="col-7 text-danger"><%= (VoucherFound.total_bills).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
-                                <dt class="col-5 mt-2">Cash Received <div class="currency-formated fs-h6">(QAR)</div>:</dt>
-                                <dd id="cashR" class="col-7 text-danger mt-2 fw-bold"> <%= (VoucherFound.cash_received).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
+                                <dd id="totalR" class="col-7 mt-2"><%= (VoucherFound.total_rent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
+                                <dt class="col-5 ">Cash Received <div class="currency-formated fs-h6">(QAR)</div>:</dt>
+                                <dd id="cashR" class="col-7 "> <%= (VoucherFound.cash_received).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
+                                <dt class="col-5 mt-2">Total Balance <div class="currency-formated fs-h6">(QAR)</div>:</dt>
+                                <dd id="totalB" class="col-7 mt-2 fw-bold"><%= (VoucherFound.total_bills).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
+                                
                               </dl>
                             </div>
                           <!-- </div> -->
@@ -67,16 +68,16 @@
                     <div class="col-lg-6">
                       <div class="row">
                         <div class="col-sm-12 col-md-6 col-lg-6">
-                        <div class="mb-3">
-                          <label class="form-label">Total Rent</label>
-                          <div class="input-group mb-2">
-                            <span class="input-group-text fs-h5">
-                              QAR
-                            </span>
-                            <input type="text" class="form-control text-danger totalRent"
-                              name="totalRent" value="<%=VoucherFound.total_rent%>" required>
+                          <div class="mb-3">
+                            <div class="form-label">Voucher Status</div>
+                              
+                                 <select class="form-select" name="status" required>
+                                  <option value="1" <%-VoucherFound.status===1 && 'selected' %>>Paid</option>
+                                  <option value="2" <%-VoucherFound.status===2 && 'selected' %>>Unpaid</option>
+                                  <option value="3" <%-VoucherFound.status===3 && 'selected' %>>Partial Paid</option>
+                                </select>
                           </div>
-                        </div>
+                       
 
                         <% if (VoucherFound.voucher_for!='Others'){%>
                           <div class="mb-3">
@@ -96,26 +97,17 @@
                           <%}%>
                     
                         </div>
+                        
                         <div class="col-sm-12 col-md-6 col-lg-6">
                           <div class="mb-3">
-                            <label class="form-label">Total Bills</label>
+                            <label class="form-label">Total Rent</label>
                             <div class="input-group mb-2">
                               <span class="input-group-text fs-h5">
                                 QAR
                               </span>
-                              <input type="text" class="form-control text-danger totalBills"
-                                name="totalBills" value="<%=VoucherFound.total_bills%>" required>
+                              <input type="text" class="form-control fw-bold totalRent"
+                                name="totalRent" value="<%=VoucherFound.total_rent%>" required>
                             </div>
-                          </div>
-                          <div class="mb-5">
-                            <div class="form-label">Voucher Status</div>
-                              
-                                 <select class="form-select" name="status" required>
-                                  <option value="1" <%-VoucherFound.status===1 && 'selected' %>>Paid</option>
-                                  <option value="2" <%-VoucherFound.status===2 && 'selected' %>>Unpaid</option>
-                                  <option value="3" <%-VoucherFound.status===3 && 'selected' %>>Partial Paid</option>
-                                </select>
-                           
                           </div>
                           <div class="mb-3">
                             <label class="form-label">Cash Received</label>
@@ -123,8 +115,21 @@
                               <span class="input-group-text fs-h5">
                                 QAR
                               </span>
-                              <input type="text" class="form-control text-danger cashReceived"
+                              <input type="text" class="form-control fw-bold cashReceived"
                                 name="cashReceived" value="<%=VoucherFound.cash_received%>" required>
+                            </div>
+                          </div>
+                          
+                         
+
+                          <div class="mb-3">
+                            <label class="form-label">Total Balance</label>
+                            <div class="input-group mb-2">
+                              <span class="input-group-text fs-h5">
+                                QAR
+                              </span>
+                              <input type="text" class="form-control fw-bold totalBills"
+                                name="totalBills" value="<%=VoucherFound.total_bills%>" readonly>
                             </div>
                           </div>
                           
@@ -170,16 +175,24 @@
 <script>
   
      $(".totalRent").keyup(()=>{
-      getCashR()
-      let rent = + ($(".totalRent").val().split(',').join(''))
-      $('#totalR').text((rent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+      // getCashR()
+      let rentAmount = + ($(".totalRent").val().split(',').join(''))
+      let cashReceived = + ($(".cashReceived").val().split(',').join(''))
+       let billAmount = rentAmount - cashReceived;
+       $(".totalBills").val((billAmount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')); 
+      $('#totalR').text((billAmount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+      $('#totalB').text((billAmount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
      })
 
-     $(".totalBills").keyup(()=>{
-      getCashR()
-      let bill = + ($(".totalBills").val().split(',').join(''))
-      $('#totalB').text((bill).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+     $(".cashReceived").keyup(()=>{
+      let rentAmount = + ($(".totalRent").val().split(',').join(''))
+       let cashReceived = + ($(".cashReceived").val().split(',').join(''))
+       let billAmount = rentAmount - cashReceived;
+      $(".totalBills").val((billAmount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')); 
+      $('#cashR').text((cashReceived).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+      $('#totalB').text((billAmount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
      });
+
 
      const getCashR = ()=>{
       let rentAmount = + ($(".totalRent").val().split(',').join(''))

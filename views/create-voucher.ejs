@@ -109,18 +109,18 @@
                             <span class="input-group-text fs-h5">
                               QAR
                             </span>
-                            <input type="text" class="form-control text-danger totalRent"
+                            <input type="text" class="form-control fw-bold totalRent"
                               name="totalRent" placeholder="0.00" required>
                           </div>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label">Total Bills</label>
+                          <label class="form-label">Cash Received</label>
                           <div class="input-group mb-2">
                             <span class="input-group-text fs-h5">
                               QAR
                             </span>
-                            <input type="text" class="form-control text-danger totalBills"
-                              name="totalBills" placeholder="0.00" required>
+                            <input type="text" class="form-control fw-bold cashReceived"
+                              name="cashReceived" placeholder="0.00" required>
                           </div>
                         </div>
                       </div>
@@ -129,14 +129,15 @@
 
                       <div class="row">
                         <div class="col-auto ms-auto">
+                          
                           <div class="mb-3">
-                            <label class="form-label">Cash Received</label>
+                            <label class="form-label">Total Balance</label>
                             <div class="input-group mb-2">
                               <span class="input-group-text fs-h5">
                                 QAR
                               </span>
-                              <input type="text" class="form-control text-danger cashReceived"
-                                name="cashReceived" placeholder="0.00" required readonly>
+                              <input type="text" class="form-control fw-bold totalBills"
+                                name="totalBills" placeholder="0.00" readonly>
                             </div>
                           </div>
                         </div>
@@ -197,19 +198,19 @@
 <script>
   
      $(".totalRent").keyup(()=>{
-      getCashR()
+      let rentAmount = + ($(".totalRent").val().split(',').join(''))
+      let cashReceived = + ($(".cashReceived").val().split(',').join(''))
+       let billAmount = rentAmount - cashReceived;
+       $(".totalBills").val((billAmount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')); 
      })
-     $(".totalBills").keyup(()=>{
-      getCashR()
+
+     $(".cashReceived").keyup(()=>{
+      let rentAmount = + ($(".totalRent").val().split(',').join(''))
+       let cashReceived = + ($(".cashReceived").val().split(',').join(''))
+       let billAmount = rentAmount - cashReceived;
+      $(".totalBills").val((billAmount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')); 
      });
 
-     const getCashR = ()=>{
-      let rentAmount = + ($(".totalRent").val().split(',').join(''))
-       let billAmount = + ($(".totalBills").val().split(',').join(''))
-       let cashReceived = rentAmount - billAmount;
-    
-       $(".cashReceived").val((cashReceived).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')); 
-     }
 
 </script>
 

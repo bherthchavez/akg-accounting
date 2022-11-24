@@ -179,9 +179,6 @@ module.exports = {
                                             res.json({ message: err.message });
                                         } 
                                     })
-                                
-
-
 
 
                                 req.session.message = {
