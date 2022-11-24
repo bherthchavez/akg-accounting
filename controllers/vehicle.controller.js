@@ -158,11 +158,32 @@ module.exports = {
 
                     if (result.income === 0 && result.expenses === 0) {
 
-                        Vehicles.findByIdAndRemove(id, (err) => {
+                        Vehicles.findByIdAndRemove(id, (err, foundDeleted) => {
 
                             if (err) {
                                 res.json({ message: err.message });
                             } else {
+
+                                    // delete file  istimara
+                                    const filePathIS = path.join(__dirname, '../public/attachment/' + foundDeleted.istimara_file);
+                                    fs.unlink(filePathIS, (err) => { 
+                                        if (err) {
+                                            res.json({ message: err.message });
+                                        } 
+                                    })
+                                
+                                       // delete file  insurance
+                                    const filePathIN = path.join(__dirname, '../public/attachment/' + foundDeleted.insurance_file);
+                                    fs.unlink(filePathIN, (err) => { // remove old  insurance
+                                        if (err) {
+                                            res.json({ message: err.message });
+                                        } 
+                                    })
+                                
+
+
+
+
                                 req.session.message = {
                                     type: 'info',
                                     message: 'Vehicles deleted successfully!',
