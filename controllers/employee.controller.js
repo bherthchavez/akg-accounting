@@ -53,36 +53,39 @@ module.exports = {
 
             Employee.find().exec((err, foundEmployee) => {
                 if (err) {
-                    res.json({ message: err.message });
+                    res.json({ message: err.message })
                 } else {
 
                     Notif.getINV((err, dataINV) => {
                         Notif.getVehicle((err, dataVehicle) => {
-                            Notif.getEmployee((err, dataEmployee) => {
+                            Notif.getVehicleIn((err, dataVehicleIn) => {
+                                Notif.getEmployee((err, dataEmployee) => {
 
 
-                    let nav = {
-                        title: "Accounts",
-                        child: "Employee",
-                        view: 2,
-                        notif: {
-                            exIstimara: dataVehicle,
-                            expenPending: dataINV,
-                            exQID: dataEmployee
-                        }
-                    };
+                                    let nav = {
+                                        title: "Accounts",
+                                        child: "Employee",
+                                        view: 2,
+                                        notif: {
+                                            exIstimara: dataVehicle,
+                                            exInsurance: dataVehicleIn,
+                                            expenPending: dataINV,
+                                            exQID: dataEmployee
+                                        }
+                                    }
 
-                    res.render('employee', {
-                        title: "Employee List",
-                        employeeList: foundEmployee,
-                        nav: nav
-                    })
-                    })
-                    })
+                                    res.render('employee', {
+                                        title: "Employee List",
+                                        employeeList: foundEmployee,
+                                        nav: nav
+                                    })
+                                })
+                            })
+                        })
                     })
 
                 }
-            });
+            })
 
         } else {
             res.redirect("/sign-in");
@@ -157,11 +160,11 @@ module.exports = {
                 } else {
 
                     const filePath = path.join(__dirname, '../public/attachment/' + result.qid_file);
-                        fs.unlink(filePath, (err) => { // remove old istimara
-                            if (err) {
-                                res.json({ message: err.message });
-                            }
-                        })
+                    fs.unlink(filePath, (err) => { // remove old istimara
+                        if (err) {
+                            res.json({ message: err.message });
+                        }
+                    })
 
                     req.session.message = {
                         type: 'info',

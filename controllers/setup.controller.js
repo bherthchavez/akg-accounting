@@ -1,8 +1,6 @@
 const Company = require('../models/Company');
 const Voucher = require('../models/Voucher');
 const User = require('../models/User');
-const Invoice = require('../models/Invoice');
-const Vehicles = require('../models/Vehicles');
 const passport = require("passport");
 const Notif = require('../middleware/notif.middleware');
 
@@ -29,21 +27,24 @@ module.exports = {
 
           Notif.getINV((err, dataINV) => {
             Notif.getVehicle((err, dataVehicle) => {
-              Notif.getEmployee((err, dataEmployee) => {
+              Notif.getVehicleIn((err, dataVehicleIn) => {
+                Notif.getEmployee((err, dataEmployee) => {
 
-                let nav = {
-                  title: "Setup",
-                  view: 1,
-                  notif: {
-                    exIstimara: dataVehicle,
-                    expenPending: dataINV,
-                    exQID: dataEmployee
-                  }
-                };
-                res.render('company', {
-                  title: "Company Setup",
-                  nav: nav,
-                  companyList: foundList
+                  let nav = {
+                    title: "Setup",
+                    view: 1,
+                    notif: {
+                      exIstimara: dataVehicle,
+                      exInsurance: dataVehicleIn,
+                      expenPending: dataINV,
+                      exQID: dataEmployee
+                    }
+                  };
+                  res.render('company', {
+                    title: "Company Setup",
+                    nav: nav,
+                    companyList: foundList
+                  })
                 })
               })
             })
@@ -171,12 +172,12 @@ module.exports = {
 
   },
   devRegisterUnlock: async (req, res) => {
-   
 
-        (req.body.password === 'himaChan') ? res.render('register') : res.redirect('/');
-     
 
-   
+    (req.body.password === 'himaChan') ? res.render('register') : res.redirect('/');
+
+
+
 
   },
   userSetup: async (req, res) => {
@@ -194,22 +195,25 @@ module.exports = {
 
               Notif.getINV((err, dataINV) => {
                 Notif.getVehicle((err, dataVehicle) => {
-                  Notif.getEmployee((err, dataEmployee) => {
+                  Notif.getVehicleIn((err, dataVehicleIn) => {
+                    Notif.getEmployee((err, dataEmployee) => {
 
-                    let nav = {
-                      title: "User",
-                      view: 1,
-                      notif: {
-                        exIstimara: dataVehicle,
-                        expenPending: dataINV,
-                        exQID: dataEmployee
-                      }
-                    };
-                    res.render('user', {
-                      title: "User Setup",
-                      nav: nav,
-                      userList: foundList,
-                      foundCompany: foundCompany
+                      let nav = {
+                        title: "User",
+                        view: 1,
+                        notif: {
+                          exIstimara: dataVehicle,
+                          exInsurance: dataVehicleIn,
+                          expenPending: dataINV,
+                          exQID: dataEmployee
+                        }
+                      };
+                      res.render('user', {
+                        title: "User Setup",
+                        nav: nav,
+                        userList: foundList,
+                        foundCompany: foundCompany
+                      })
                     })
                   })
                 })

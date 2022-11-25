@@ -123,12 +123,14 @@ module.exports = {
                     } else {
                       Notif.getINV((err, dataINV) => {
                         Notif.getVehicle((err, dataVehicle) => {
+                        Notif.getVehicleIn((err, dataVehicleIn) => {
                           Notif.getEmployee((err, dataEmployee) => {
                             let nav = {
                               title: "Dashboard",
                               view: 1,
                               notif: {
                                 exIstimara: dataVehicle,
+                                exInsurance: dataVehicleIn,
                                 expenPending: dataINV,
                                 exQID: dataEmployee
                               }
@@ -145,6 +147,7 @@ module.exports = {
 
                           });
                         });
+                      });
                       });
 
                     }

@@ -2,7 +2,6 @@ const Voucher = require('../models/Voucher');
 const Invoice = require('../models/Invoice');
 const Vehicles = require('../models/Vehicles');
 const Settings = require('../models/Settings');
-const { addListener } = require('nodemon');
 
 const Notif = require('../middleware/notif.middleware');
 
@@ -25,6 +24,7 @@ module.exports = {
 
                             Notif.getINV((err, dataINV) => {
                                 Notif.getVehicle((err, dataVehicle) => {
+                                Notif.getVehicleIn((err, dataVehicleIn) => {
                                     Notif.getEmployee((err, dataEmployee) => {
 
                                         if (id != 'others') {
@@ -44,6 +44,7 @@ module.exports = {
                                                         view: 2,
                                                         notif: {
                                                             exIstimara: dataVehicle,
+                                                            exInsurance: dataVehicleIn,
                                                             expenPending: dataINV,
                                                             exQID: dataEmployee
                                                         }
@@ -71,6 +72,7 @@ module.exports = {
                                                 view: 2,
                                                 notif: {
                                                     exIstimara: dataVehicle,
+                                                    exInsurance: dataVehicleIn,
                                                     expenPending: dataINV,
                                                     exQID: dataEmployee
                                                 }
@@ -86,6 +88,7 @@ module.exports = {
                                             });
                                         }
 
+                                    })
                                     })
                                 })
                             })
@@ -400,6 +403,7 @@ module.exports = {
                 } else {
                     Notif.getINV((err, dataINV) => {
                         Notif.getVehicle((err, dataVehicle) => {
+                        Notif.getVehicleIn((err, dataVehicleIn) => {
                             Notif.getEmployee((err, dataEmployee) => {
 
                                 let nav = {
@@ -408,6 +412,7 @@ module.exports = {
                                     view: 2,
                                     notif: {
                                         exIstimara: dataVehicle,
+                                        exInsurance: dataVehicleIn,
                                         expenPending: dataINV,
                                         exQID: dataEmployee
                                     }
@@ -418,6 +423,7 @@ module.exports = {
                                     VoucherFound: foundVoucher,
                                     nav: nav
                                 })
+                            })
                             })
                         })
                     })
@@ -448,6 +454,7 @@ module.exports = {
 
                             Notif.getINV((err, dataINV) => {
                                 Notif.getVehicle((err, dataVehicle) => {
+                                Notif.getVehicleIn((err, dataVehicleIn) => {
                                     Notif.getEmployee((err, dataEmployee) => {
 
                                         if (id != 'others') {
@@ -464,6 +471,7 @@ module.exports = {
                                                         view: 2,
                                                         notif: {
                                                             exIstimara: dataVehicle,
+                                                            exInsurance: dataVehicleIn,
                                                             expenPending: dataINV,
                                                             exQID: dataEmployee
                                                         }
@@ -491,6 +499,7 @@ module.exports = {
                                                 view: 2,
                                                 notif: {
                                                     exIstimara: dataVehicle,
+                                                    exInsurance: dataVehicleIn,
                                                     expenPending: dataINV,
                                                     exQID: dataEmployee
                                                 }
@@ -506,6 +515,7 @@ module.exports = {
                                             });
                                         }
 
+                                    })
                                     })
                                 })
                             })
@@ -683,6 +693,7 @@ module.exports = {
                 } else {
                     Notif.getINV((err, dataINV) => {
                         Notif.getVehicle((err, dataVehicle) => {
+                        Notif.getVehicleIn((err, dataVehicleIn) => {
                             Notif.getEmployee((err, dataEmployee) => {
 
                                 let nav = {
@@ -691,6 +702,7 @@ module.exports = {
                                     view: 2,
                                     notif: {
                                         exIstimara: dataVehicle,
+                                        exInsurance: dataVehicleIn,
                                         expenPending: dataINV,
                                         exQID: dataEmployee
                                     }
@@ -701,6 +713,7 @@ module.exports = {
                                     foundInv: foundInv,
                                     nav: nav
                                 })
+                            })
                             })
                         })
                     })
@@ -836,6 +849,7 @@ module.exports = {
 
                         Notif.getINV((err, dataINV) => {
                             Notif.getVehicle((err, dataVehicle) => {
+                            Notif.getVehicleIn((err, dataVehicleIn) => {
                                 Notif.getEmployee((err, dataEmployee) => {
 
                                     let nav = {
@@ -844,6 +858,7 @@ module.exports = {
                                         view: 2,
                                         notif: {
                                             exIstimara: dataVehicle,
+                                            exInsurance: dataVehicleIn,
                                             expenPending: dataINV,
                                             exQID: dataEmployee
                                         }
@@ -855,6 +870,7 @@ module.exports = {
                                         pendingINV: resultINV
 
                                     })
+                                })
                                 })
                             })
                         })

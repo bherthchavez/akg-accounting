@@ -46,6 +46,7 @@ module.exports = {
 
                                     Notif.getINV((err, dataINV) => {
                                         Notif.getVehicle((err, dataVehicle) => {
+                                        Notif.getVehicleIn((err, dataVehicleIn) => {
                                             Notif.getEmployee((err, dataEmployee) => {
 
 
@@ -55,6 +56,7 @@ module.exports = {
                                                     view: 2,
                                                     notif: {
                                                         exIstimara: dataVehicle,
+                                                        exInsurance: dataVehicleIn,
                                                         expenPending: dataINV,
                                                         exQID: dataEmployee
                                                     }
@@ -66,18 +68,19 @@ module.exports = {
                                                     chartFoundItems: chartFoundItems,
                                                     purposeFoundItems: purposeFoundItems,
                                                     costFoundItems: costFoundItems,
-                                                });
-                                            });
-                                        });
-                                    });
+                                                })
+                                            })
+                                        })
+                                    })
+                                    })
 
 
                                 }
-                            });
+                            })
                         }
-                    });
+                    })
                 }
-            });
+            })
 
         } else {
             res.redirect("/sign-in");
@@ -191,6 +194,7 @@ module.exports = {
 
                                     Notif.getINV((err, dataINV) => {
                                         Notif.getVehicle((err, dataVehicle) => {
+                                        Notif.getVehicleIn((err, dataVehicleIn) => {
                                             Notif.getEmployee((err, dataEmployee) => {
 
 
@@ -200,6 +204,7 @@ module.exports = {
                                                     view: 2,
                                                     notif: {
                                                         exIstimara: dataVehicle,
+                                                        exInsurance: dataVehicleIn,
                                                         expenPending: dataINV,
                                                         exQID: dataEmployee
                                                     }
@@ -211,18 +216,19 @@ module.exports = {
                                                     chartFoundItems: chartFoundItems,
                                                     purposeFoundItems: purposeFoundItems,
                                                     costFoundItems: costFoundItems,
-                                                });
-                                            });
-                                        });
-                                    });
+                                                })
+                                            })
+                                        })
+                                        })
+                                    })
 
 
                                 }
-                            });
+                            })
                         }
-                    });
+                    })
                 }
-            });
+            })
 
         } else {
             res.redirect("/sign-in");
@@ -336,6 +342,7 @@ module.exports = {
 
                                     Notif.getINV((err, dataINV) => {
                                         Notif.getVehicle((err, dataVehicle) => {
+                                        Notif.getVehicleIn((err, dataVehicleIn) => {
                                             Notif.getEmployee((err, dataEmployee) => {
 
 
@@ -345,6 +352,7 @@ module.exports = {
                                                     view: 2,
                                                     notif: {
                                                         exIstimara: dataVehicle,
+                                                        exInsurance: dataVehicleIn,
                                                         expenPending: dataINV,
                                                         exQID: dataEmployee
 
@@ -357,19 +365,20 @@ module.exports = {
                                                     chartFoundItems: chartFoundItems,
                                                     purposeFoundItems: purposeFoundItems,
                                                     costFoundItems: costFoundItems,
-                                                });
-                                            });
-                                        });
-                                    });
+                                                })
+                                            })
+                                        })
+                                        })
+                                    })
                                 }
-                            });
+                            })
                         }
-                    });
+                    })
                 }
-            });
+            })
 
         } else {
-            res.redirect("/sign-in");
+            res.redirect("/sign-in")
         }
     },
 
@@ -495,6 +504,7 @@ module.exports = {
 
                                     Notif.getINV((err, dataINV) => {
                                         Notif.getVehicle((err, dataVehicle) => {
+                                        Notif.getVehicleIn((err, dataVehicleIn) => {
                                             Notif.getEmployee((err, dataEmployee) => {
 
                                                 let nav = {
@@ -504,6 +514,7 @@ module.exports = {
                                                     notif: {
                                                         exIstimara: dataVehicle,
                                                         expenPending: dataINV,
+                                                        exInsurance: dataVehicleIn,
                                                         exQID: dataEmployee
                                                     }
                                                 };
@@ -514,24 +525,25 @@ module.exports = {
                                                     nav: nav,
                                                     billSetting: billSetting,
                                                     PAVSetting: PAVSetting,
-                                                });
-                                            });
-                                        });
-                                    });
+                                                })
+                                            })
+                                        })
+                                    })
+                                    })
 
                                 }
-                            });
+                            })
                         }
-                    });
+                    })
 
                 }
-            });
+            })
 
 
 
 
         } else {
-            res.redirect("/sign-in");
+            res.redirect("/sign-in")
         }
     },
 
