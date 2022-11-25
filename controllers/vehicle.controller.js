@@ -18,10 +18,11 @@ module.exports = {
                 registered_date: req.body.regDate,
                 istimara_exdate: req.body.exDate,
                 istimara_file: req.files['istimaraFile'][0].filename,
+                insurance_exdate: req.body.exDateIn,
                 insurance_file: req.files['insuranceFile'][0].filename,
                 expenses: 0.0,
                 income: 0.0,
-                status: + req.body.status,
+                status: 1,
                 created_by: req.user.name,
             });
             newVehicle.save((err) => {
@@ -52,6 +53,7 @@ module.exports = {
 
                     Notif.getINV((err, dataINV) => {
                         Notif.getVehicle((err, dataVehicle) => {
+                        Notif.getVehicleIn((err, dataVehicleIn) => {
                             Notif.getEmployee((err, dataEmployee) => {
                                 let nav = {
                                     title: "Accounts",
@@ -59,6 +61,7 @@ module.exports = {
                                     view: 2,
                                     notif: {
                                         exIstimara: dataVehicle,
+                                        exInsurance: dataVehicleIn,
                                         expenPending: dataINV,
                                         exQID: dataEmployee
                                     }
@@ -71,6 +74,7 @@ module.exports = {
                                 })
 
                             });
+                        });
                         });
                     });
 
@@ -95,7 +99,7 @@ module.exports = {
                 registered_owner: req.body.regOwner,
                 registered_date: req.body.regDate,
                 istimara_exdate: req.body.exDate,
-                status: + req.body.status
+                insurance_exdate: req.body.exDateIn
             }, (err, result) => {
                 if (err) {
                     res.json({ message: err.message, type: 'danger' });

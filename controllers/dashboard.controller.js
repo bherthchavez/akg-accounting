@@ -55,6 +55,7 @@ module.exports = {
 
                       Notif.getINV((err, dataINV) => {
                         Notif.getVehicle((err, dataVehicle) => {
+                        Notif.getVehicleIn((err, dataVehicleIn) => {
                           Notif.getEmployee((err, dataEmployee) => {
 
                             let nav = {
@@ -62,6 +63,7 @@ module.exports = {
                               view: 2,
                               notif: {
                                 exIstimara: dataVehicle,
+                                exInsurance: dataVehicleIn,
                                 expenPending: dataINV,
                                 exQID: dataEmployee
                               }
@@ -76,6 +78,7 @@ module.exports = {
                               invItems: foundInv
                             })
 
+                          })
                           })
                         })
                       })

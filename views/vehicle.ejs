@@ -116,15 +116,13 @@
                                   </div>
                             </td>
                             <td>
-                              <div class="details-header"> Registered Owner</div>
-                              <div>
-                                <%=vehicle.registered_owner%>
-                              </div>
-
-
                               <div class="details-header"> Istimara Expiry Date <%- (new Date() >= vehicle.istimara_exdate) ? '<span class="badge bg-red-lt">Expired</span>' :'' %> </div>
                               <div class="<%- (new Date() >= vehicle.istimara_exdate) && 'text-red' %>">
                                 <%=((vehicle.istimara_exdate).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' , month: 'long' })) %>
+                              </div>
+                              <div class="details-header"> Insurance Expiry Date <%- (new Date() >= vehicle.insurance_exdate) ? '<span class="badge bg-red-lt">Expired</span>' :'' %> </div>
+                              <div class="<%- (new Date() >= vehicle.insurance_exdate) && 'text-red' %>">
+                                <%=((vehicle.insurance_exdate).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' , month: 'long' })) %>
                               </div>
                             </td>
                             <td>
@@ -234,18 +232,6 @@
                                             value="<%=vehicle.registered_date%>" required />
                                         </div>
                                         <div class="mb-3">
-                                          <label class="form-label">Status</label>
-                                        <select class="form-select" name="status" id="floatingSelect<%=vehicle._id%>"
-                                          aria-label="Floating label select example">
-                                          <option value="1" <%=vehicle.status===1 ? 'selected' : '' %>
-                                            >Available</option>
-                                          <option value="2" <%=vehicle.status===2 ? 'selected' : '' %>
-                                            >Rented</option>
-                                        </select>
-                                        </div>
-                                      </div>
-                                      <div class="col-lg-6">
-                                        <div class="mb-1">
                                          
                                           <label class="form-label">Istimara Expiration Date <%- (new Date() >= vehicle.istimara_exdate) ? '<span class="badge bg-red-lt fs-h6">Expired</span>' : '' %> </label> 
                                           <div class="input-icon mb-2">
@@ -254,6 +240,27 @@
                                               value="<%= (vehicle.istimara_exdate).toISOString().slice(0, 10) %>" required />
                                           </div>
                                         </div>
+                                        <div class="mb-3">
+                                         
+                                          <label class="form-label">Insurance Expiration Date <%- (new Date() >= vehicle.insurance_exdate) ? '<span class="badge bg-red-lt fs-h6">Expired</span>' : '' %> </label> 
+                                          <div class="input-icon mb-2">
+                                            <input type="date" name="exDateIn" class="form-control  <%- (new Date() >= vehicle.insurance_exdate) && 'is-invalid' %>"
+                                              placeholder="Select istimara expiration date"
+                                              value="<%= (vehicle.insurance_exdate).toISOString().slice(0, 10) %>" required />
+                                          </div>
+                                        </div>
+                                        <!-- <div class="mb-3">
+                                          <label class="form-label">Status</label>
+                                        <select class="form-select" name="status" id="floatingSelect<%=vehicle._id%>"
+                                          aria-label="Floating label select example">
+                                          <option value="1" <%=vehicle.status===1 ? 'selected' : '' %>
+                                            >Available</option>
+                                          <option value="2" <%=vehicle.status===2 ? 'selected' : '' %>
+                                            >Rented</option>
+                                        </select>
+                                        </div> -->
+                                      </div>
+                                      <div class="col-lg-6">
                                         <div class="modal-body">
                                         <div class="mb-3">
                                           <label class="form-label">Download Attachments </label>
@@ -340,20 +347,6 @@
                                   <label class="form-label">Make & Model</label>
                                   <input type="text" name="makeModel" class="form-control" required />
                                 </div>
-
-                                <div class="mb-4">
-                                  <label class="form-label">Status</label>
-                                  <select class="form-select" name="status" id="floatingSelect"
-                                    aria-label="Floating label select example" required>
-                                    <option>--</option>
-                                    <option value="1">Available</option>
-                                    <option value="2">Rented</option>
-                                  </select>
-                                </div>
-
-                              </div>
-
-                              <div class="col-lg-6">
                                 <div class="mb-3">
                                   <label class="form-label">Registered Date</label>
                                   <div class="input-icon mb-2">
@@ -364,11 +357,35 @@
                                     </span>
                                   </div>
                                 </div>
+
+                                <!-- <div class="mb-4">
+                                  <label class="form-label">Status</label>
+                                  <select class="form-select" name="status" id="floatingSelect"
+                                    aria-label="Floating label select example" required>
+                                    <option>--</option>
+                                    <option value="1">Available</option>
+                                    <option value="2">Rented</option>
+                                  </select>
+                                </div> -->
+
+                              </div>
+
+                              <div class="col-lg-6">
                                 <div class="mb-3">
                                   <label class="form-label">Istimara Expiration Date</label>
                                   <div class="input-icon mb-2">
                                     <input name="exDate" class="form-control "
                                       placeholder="Select istimara expiration date" id="datepicker-istimara" required />
+                                    <span class="input-icon-addon">
+                                      <i class="ti ti-calendar"></i>
+                                    </span>
+                                  </div>
+                                </div>
+                                <div class="mb-3">
+                                  <label class="form-label">Insurance Expiration Date</label>
+                                  <div class="input-icon mb-2">
+                                    <input name="exDateIn" class="form-control "
+                                      placeholder="Select istimara expiration date" id="datepicker-insurance" required />
                                     <span class="input-icon-addon">
                                       <i class="ti ti-calendar"></i>
                                     </span>

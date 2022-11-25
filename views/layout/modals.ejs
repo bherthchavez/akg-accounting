@@ -464,6 +464,22 @@
 // @formatter:on
 $('#datepicker-istimara').val(new Date().toISOString().split('T')[0])
 </script>
+<script>
+  // @formatter:off
+  document.addEventListener("DOMContentLoaded", function () {
+    window.Litepicker && (new Litepicker({
+      element: document.getElementById('datepicker-insurance'),
+      buttonText: {
+        previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>`,
+        nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>`,
+      },
+    }));
+  });
+// @formatter:on
+$('#datepicker-insurance').val(new Date().toISOString().split('T')[0])
+</script>
 
 <script>
   // @formatter:off

@@ -86,9 +86,9 @@
                   <i class="ti ti-bell icon"></i>
                   
                   <%if (nav.notif.expenPending.length && user.role === 1) {%>
-                    <span class="badge badge-pill bg-red"><%= nav.notif.expenPending.length + nav.notif.exIstimara.length + nav.notif.exQID.length %></span>
-                  <%}else if(nav.notif.exIstimara.length || nav.notif.exQID.length) {%>
-                    <span class="badge badge-pill bg-red"><%= nav.notif.exIstimara.length + nav.notif.exQID.length %></span>
+                    <span class="badge badge-pill bg-red"><%= nav.notif.expenPending.length + nav.notif.exIstimara.length + nav.notif.exInsurance.length + nav.notif.exQID.length %></span>
+                  <%}else if(nav.notif.exIstimara.length || nav.notif.exInsurance.length || nav.notif.exQID.length) {%>
+                    <span class="badge badge-pill bg-red"><%= nav.notif.exIstimara.length + nav.notif.exQID.length + nav.notif.exInsurance.length %></span>
                     <!-- <span class="badge badge-pill bg-red">6</span> -->
                     <%}%>
                 </a>
@@ -131,6 +131,27 @@
                             <a href="/vehicle-list" class="text-body d-block fw-bold">Vehicle Istimara Expired </a>
                             <div class="d-block text-muted text-truncate mt-n1 fs-h5">
                               Vehicle No: <strong><%=notif.vehicle_no%>, </strong> Expiry Date: <strong><%=(new Date(notif.istimara_exdate).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' ,month: 'short' })) %></strong>  
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <!-- <a href="#" class="list-group-item-actions">View -->
+                            <!-- </a> -->
+                          </div>
+                        </div>
+                      </div>
+                      <% }) %>
+                      <%}%>
+
+                      <%if (nav.notif.exInsurance) {%>
+                        <% nav.notif.exInsurance.forEach(function(notif){ %>
+                      <div class="list-group-item">
+                        <div class="row align-items-center">
+                          <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span>
+                          </div>
+                          <div class="col text-truncate">
+                            <a href="/vehicle-list" class="text-body d-block fw-bold">Vehicle Insurance Expired </a>
+                            <div class="d-block text-muted text-truncate mt-n1 fs-h5">
+                              Vehicle No: <strong><%=notif.vehicle_no%>, </strong> Expiry Date: <strong><%=(new Date(notif.insurance_exdate).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' ,month: 'short' })) %></strong>  
                             </div>
                           </div>
                           <div class="col-auto">

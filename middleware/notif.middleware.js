@@ -22,6 +22,15 @@ module.exports = {
           }
        });
     },
+    getVehicleIn: (callback) =>{
+        Vehicles.find({ insurance_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + 0)) } }, (err, data) => {
+          if(!err && data){
+          return callback(null,data);
+          }else{
+           return callback(err,null);
+          }
+       });
+    },
     getEmployee: (callback) =>{
         Employee.find({ ex_qid: { $lte: new Date(new Date().setDate(new Date().getDate() + 0)) } }, (err, data) => {
           if(!err && data){

@@ -27,6 +27,10 @@ const vehiclesSchema = new mongoose.Schema(
         type:  String,
         required: true
     },
+    insurance_exdate: {
+        type:  Date,
+        required: true,
+    },
     insurance_file: {
         type:  String,
         required: true
