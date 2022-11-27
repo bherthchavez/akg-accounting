@@ -1,7 +1,6 @@
-
+const { s3Upload, s3Delete, s3Download } = require('../middleware/s3Service.middleware')
 const Vehicles = require('../models/Vehicles');
 const Voucher = require('../models/Voucher');
-const Invoice = require('../models/Invoice');
 const fs = require('fs');
 const path = require('path');
 
@@ -9,7 +8,8 @@ const Notif = require('../middleware/notif.middleware');
 
 module.exports = {
 
-    addVehicle: async (req, res) => {
+    addVehicle: (req, res) => {
+
         if (req.isAuthenticated()) {
             const newVehicle = new Vehicles({
                 vehicle_no: req.body.vehicleNo,
@@ -17,18 +17,22 @@ module.exports = {
                 registered_owner: req.body.regOwner,
                 registered_date: req.body.regDate,
                 istimara_exdate: req.body.exDate,
-                istimara_file: req.files['istimaraFile'][0].filename,
+                istimara_file: `${req.files['istimaraFile'][0].fieldname}-${req.body.vehicleNo}-${req.files['istimaraFile'][0].originalname}`,
                 insurance_exdate: req.body.exDateIn,
-                insurance_file: req.files['insuranceFile'][0].filename,
+                insurance_file: `${req.files['insuranceFile'][0].fieldname}-${req.body.vehicleNo}-${req.files['insuranceFile'][0].originalname}`,
                 expenses: 0.0,
                 income: 0.0,
                 status: 1,
                 created_by: req.user.name,
             });
-            newVehicle.save((err) => {
+            newVehicle.save(async (err, result) => {
                 if (err) {
                     res.json({ message: err.message, type: 'danger' });
                 } else {
+
+                    const s3UpIs = await s3Upload(req.files['istimaraFile'][0], req.body.vehicleNo, 'vehicle');
+                    const s3UpIn = await s3Upload(req.files['insuranceFile'][0], req.body.vehicleNo, 'vehicle');
+
                     req.session.message = {
                         type: 'success',
                         message: 'Vehicle added successfully!',
@@ -42,7 +46,6 @@ module.exports = {
         }
     },
 
-
     viewVehicles: async (req, res) => {
         if (req.isAuthenticated()) {
 
@@ -53,28 +56,28 @@ module.exports = {
 
                     Notif.getINV((err, dataINV) => {
                         Notif.getVehicle((err, dataVehicle) => {
-                        Notif.getVehicleIn((err, dataVehicleIn) => {
-                            Notif.getEmployee((err, dataEmployee) => {
-                                let nav = {
-                                    title: "Accounts",
-                                    child: "Vehicle",
-                                    view: 2,
-                                    notif: {
-                                        exIstimara: dataVehicle,
-                                        exInsurance: dataVehicleIn,
-                                        expenPending: dataINV,
-                                        exQID: dataEmployee
-                                    }
-                                };
+                            Notif.getVehicleIn((err, dataVehicleIn) => {
+                                Notif.getEmployee((err, dataEmployee) => {
+                                    let nav = {
+                                        title: "Accounts",
+                                        child: "Vehicle",
+                                        view: 2,
+                                        notif: {
+                                            exIstimara: dataVehicle,
+                                            exInsurance: dataVehicleIn,
+                                            expenPending: dataINV,
+                                            exQID: dataEmployee
+                                        }
+                                    };
 
-                                res.render('vehicle', {
-                                    title: "Vehicle List",
-                                    vehicleList: foundVehicles,
-                                    nav: nav
-                                })
+                                    res.render('vehicle', {
+                                        title: "Vehicle List",
+                                        vehicleList: foundVehicles,
+                                        nav: nav
+                                    })
 
+                                });
                             });
-                        });
                         });
                     });
 
@@ -91,58 +94,73 @@ module.exports = {
     updateVehicles: async (req, res) => {
         if (req.isAuthenticated()) {
 
+
+
             let id = req.params.id;
 
-            Vehicles.findByIdAndUpdate(id, {
-                vehicle_no: req.body.vehicleNo,
-                make_model: req.body.makeModel,
-                registered_owner: req.body.regOwner,
-                registered_date: req.body.regDate,
-                istimara_exdate: req.body.exDate,
-                insurance_exdate: req.body.exDateIn
-            }, (err, result) => {
+            Vehicles.findById(id, (err, vResult) => {
                 if (err) {
-                    res.json({ message: err.message, type: 'danger' });
+                    res.json({ message: err.message });
                 } else {
 
-                    if (req.files['istimaraFile']) { // new istimara
-                        const filePath = path.join(__dirname, '../public/attachment/' + result.istimara_file);
-                        fs.unlink(filePath, (err) => { // remove old istimara
-                            if (err) {
-                                res.json({ message: err.message });
-                            } else { //update new istimara to db
+
+                    Vehicles.findByIdAndUpdate(id, {
+                        vehicle_no: req.body.vehicleNo,
+                        make_model: req.body.makeModel,
+                        registered_owner: req.body.regOwner,
+                        registered_date: req.body.regDate,
+                        istimara_exdate: req.body.exDate,
+                        insurance_exdate: req.body.exDateIn
+                    }, async (err, result) => {
+                        if (err) {
+                            res.json({ message: err.message, type: 'danger' });
+                        } else {
+
+                            if (req.files['istimaraFile']) { // new istimara
+
+                                const S3up = await s3Upload(req.files['istimaraFile'][0], req.body.vehicleNo,'vehicle');
+
                                 Vehicles.findByIdAndUpdate(id, {
-                                    istimara_file: req.files['istimaraFile'][0].filename
-                                }, (err) => {
-                                    (err) && res.json({ message: err.message });
-                                })
-                            }
-                        })
-                    }
+                                    istimara_file: `${req.files['istimaraFile'][0].fieldname}-${req.body.vehicleNo}-${req.files['istimaraFile'][0].originalname}`
+                                }, async (err) => {
+                                    if (err) {
 
-                    if (req.files['insuranceFile']) { // new  insurance
-                        const filePath = path.join(__dirname, '../public/attachment/' + result.insurance_file);
-                        fs.unlink(filePath, (err) => { // remove old  insurance
-                            if (err) {
-                                res.json({ message: err.message });
-                            } else { //update new  insurance to db
+                                        res.json({ message: err.message });
+                                    } else {
+                                        const S3del = await s3Delete(vResult.istimara_file,'vehicle')
+                                    }
+                                })
+
+                            }
+
+                            if (req.files['insuranceFile']) { // new  insurance
+                                const S3up = await s3Upload(req.files['insuranceFile'][0], req.body.vehicleNo,'vehicle');
+
                                 Vehicles.findByIdAndUpdate(id, {
-                                    insurance_file: req.files['insuranceFile'][0].filename
-                                }, (err) => {
-                                    (err) && res.json({ message: err.message });
+                                    insurance_file: `${req.files['insuranceFile'][0].fieldname}-${req.body.vehicleNo}-${req.files['insuranceFile'][0].originalname}`
+                                }, async (err) => {
+                                    if (err) {
+
+                                        res.json({ message: err.message });
+                                    } else {
+                                        const S3del = await s3Delete(vResult.insurance_file,'vehicle')
+                                    }
                                 })
+
                             }
-                        })
-                    }
 
-                    req.session.message = {
-                        type: 'success',
-                        message: 'Vehicle updated successfully!'
-                    };
+                            req.session.message = {
+                                type: 'success',
+                                message: 'Vehicle updated successfully!'
+                            };
 
-                    res.redirect('/vehicle-list')
+                            res.redirect('/vehicle-list')
+                        }
+                    });
                 }
-            });
+            })
+
+
 
 
         } else {
@@ -162,27 +180,18 @@ module.exports = {
 
                     if (result.income === 0 && result.expenses === 0) {
 
-                        Vehicles.findByIdAndRemove(id, (err, foundDeleted) => {
+                        Vehicles.findByIdAndRemove(id, async (err, foundDeleted) => {
 
                             if (err) {
                                 res.json({ message: err.message });
                             } else {
 
-                                    // delete file  istimara
-                                    const filePathIS = path.join(__dirname, '../public/attachment/' + foundDeleted.istimara_file);
-                                    fs.unlink(filePathIS, (err) => { 
-                                        if (err) {
-                                            res.json({ message: err.message });
-                                        } 
-                                    })
-                                
-                                       // delete file  insurance
-                                    const filePathIN = path.join(__dirname, '../public/attachment/' + foundDeleted.insurance_file);
-                                    fs.unlink(filePathIN, (err) => { // remove old  insurance
-                                        if (err) {
-                                            res.json({ message: err.message });
-                                        } 
-                                    })
+                                // delete file  istimara
+                                const s3Del = await s3Delete(foundDeleted.istimara_file,'vehicle')
+
+                                // delete file  insurance
+                                const s3Del1 = await s3Delete(foundDeleted.insurance_file,'vehicle')
+
 
 
                                 req.session.message = {
@@ -330,24 +339,10 @@ module.exports = {
     dlAttachment: async (req, res) => {
         if (req.isAuthenticated()) {
 
-            const filePath = path.join(__dirname, '../public/attachment/' + req.params.filename);
-            console.log(filePath)
+            res.attachment(req.params.filename);
+            const fileStream = await s3Download(req.params.filename, 'vehicle');
+            fileStream.pipe(res);
 
-            res.download(
-                filePath,
-                req.params.filename, // Remember to include file extension
-
-                (err) => {
-
-                    if (err) {
-
-                        res.json({ message: err.message });
-
-                    } else {
-                        console.log(filePath)
-                    }
-
-                });
         } else {
             res.redirect("/sign-in");
         }

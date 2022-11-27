@@ -1,4 +1,4 @@
-
+const { s3Upload, s3Delete, s3Download } = require('../middleware/s3Service.middleware')
 const Employee = require('../models/Employee');
 const fs = require('fs');
 const path = require('path');
@@ -22,7 +22,7 @@ module.exports = {
                 address: req.body.address,
                 qid: req.body.qid,
                 ex_qid: req.body.exQID,
-                qid_file: req.files['qidFile'][0].filename,
+                qid_file: `${req.files['qidFile'][0].fieldname}-${req.body.qid}-${req.files['qidFile'][0].originalname}`,
                 bank_name: req.body.bankName,
                 iban: req.body.iban,
                 salary: salaryAmount,
@@ -31,10 +31,12 @@ module.exports = {
                 updated_by: req.user.name,
                 created_by: req.user.name
             });
-            newEmployee.save((err) => {
+            newEmployee.save(async(err) => {
                 if (err) {
                     res.json({ message: err.message, type: 'danger' });
                 } else {
+                    const s3UpQID = await s3Upload(req.files['qidFile'][0], req.body.qid, 'employee');
+                    
                     req.session.message = {
                         type: 'success',
                         message: 'New employee added successfully!',
@@ -113,23 +115,23 @@ module.exports = {
                 iban: req.body.iban,
                 salary: salaryAmount,
                 updated_by: req.user.name
-            }, (err, result) => {
+            },async (err, result) => {
                 if (err) {
                     res.json({ message: err.message, type: 'danger' });
                 } else {
 
                     if (req.files['qidFile']) { // new istimara
-                        const filePath = path.join(__dirname, '../public/attachment/' + result.qid_file);
-                        fs.unlink(filePath, (err) => { // remove old istimara
-                            if (err) {
-                                res.json({ message: err.message });
-                            } else { //update new istimara to db
-                                Employee.findByIdAndUpdate(id, {
-                                    qid_file: req.files['qidFile'][0].filename,
-                                }, (err) => {
-                                    (err) && res.json({ message: err.message });
-                                })
-                            }
+
+                        const S3up = await s3Upload(req.files['qidFile'][0], req.body.qid,'employee');
+                       
+                        Employee.findByIdAndUpdate(id, {
+                            qid_file: `${req.files['qidFile'][0].fieldname}-${req.body.qid}-${req.files['qidFile'][0].originalname}`,
+                        }, async(err) => {
+                           if (err) {
+                             res.json({ message: err.message });
+                           }else{
+                            const S3del = await s3Delete(result.qid_file,'employee')
+                           }
                         })
                     }
 
@@ -153,18 +155,14 @@ module.exports = {
 
             let id = req.params.id
 
-            Employee.findByIdAndRemove(id, (err, result) => {
+            Employee.findByIdAndRemove(id, async(err, result) => {
 
                 if (err) {
                     res.json({ message: err.message });
                 } else {
 
-                    const filePath = path.join(__dirname, '../public/attachment/' + result.qid_file);
-                    fs.unlink(filePath, (err) => { // remove old istimara
-                        if (err) {
-                            res.json({ message: err.message });
-                        }
-                    })
+                                // delete file  QID FILE
+                                const s3Del1 = await s3Delete(result.qid_file,'employee')
 
                     req.session.message = {
                         type: 'info',
@@ -185,24 +183,10 @@ module.exports = {
     dlQID: async (req, res) => {
         if (req.isAuthenticated()) {
 
-            const filePath = path.join(__dirname, '../public/attachment/' + req.params.filename);
-            console.log(filePath)
+            res.attachment(req.params.filename);
+            const fileStream = await s3Download(req.params.filename, 'employee');
+            fileStream.pipe(res);
 
-            res.download(
-                filePath,
-                req.params.filename, // Remember to include file extension
-
-                (err) => {
-
-                    if (err) {
-
-                        res.json({ message: err.message });
-
-                    } else {
-                        console.log(filePath)
-                    }
-
-                });
         } else {
             res.redirect("/sign-in");
         }
