@@ -67,7 +67,7 @@
                   <%})%>
                     <div class="mt-4 text-end">
 
-                      <a href="" class="btn btn-primary w-50 fs-h3 createBill">Rent Vehicle <i
+                      <a href="" class="btn btn-primary w-50 fs-h3 createBill aDisabled">Rent Vehicle <i
                           class="ti ti-chevron-right fs-h3 ms-2"></i></a>
 
                     </div>
@@ -297,7 +297,7 @@
         </div>
 
 
-        <div class="col-6">
+        <div class="col-lg-6">
           <div class="card">
             <div class="card-header hd-right">
               <div class="row row-cards">
@@ -398,7 +398,7 @@
         </div>
 
 
-        <div class="col-6">
+        <div class="col-lg-6">
           <div class="card">
             <div class="card-header hd-right">
               <div class="row row-cards">
@@ -503,8 +503,12 @@
       $("#billForm").on("click", function () {
         var radVal = $("input[name='sVehicle']:checked").val();
         $("a.createBill").attr("href", "create-voucher/" + radVal)
-
+        if(radVal) {
+         $("a.createBill").removeClass("aDisabled")
+        }
       });
+
+     
 
       $("#payForm").on("click", function () {
         var radVal = $("input[name='form-payment']:checked").val();
@@ -512,6 +516,8 @@
 
       });
     });
+
+  
   </script>
 
   <script>
