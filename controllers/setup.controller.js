@@ -127,7 +127,7 @@ module.exports = {
 
       let id = req.params.id
 
-      Voucher.find({ company_id: id }, (err, result) => {
+      User.find({ company_id: id }, (err, result) => {
         if (err) {
           res.json({ message: err.message });
         } else {
@@ -151,7 +151,7 @@ module.exports = {
 
             req.session.message = {
               type: 'danger',
-              message: 'Thi Company cannot not be deleted since it has one or more entries and still present!',
+              message: 'Thi Company cannot not be deleted since it has one or more users and still active!',
             };
             res.redirect('/company-setup')
 

@@ -5,13 +5,15 @@ const Settings = require('../models/Settings');
 const PurposeTransfer = require('../models/PurposeTransfer');
 const LoginHistory = require('../models/LoginHistory');
 const Invoice = require('../models/Invoice');
+const Voucher = require('../models/Voucher');
 const Vehicles = require('../models/Vehicles');
 const Notif = require('../middleware/notif.middleware');
 const fs = require('fs');
 const path = require('path');
 
-let alertSetBill;
-let alertSetPay;
+let alertSetVou;
+let alertSetInv;
+let alertSetOther;
 
 
 module.exports = {
@@ -46,32 +48,32 @@ module.exports = {
 
                                     Notif.getINV((err, dataINV) => {
                                         Notif.getVehicle((err, dataVehicle) => {
-                                        Notif.getVehicleIn((err, dataVehicleIn) => {
-                                            Notif.getEmployee((err, dataEmployee) => {
+                                            Notif.getVehicleIn((err, dataVehicleIn) => {
+                                                Notif.getEmployee((err, dataEmployee) => {
 
 
-                                                let nav = {
-                                                    title: "Settings",
-                                                    child: "Master",
-                                                    view: 2,
-                                                    notif: {
-                                                        exIstimara: dataVehicle,
-                                                        exInsurance: dataVehicleIn,
-                                                        expenPending: dataINV,
-                                                        exQID: dataEmployee
-                                                    }
-                                                };
+                                                    let nav = {
+                                                        title: "Settings",
+                                                        child: "Master",
+                                                        view: 2,
+                                                        notif: {
+                                                            exIstimara: dataVehicle,
+                                                            exInsurance: dataVehicleIn,
+                                                            expenPending: dataINV,
+                                                            exQID: dataEmployee
+                                                        }
+                                                    };
 
-                                                res.render('account-ledger', {
-                                                    title: "Settings - Account Ledger",
-                                                    nav: nav,
-                                                    chartFoundItems: chartFoundItems,
-                                                    purposeFoundItems: purposeFoundItems,
-                                                    costFoundItems: costFoundItems,
+                                                    res.render('account-ledger', {
+                                                        title: "Settings - Account Ledger",
+                                                        nav: nav,
+                                                        chartFoundItems: chartFoundItems,
+                                                        purposeFoundItems: purposeFoundItems,
+                                                        costFoundItems: costFoundItems,
+                                                    })
                                                 })
                                             })
                                         })
-                                    })
                                     })
 
 
@@ -194,31 +196,31 @@ module.exports = {
 
                                     Notif.getINV((err, dataINV) => {
                                         Notif.getVehicle((err, dataVehicle) => {
-                                        Notif.getVehicleIn((err, dataVehicleIn) => {
-                                            Notif.getEmployee((err, dataEmployee) => {
+                                            Notif.getVehicleIn((err, dataVehicleIn) => {
+                                                Notif.getEmployee((err, dataEmployee) => {
 
 
-                                                let nav = {
-                                                    title: "Settings",
-                                                    child: "Master",
-                                                    view: 2,
-                                                    notif: {
-                                                        exIstimara: dataVehicle,
-                                                        exInsurance: dataVehicleIn,
-                                                        expenPending: dataINV,
-                                                        exQID: dataEmployee
-                                                    }
-                                                };
+                                                    let nav = {
+                                                        title: "Settings",
+                                                        child: "Master",
+                                                        view: 2,
+                                                        notif: {
+                                                            exIstimara: dataVehicle,
+                                                            exInsurance: dataVehicleIn,
+                                                            expenPending: dataINV,
+                                                            exQID: dataEmployee
+                                                        }
+                                                    };
 
-                                                res.render('cost-center', {
-                                                    title: "Settings - Cost Center",
-                                                    nav: nav,
-                                                    chartFoundItems: chartFoundItems,
-                                                    purposeFoundItems: purposeFoundItems,
-                                                    costFoundItems: costFoundItems,
+                                                    res.render('cost-center', {
+                                                        title: "Settings - Cost Center",
+                                                        nav: nav,
+                                                        chartFoundItems: chartFoundItems,
+                                                        purposeFoundItems: purposeFoundItems,
+                                                        costFoundItems: costFoundItems,
+                                                    })
                                                 })
                                             })
-                                        })
                                         })
                                     })
 
@@ -342,32 +344,32 @@ module.exports = {
 
                                     Notif.getINV((err, dataINV) => {
                                         Notif.getVehicle((err, dataVehicle) => {
-                                        Notif.getVehicleIn((err, dataVehicleIn) => {
-                                            Notif.getEmployee((err, dataEmployee) => {
+                                            Notif.getVehicleIn((err, dataVehicleIn) => {
+                                                Notif.getEmployee((err, dataEmployee) => {
 
 
-                                                let nav = {
-                                                    title: "Settings",
-                                                    child: "Master",
-                                                    view: 2,
-                                                    notif: {
-                                                        exIstimara: dataVehicle,
-                                                        exInsurance: dataVehicleIn,
-                                                        expenPending: dataINV,
-                                                        exQID: dataEmployee
+                                                    let nav = {
+                                                        title: "Settings",
+                                                        child: "Master",
+                                                        view: 2,
+                                                        notif: {
+                                                            exIstimara: dataVehicle,
+                                                            exInsurance: dataVehicleIn,
+                                                            expenPending: dataINV,
+                                                            exQID: dataEmployee
 
-                                                    }
-                                                };
+                                                        }
+                                                    };
 
-                                                res.render('transfer-purpose', {
-                                                    title: "Settings - Transfer Purpose",
-                                                    nav: nav,
-                                                    chartFoundItems: chartFoundItems,
-                                                    purposeFoundItems: purposeFoundItems,
-                                                    costFoundItems: costFoundItems,
+                                                    res.render('transfer-purpose', {
+                                                        title: "Settings - Transfer Purpose",
+                                                        nav: nav,
+                                                        chartFoundItems: chartFoundItems,
+                                                        purposeFoundItems: purposeFoundItems,
+                                                        costFoundItems: costFoundItems,
+                                                    })
                                                 })
                                             })
-                                        })
                                         })
                                     })
                                 }
@@ -462,79 +464,52 @@ module.exports = {
     //--------------------------------------------------------  SYSTEM SETTINGS //
     viewSysSettings: async (req, res) => {
         if (req.isAuthenticated()) {
-
-            const settings1 = new Settings({
-                name: "voucher_settings",
-                prefix: "#VOU/2022/",
-                starting_no: "100",
-                created_by: "Admin"
-            });
-
-            const settings2 = new Settings({
-                name: "invoice_settings",
-                prefix: "#INV/2022/",
-                starting_no: "100",
-                created_by: "Admin"
-            });
-
-            const defaultSettings = [settings1, settings2];
-
+          
             Settings.find({}, (err, foundItems) => {
-                if (foundItems.length === 0) {
-                    Settings.insertMany(defaultSettings, err => {
-                        if (err) {
-                            res.json({ message: err.message });
-                        } else {
-                            console.log("Successfully saved settings to DB.");
-                        }
-                    });
-                    res.redirect("/system-settings");
+                if (err) {
+                    res.json({ message: err.message });
                 } else {
+                    Notif.getINV((err, dataINV) => {
+                        Notif.getVehicle((err, dataVehicle) => {
+                            Notif.getVehicleIn((err, dataVehicleIn) => {
+                                Notif.getEmployee((err, dataEmployee) => {
 
-                    Settings.findOne({ name: "voucher_settings" }, (err, billSetting) => {
-                        if (err) {
-                            res.json({ message: err.message });
-                        } else {
+                                    let nav = {
+                                        title: "Settings",
+                                        child: "System Settings",
+                                        view: 2,
+                                        notif: {
+                                            exIstimara: dataVehicle,
+                                            expenPending: dataINV,
+                                            exInsurance: dataVehicleIn,
+                                            exQID: dataEmployee
+                                        }
+                                    };
 
-                            Settings.findOne({ name: "invoice_settings" }, (err, PAVSetting) => {
-
-                                if (err) {
-                                    res.json({ message: err.message });
-                                } else {
-
-                                    Notif.getINV((err, dataINV) => {
-                                        Notif.getVehicle((err, dataVehicle) => {
-                                        Notif.getVehicleIn((err, dataVehicleIn) => {
-                                            Notif.getEmployee((err, dataEmployee) => {
-
-                                                let nav = {
-                                                    title: "Settings",
-                                                    child: "System Settings",
-                                                    view: 2,
-                                                    notif: {
-                                                        exIstimara: dataVehicle,
-                                                        expenPending: dataINV,
-                                                        exInsurance: dataVehicleIn,
-                                                        exQID: dataEmployee
-                                                    }
-                                                };
+                                    let settingsAlert = {
+                                        alertSetVou: alertSetVou,
+                                        alertSetInv: alertSetInv,
+                                        alertSetOther: alertSetOther
+                                    }
 
 
-                                                res.render('system-settings', {
-                                                    title: "Settings - System Settings",
-                                                    nav: nav,
-                                                    billSetting: billSetting,
-                                                    PAVSetting: PAVSetting,
-                                                })
-                                            })
-                                        })
-                                    })
+                                    res.render('system-settings', {
+                                        title: "Settings - System Settings",
+                                        nav: nav,
+                                        settingsAlert: settingsAlert,
+                                        foundSettings: foundItems
                                     })
 
-                                }
+                                    alertSetVou = 0;
+                                    alertSetInv = 0;
+                                    alertSetOther= 0;
+                                })
                             })
-                        }
+                        })
                     })
+
+
+
 
                 }
             })
@@ -550,86 +525,114 @@ module.exports = {
     updateSysSettings: async (req, res) => {
         if (req.isAuthenticated()) {
 
-            let billNo = req.body.billPrefix + req.body.billStartingNo;
-            let payNo = req.body.payPrefix + req.body.payStartingNo;
-
-            if (parseFloat(req.body.actualBillStartingNo) <= parseFloat(req.body.billStartingNo)) {
-
-                SupplierBill.find({ bill_number: billNo }, (err, supBill) => {
+            Settings.findOneAndUpdate({ name: "expenses_settings" },
+                {
+                    $set: {
+                        value: + req.body.expensesAmout,
+                        updated_by: req.user.name
+                    }
+                }, (err) => {
                     if (err) {
                         res.json({ message: err.message });
                     } else {
 
+                        alertSetOther = 1
 
-                        if (supBill.length === 0) {
+                        Settings.findOneAndUpdate({ name: "documents_settings" },
+                            {
+                                $set: {
+                                    value: + req.body.docsNotif,
+                                    updated_by: req.user.name
+                                }
+                            }, (err) => {
+                                if (err) {
+                                    res.json({ message: err.message });
+                                } else {
 
-                            Settings.findOneAndUpdate({ _id: req.body.billID },
-                                {
-                                    $set: {
-                                        prefix: req.body.billPrefix,
-                                        starting_no: req.body.billStartingNo
-                                    }
-                                }, (err) => {
-                                    if (err) {
-                                        res.json({ message: err.message });
+                                    let voucherNo = req.body.vouPrefix + req.body.vouStartingNo;
+                                    let invNo = req.body.invPrefix + req.body.invStartingNo;
+
+                                    if (parseFloat(req.body.actualVouStartingNo) <= parseFloat(req.body.vouStartingNo)) {
+
+                                        Voucher.find({ voucher_no: voucherNo }, (err, vouFound) => {
+                                            if (err) {
+                                                res.json({ message: err.message });
+                                            } else {
+
+
+                                                if (vouFound.length === 0) {
+
+                                                    Settings.findOneAndUpdate({ _id: req.body.vouID },
+                                                        {
+                                                            $set: {
+                                                                prefix: req.body.vouPrefix,
+                                                                starting_no: req.body.vouStartingNo
+                                                            }
+                                                        }, (err) => {
+                                                            if (err) {
+                                                                res.json({ message: err.message });
+                                                            } else {
+                                                                alertSetVou = 1;
+                                                            }
+
+                                                        });
+
+                                                } else {
+
+                                                    alertSetVou = 2;
+                                                }
+                                            }
+                                        });
+
                                     } else {
-                                        alertSetBill = 1;
+                                        alertSetVou = 3;
                                     }
 
-                                });
-
-                        } else {
-
-                            alertSetBill = 2;
-                        }
-                    }
-                });
-
-            } else {
-                alertSetBill = 3;
-            }
-
-            if (parseFloat(req.body.actualPayStartingNo) <= parseFloat(req.body.payStartingNo)) {
+                                    if (parseFloat(req.body.actualInvStartingNo) <= parseFloat(req.body.invStartingNo)) {
 
 
-                PaymentVoucher.find({ payment_voucher_no: payNo }, (err, payVouBill) => {
-                    if (err) {
-                        res.json({ message: err.message });
-                    } else {
+                                        Invoice.find({ inv_no: invNo }, (err, payVouBill) => {
+                                            if (err) {
+                                                res.json({ message: err.message });
+                                            } else {
 
-                        if (payVouBill.length === 0) {
+                                                if (payVouBill.length === 0) {
 
-                            Settings.findOneAndUpdate({ _id: req.body.payID },
-                                {
-                                    $set: {
-                                        prefix: req.body.payPrefix,
-                                        starting_no: req.body.payStartingNo
-                                    }
-                                }, (err2) => {
-                                    if (err2) {
-                                        res.json({ message: err.message });
+                                                    Settings.findOneAndUpdate({ _id: req.body.invID },
+                                                        {
+                                                            $set: {
+                                                                prefix: req.body.invPrefix,
+                                                                starting_no: req.body.invStartingNo
+                                                            }
+                                                        }, (err2) => {
+                                                            if (err2) {
+                                                                res.json({ message: err.message });
+                                                            } else {
+                                                                alertSetInv = 1;
+                                                            }
+                                                        });
+
+                                                } else {
+                                                    alertSetInv = 2;
+                                                }
+                                            }
+                                        });
+
                                     } else {
-                                        alertSetPay = 1;
+
+                                        alertSetInv = 3;
                                     }
-                                });
+                                    res.redirect('/system-settings');
 
-                        } else {
-                            alertSetPay = 2;
-                        }
+
+
+                                }
+
+                            });
+
                     }
+
                 });
-
-            } else {
-
-                alertSetPay = 3;
-            }
-
-            req.session.settingsAlert = {
-                alertSetPay: alertSetPay,
-                alertSetBill: alertSetBill,
-            };
-            res.redirect('/system-settings');
-
 
         } else {
             res.redirect("/sign-in");

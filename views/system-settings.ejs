@@ -1,105 +1,147 @@
 <%- include('layout/header') %>
 
 <div class="page-wrapper">
-           <div class="container-xl">
+         
             <!-- Page title -->
             <div class="page-header d-print-none">
-              <div class="row g-2 align-items-center">
-                <div class="col">
-                  <!-- Page pre-title -->
-                  <div class="page-pretitle">
-                    Settings
+              <div class="container-xl">
+                <div class="row g-2 align-items-center">
+                  <div class="col">
+                    <h2 class="page-title">
+                      System Setup
+                    </h2>
                   </div>
-                  <h2 class="page-title">
-                    System Settings
-                  </h2>
                 </div>
-                <!-- Page title actions -->
-                <div class="col-12 col-md-auto ms-auto d-print-none">
-           
-                </div>
-      
               </div>
             </div>
-          </div>
+          
     <div class="page-body">
   
       <div class="container-xl">
-     
-        <div class="row">
-          <div class="col-12 col-md-4 px-4">
-            <div class="list-group list-group-transparent mb-3 ml-3">
-              <a class="list-group-item list-group-item-action d-flex align-items-center active" href="/system-settings">
-              System Setting
-                <small class="text-muted ms-auto"> <i class="ti ti-adjustments"></i></small>
-              </a>
+        <div class="card">
+        <div class="row g-0">
+          <div class="col-3 d-none d-md-block border-end">
+            <div class="card-body">
+              <h4 class="subheader">BUSINESS SETTINGS</h4>
+              <div class="list-group list-group-transparent">
+                <a href="/system-settings" class="list-group-item list-group-item-action d-flex align-items-center active">System Setting</a>
+               </div>
             </div>
           </div>
-
-          <div class="col-12 col-md-8">
-            <div class="row">
-
-              <div class="col-12">
-                <div class="card">
-                  <div class="card-header hd-right">
+          <div class="col d-flex flex-column">
+            <form action="/update-system-settings" method="post">
+           
+              <div class="card-body">
+              <h3 class="mb-4">Approval & Expiration Settings</h3>
+                <div class="row">
+                <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label class="form-label">Expenses Approval</label>
+                      <small class="form-hint mb-2"> <strong class="text-orange">Maximum Amount </strong> of expenses to send for approval </small>
                    
-                    <div class="row align-items-center">
-                      <div class="col">
-                         <h3 class="card-title">System Settings</h3>
-                       </div>
+                        <input type="text" name="expensesAmout" value="<%= foundSettings[2].value %>" class="form-control otherSet <%- (settingsAlert) && (settingsAlert.alertSetOther === 1) && 'is-valid mb-2' %> " required/> 
+                        <%if (settingsAlert) {%>
+                          <%if (settingsAlert.alertSetOther === 1) {%>
+                          <small class="form-hint text-success notifX">Expenses Approval succesfully saved.</small>
+                          <%}%>
+                          <%}%>
                     </div>
-                  </div>
-                  <div class="card-body">
-                    <form action="/update-system-settings" method="post">
-                      <div class="row">
-                      <div class="col-6">
-                          <div class="form-group mb-4">
-                            <label class="form-label">Voucher Prefix</label>
-                            <small class="form-hint mb-2">Eg: #VOU/2022</small>
-                            <div>
-                              <input type="text" name="billPrefix" value="<%= billSetting.prefix %>" class="form-control" required readonly/> 
-                            </div>
-                          </div>
-                          
-                          <div class="form-group">
-                            <label class="form-label">Voucher Number</label>
-                            <small class="form-hint mb-2">This will be the next Voucher number.</small>
-                            <div>
-                              <input type="number" name="billStartingNo" value="<%= billSetting.starting_no %>" class="form-control billNo" required/>
-                              <input type="number" name="actualBillStartingNo" value="<%= billSetting.starting_no %>" class="form-control actualBillNo" hidden/>
-                            </div>
-                          </div>
-                        </div>    
-                        <div class="col-6">
-                            <div class="form-group mb-4">
-                              <label class="form-label">Invoice Prefix</label>
-                              <small class="form-hint mb-2">Eg: #INV/2022</small>
-                              <div>
-                                <input type="text" name="payPrefix" value="<%= PAVSetting.prefix %>" class="form-control" required readonly/>
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="form-label">Invoice Starting Number </label>
-                              <small class="form-hint mb-2">This will be the next Invoice number.</small>
-                              <div>
-                                <input type="number" name="payStartingNo" value="<%= PAVSetting.starting_no %>" class="form-control payID" required/>
-                                <input type="number" name="actualPayStartingNo" value="<%= PAVSetting.starting_no %>" class="form-control actualPayNo" hidden/>
-                                <input type="text" name="payID" value="<%= PAVSetting._id %>" class="form-control" hidden>
-                              </div>
-                            </div>
-                         </div>
-                    </div>
-                      <div class="form-footer">
-                        <button type="submit" name="billID" value="<%= billSetting._id %>" class="btn btn-primary">Save Changes</button>
+                  </div>    
+                  <div class="col-6">
+                      <div class="form-group mb-4">
+                        <label class="form-label">Document Expiration Notification</label>
+                        <small class="form-hint mb-2"> <strong class="text-orange">Number of Days </strong> to notify before document expiration</small>
+                     
+                          <input type="number" name="docsNotif" value="<%= foundSettings[3].value %>" class="form-control otherSet <%- (settingsAlert) && (settingsAlert.alertSetOther === 1) && 'is-valid mb-2' %>" required/>
+                            <%if (settingsAlert) {%>
+                            <%if (settingsAlert.alertSetOther === 1) {%>
+                            <small class="form-hint text-success notifX">Document Expiration Notification succesfully saved.</small>
+                            <%}%>
+                            <%}%>
+                        
                       </div>
-                    </form>
-                  </div>
-                </div>
+                   </div>
               </div>
-
             </div>
+
+
+            <div class="card-body">
+              <h3 class="mb-4">Transactions Number Settings</h3>
+                <div class="row">
+                <div class="col-6">
+                    <div class="form-group mb-4">
+                      <label class="form-label">Voucher Prefix</label>
+                      <small class="form-hint mb-2">Eg: #VOU/2022</small>
+                      <div>
+                        <input type="text" name="vouPrefix" value="<%= foundSettings[0].prefix %>" class="form-control" required readonly/> 
+                      </div>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label class="form-label">Voucher Number</label>
+                      <small class="form-hint mb-2">This will be the next Voucher number</small>
+                      <div>
+                        <input type="number" name="vouStartingNo" value="<%= foundSettings[0].starting_no %>" class="form-control vouNo <%- (settingsAlert) && (settingsAlert.alertSetVou === 1) && 'is-valid mb-2' %> <%- (settingsAlert) && (settingsAlert.alertSetVou === 3) && 'is-invalid mb-2' %> " required/>
+                        <input type="number" name="actualVouStartingNo" value="<%= foundSettings[0].starting_no %>" class="form-control" hidden/>
+                        <%if (settingsAlert) {%>
+                            <%if (settingsAlert && settingsAlert.alertSetVou === 1) {%>
+                            <small class="form-hint text-success notifX">Voucher Number Prefix and starting number succesfully saved.</small>
+                            <%}else if(settingsAlert.alertSetVou === 2){%>
+                            <small class="form-hint text-danger notifX">Voucher Number already exist. <br> Please enter different prefix and starting number.</small>
+                            <%}else if(settingsAlert.alertSetVou === 3){%>
+                            <small class="form-hint text-danger notifX">Voucher Number should greater than current next voucher no.</small>
+                            <%}%>
+                            <%}%>
+
+                         
+                        </div>
+                    </div>
+                  </div>    
+                  <div class="col-6">
+                      <div class="form-group mb-4">
+                        <label class="form-label">Invoice Prefix</label>
+                        <small class="form-hint mb-2">Eg: #INV/2022</small>
+                        <div>
+                          <input type="text" name="invPrefix" value="<%= foundSettings[1].prefix %>" class="form-control" required readonly/>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Invoice Starting Number </label>
+                        <small class="form-hint mb-2">This will be the next Invoice number</small>
+                        <div>
+                          <input type="number" name="invStartingNo" value="<%= foundSettings[1].starting_no %>" class="form-control invID <%- (settingsAlert) && (settingsAlert.alertSetInv === 1) && 'is-valid mb-2' %> <%- (settingsAlert) && (settingsAlert.alertSetInv === 3) && 'is-invalid mb-2' %>" required/>
+                          <input type="number" name="actualInvStartingNo" value="<%= foundSettings[1].starting_no %>" class="form-control" hidden/>
+                          <input type="text" name="vouID" value="<%= foundSettings[0]._id %>" class="form-control" hidden>
+                          <%if (settingsAlert) {%>
+                         
+                            <%if (settingsAlert.alertSetInv === 1) {%>
+                            <small class="form-hint text-success notifX">Invoice Number Prefix and starting number succesfully saved.</small>
+                            <%}else if(settingsAlert.alertSetInv === 2){%>
+                            <small class="form-hint text-danger notifX">Invoice Number already exist. <br> Please enter different prefix and starting number.</small>
+                            <%}else if(settingsAlert.alertSetInv === 3){%>
+                            <small class="form-hint text-danger notifX">Invoice Number should greater than current next invoice no.</small>
+                            <%}%>
+                            <%}%>
+
+                         
+                        </div>
+                      </div>
+                   </div>
+              </div>
+            </div>
+            <div class="card-footer bg-transparent mt-auto">
+              <div class="btn-list justify-content-end">
+                <a href="/" class="btn">
+                  Cancel
+                </a>
+                <button type="submit" name="invID" value="<%= foundSettings[1]._id %>" class="btn btn-secondary">Save Changes</button>
+              </div>
+            </div>
+          </form>
           </div>
+          
       </div>
+    </div>
     </div>
 
 
@@ -107,55 +149,16 @@
 
   ' <% if (settingsAlert) {%>'
 
-        let getAlertBill = + "<%= settingsAlert.alertSetBill %>";
-        let getAlertPay = + "<%= settingsAlert.alertSetPay %>";
+         setTimeout(function () {
+              $('.notifX').remove();
 
-        if(getAlertBill === 1){
-          $('.billNo').after('<small class="form-hint text-success billExist">Bill Number Prefix and starting number succesfully saved.</small>');
-          $('.billNo').addClass('is-valid mb-2');
-
-          setTimeout(function () {
-            $('.billExist').remove();
-            $('.billNo').removeClass('is-valid mb-2');
-            }, 10000);
-        }else if (getAlertBill === 2) {
-          $('.billNo').after('<small class="form-hint text-danger billExist">Bill Number already exist. <br> Please enter different prefix and starting number.</small>');
-            setTimeout(function () {
-              $('.billExist').remove();
-            }, 10000);
-        }else if (getAlertBill === 3) {
-          $('.billNo').addClass('is-invalid mb-2');
-
-          
-          $('.billNo').after('<small class="form-hint text-danger billExist">Bill Number should greater than current next bill no.</small>');
-            setTimeout(function () {
-              $('.billNo').removeClass('is-invalid mb-2');
-
-              $('.billExist').remove();
-            }, 10000);
-        }
-
-        if(getAlertPay === 1){
-          $('.payID').after('<small class="form-hint text-success payExist">Payment Voucher Prefix and starting number succesfully saved.</small>');
-          $('.payID').addClass('is-valid mb-2');
-          setTimeout(function () {
-            $('.payID').removeClass('is-valid mb-2');
-            $('.payExist').remove();
-            }, 10000);
-        }else if (getAlertPay === 2) {
-          $('.payID').after('<small class="form-hint text-danger payExist">Payment Voucher already exist. <br> Please enter different prefix and starting number.</small>');
-            setTimeout(function () {
-              $('.payExist').remove();
-            }, 10000);
-        }else if (getAlertPay === 3) {
-          
-          $('.payID').after('<small class="form-hint text-danger billExist">Bill Number should greater than current next bill no.</small>');
-          $('.payID').addClass('is-invalid mb-2');
-          setTimeout(function () {
-            $('.payID').removeClass('is-invalid mb-2');
-              $('.payExist').remove();
-            }, 10000);
-        }
+              $('.vouNo').removeClass('is-valid mb-2');
+              $('.vouNo').removeClass('is-invalid mb-2');
+              $('.invID').removeClass('is-invalid mb-2');
+              $('.invID').removeClass('is-valid mb-2');
+              $('.otherSet').removeClass('is-valid mb-2');
+         
+            }, 5000);
 '  <%} %>'
 </script>
 

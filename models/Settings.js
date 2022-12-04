@@ -5,17 +5,21 @@ const settingsSchema = new mongoose.Schema({
         type:  String,
         required: true,
     },
+    value: {
+        type:  Number
+    },
     prefix: {
-        type:  String,
-        required: true,
+        type:  String
     },
     starting_no: {
-        type:  String,
-        required: true,
+        type:  Number
     },
     created_by: {
         type:  String,
         required: true,
+    },
+    updated_by: {
+        type:  String
     }
 },
 {
