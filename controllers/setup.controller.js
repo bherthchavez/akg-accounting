@@ -1,5 +1,4 @@
 const Company = require('../models/Company');
-const Voucher = require('../models/Voucher');
 const User = require('../models/User');
 const passport = require("passport");
 const Notif = require('../middleware/notif.middleware');

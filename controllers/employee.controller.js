@@ -1,8 +1,5 @@
 const { s3Upload, s3Delete, s3Download } = require('../middleware/s3Service.middleware')
 const Employee = require('../models/Employee');
-const fs = require('fs');
-const path = require('path');
-
 const Notif = require('../middleware/notif.middleware');
 
 module.exports = {

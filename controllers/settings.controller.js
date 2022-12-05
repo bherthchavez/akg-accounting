@@ -1,8 +1,5 @@
-
-const CostCenter = require('../models/CostCenter');
-const ChartOfAccounts = require('../models/ChartOfAccount');
+const ExpensesType = require('../models/ExpensesType');
 const Settings = require('../models/Settings');
-const PurposeTransfer = require('../models/PurposeTransfer');
 const LoginHistory = require('../models/LoginHistory');
 const Invoice = require('../models/Invoice');
 const Voucher = require('../models/Voucher');
@@ -19,10 +16,10 @@ let alertSetOther;
 module.exports = {
 
     //--------------------------------------------------------ACCOUNT LEDGER SETTINGS //
-    viewChartAcc: async (req, res) => {
+    viewExpensesType: async (req, res) => {
         if (req.isAuthenticated()) {
 
-            PurposeTransfer.find().exec((err, purposeFoundItems) => {
+            ExpensesType.find().exec((err, ExpensesTypeItems) => {
 
                 if (err) {
 
@@ -30,81 +27,61 @@ module.exports = {
 
                 } else {
 
-                    CostCenter.find().exec((err, costFoundItems) => {
-
-                        if (err) {
-
-                            res.json({ message: err.message });
-
-                        } else {
-
-                            ChartOfAccounts.find().exec((err, chartFoundItems) => {
-
-                                if (err) {
-
-                                    res.json({ message: err.message });
-
-                                } else {
-
-                                    Notif.getINV((err, dataINV) => {
-                                        Notif.getVehicle((err, dataVehicle) => {
-                                            Notif.getVehicleIn((err, dataVehicleIn) => {
-                                                Notif.getEmployee((err, dataEmployee) => {
+                    Notif.getINV((err, dataINV) => {
+                        Notif.getVehicle((err, dataVehicle) => {
+                            Notif.getVehicleIn((err, dataVehicleIn) => {
+                                Notif.getEmployee((err, dataEmployee) => {
 
 
-                                                    let nav = {
-                                                        title: "Settings",
-                                                        child: "Master",
-                                                        view: 2,
-                                                        notif: {
-                                                            exIstimara: dataVehicle,
-                                                            exInsurance: dataVehicleIn,
-                                                            expenPending: dataINV,
-                                                            exQID: dataEmployee
-                                                        }
-                                                    };
+                                    let nav = {
+                                        title: "Settings",
+                                        child: "Master",
+                                        view: 2,
+                                        notif: {
+                                            exIstimara: dataVehicle,
+                                            exInsurance: dataVehicleIn,
+                                            expenPending: dataINV,
+                                            exQID: dataEmployee
+                                        }
+                                    };
 
-                                                    res.render('account-ledger', {
-                                                        title: "Settings - Account Ledger",
-                                                        nav: nav,
-                                                        chartFoundItems: chartFoundItems,
-                                                        purposeFoundItems: purposeFoundItems,
-                                                        costFoundItems: costFoundItems,
-                                                    })
-                                                })
-                                            })
-                                        })
+                                    res.render('expenses-type', {
+                                        title: "Settings - Expenses Type",
+                                        nav: nav,
+                                        ExpensesTypeItems: ExpensesTypeItems
+                                        
                                     })
-
-
-                                }
+                                })
                             })
-                        }
+                        })
                     })
+
+
                 }
             })
+
+
 
         } else {
             res.redirect("/sign-in");
         }
     },
 
-    addChartAcc: async (req, res) => {
+    addExpensesType: async (req, res) => {
         if (req.isAuthenticated()) {
 
-            const cc = new ChartOfAccounts({
-                name: req.body.ledgerName,
-                code: req.body.ledgerCode,
-                created_by: req.user.name,
-                updated_at: Date.now()
+            const exp = new ExpensesType({
+                name: req.body.expName,
+                code: req.body.expCode,
+                created_by: req.user.name
             });
-            cc.save((err) => {
+            exp.save((err) => {
                 if (err) {
                     res.json({ message: err.message, type: 'danger' });
                 } else {
                     req.session.message = {
                         type: 'success',
-                        message: 'Account ledger added successfully!',
+                        message: 'Expenses Type added successfully!',
                     };
                     res.redirect('/master');
                 }
@@ -116,22 +93,22 @@ module.exports = {
 
     },
 
-    updateChartAcc: async (req, res) => {
+    updateExpensesType: async (req, res) => {
         if (req.isAuthenticated()) {
 
             let id = req.params.id;
 
-            ChartOfAccounts.findByIdAndUpdate(id, {
-                name: req.body.ledgerName,
-                code: req.body.ledgerCode,
-                updated_at: Date.now()
+            ExpensesType.findByIdAndUpdate(id, {
+                name: req.body.expName,
+                code: req.body.expCode,
+                updated_by: req.user.name
             }, (err, result) => {
                 if (err) {
                     res.json({ message: err.message, type: 'danger' });
                 } else {
                     req.session.message = {
                         type: 'success',
-                        message: 'Account ledger updated successfully!'
+                        message: 'Expenses Type updated successfully!'
                     };
 
                     res.redirect('/master')
@@ -143,316 +120,21 @@ module.exports = {
         }
     },
 
-    deleteChartAcc: async (req, res) => {
+    deleteExpensesType: async (req, res) => {
         if (req.isAuthenticated()) {
 
             let id = req.params.id
 
-            ChartOfAccounts.findByIdAndRemove(id, (err, result) => {
+            ExpensesType.findByIdAndRemove(id, (err, result) => {
 
                 if (err) {
                     res.json({ message: err.message });
                 } else {
                     req.session.message = {
                         type: 'success',
-                        message: 'Account ledger deleted successfully!',
+                        message: 'Expenses Type deleted successfully!',
                     };
                     res.redirect('/master')
-                }
-
-            });
-
-        } else {
-            res.redirect("/sign-in");
-        }
-    },
-    //-------------------------------------------------------- COST CENTER SETTINGS //
-    viewCostCenter: async (req, res) => {
-        if (req.isAuthenticated()) {
-
-            PurposeTransfer.find().exec((err, purposeFoundItems) => {
-
-                if (err) {
-
-                    res.json({ message: err.message });
-
-                } else {
-
-                    CostCenter.find().exec((err, costFoundItems) => {
-
-                        if (err) {
-
-                            res.json({ message: err.message });
-
-                        } else {
-
-                            ChartOfAccounts.find().exec((err, chartFoundItems) => {
-
-                                if (err) {
-
-                                    res.json({ message: err.message });
-
-                                } else {
-
-                                    Notif.getINV((err, dataINV) => {
-                                        Notif.getVehicle((err, dataVehicle) => {
-                                            Notif.getVehicleIn((err, dataVehicleIn) => {
-                                                Notif.getEmployee((err, dataEmployee) => {
-
-
-                                                    let nav = {
-                                                        title: "Settings",
-                                                        child: "Master",
-                                                        view: 2,
-                                                        notif: {
-                                                            exIstimara: dataVehicle,
-                                                            exInsurance: dataVehicleIn,
-                                                            expenPending: dataINV,
-                                                            exQID: dataEmployee
-                                                        }
-                                                    };
-
-                                                    res.render('cost-center', {
-                                                        title: "Settings - Cost Center",
-                                                        nav: nav,
-                                                        chartFoundItems: chartFoundItems,
-                                                        purposeFoundItems: purposeFoundItems,
-                                                        costFoundItems: costFoundItems,
-                                                    })
-                                                })
-                                            })
-                                        })
-                                    })
-
-
-                                }
-                            })
-                        }
-                    })
-                }
-            })
-
-        } else {
-            res.redirect("/sign-in");
-        }
-    },
-
-    addCostCenter: async (req, res) => {
-        if (req.isAuthenticated()) {
-
-            const cc = new CostCenter({
-                cost_center: req.body.costCenter,
-                code: req.body.cCcode,
-                created_by: req.user.name,
-                updated_at: Date.now()
-            });
-            cc.save((err) => {
-                if (err) {
-                    res.json({ message: err.message, type: 'danger' });
-                } else {
-                    req.session.message = {
-                        type: 'success',
-                        message: 'Cost center added successfully!',
-                    };
-                    res.redirect('/cost-center');
-                }
-            });
-
-        } else {
-            res.redirect("/sign-in");
-        }
-
-    },
-
-    updateCostCenter: async (req, res) => {
-        if (req.isAuthenticated()) {
-
-            let id = req.params.id;
-
-            CostCenter.findByIdAndUpdate(id, {
-                cost_center: req.body.costCenter,
-                code: req.body.cCcode,
-                updated_at: Date.now()
-            }, (err, result) => {
-                if (err) {
-                    res.json({ message: err.message, type: 'danger' });
-                } else {
-                    req.session.message = {
-                        type: 'success',
-                        message: 'Cost center updated successfully!'
-                    };
-
-                    res.redirect('/cost-center')
-                }
-            });
-
-        } else {
-            res.redirect("/sign-in");
-        }
-    },
-
-    deleteCostCenter: async (req, res) => {
-        if (req.isAuthenticated()) {
-
-            let id = req.params.id
-
-            CostCenter.findByIdAndRemove(id, (err, result) => {
-
-                if (err) {
-                    res.json({ message: err.message });
-                } else {
-                    req.session.message = {
-                        type: 'success',
-                        message: 'Cost center deleted successfully!',
-                    };
-                    res.redirect('/cost-center')
-                }
-
-            });
-
-        } else {
-            res.redirect("/sign-in");
-        }
-    },
-    //-------------------------------------------------------- Purpose Transfer SETTINGS //
-    viewPurpose: async (req, res) => {
-        if (req.isAuthenticated()) {
-
-            PurposeTransfer.find().exec((err, purposeFoundItems) => {
-
-                if (err) {
-
-                    res.json({ message: err.message });
-
-                } else {
-
-                    CostCenter.find().exec((err, costFoundItems) => {
-
-                        if (err) {
-
-                            res.json({ message: err.message });
-
-                        } else {
-
-                            ChartOfAccounts.find().exec((err, chartFoundItems) => {
-
-                                if (err) {
-
-                                    res.json({ message: err.message });
-
-                                } else {
-
-                                    Notif.getINV((err, dataINV) => {
-                                        Notif.getVehicle((err, dataVehicle) => {
-                                            Notif.getVehicleIn((err, dataVehicleIn) => {
-                                                Notif.getEmployee((err, dataEmployee) => {
-
-
-                                                    let nav = {
-                                                        title: "Settings",
-                                                        child: "Master",
-                                                        view: 2,
-                                                        notif: {
-                                                            exIstimara: dataVehicle,
-                                                            exInsurance: dataVehicleIn,
-                                                            expenPending: dataINV,
-                                                            exQID: dataEmployee
-
-                                                        }
-                                                    };
-
-                                                    res.render('transfer-purpose', {
-                                                        title: "Settings - Transfer Purpose",
-                                                        nav: nav,
-                                                        chartFoundItems: chartFoundItems,
-                                                        purposeFoundItems: purposeFoundItems,
-                                                        costFoundItems: costFoundItems,
-                                                    })
-                                                })
-                                            })
-                                        })
-                                    })
-                                }
-                            })
-                        }
-                    })
-                }
-            })
-
-        } else {
-            res.redirect("/sign-in")
-        }
-    },
-
-    addPurpose: async (req, res) => {
-        if (req.isAuthenticated()) {
-
-            const purpose = new PurposeTransfer({
-                purpose: req.body.purpose,
-                code: req.body.purposeCode,
-                created_by: req.user.name,
-                updated_at: Date.now()
-            });
-            purpose.save((err) => {
-                if (err) {
-                    res.json({ message: err.message, type: 'danger' });
-                } else {
-                    req.session.message = {
-                        type: 'success',
-                        message: 'Transfer purpose added successfully!',
-                    };
-                    res.redirect('/purpose-transfer');
-                }
-            });
-
-        } else {
-            res.redirect("/sign-in");
-        }
-
-    },
-
-    updatePurpose: async (req, res) => {
-        if (req.isAuthenticated()) {
-
-            let id = req.params.id;
-
-            PurposeTransfer.findByIdAndUpdate(id, {
-                purpose: req.body.purpose,
-                code: req.body.purposeCode,
-                updated_at: Date.now()
-            }, (err, result) => {
-                if (err) {
-                    res.json({ message: err.message, type: 'danger' });
-                } else {
-                    req.session.message = {
-                        type: 'success',
-                        message: 'Transfer purpose updated successfully!'
-                    };
-
-                    res.redirect('/purpose-transfer')
-                }
-            });
-
-        } else {
-            res.redirect("/sign-in");
-        }
-    },
-
-    deletePurpose: async (req, res) => {
-        if (req.isAuthenticated()) {
-
-            let id = req.params.id
-
-            PurposeTransfer.findByIdAndRemove(id, (err, result) => {
-
-                if (err) {
-                    res.json({ message: err.message });
-                } else {
-                    req.session.message = {
-                        type: 'success',
-                        message: 'Transfer purpose deleted successfully!',
-                    };
-                    res.redirect('/purpose-transfer')
                 }
 
             });
@@ -464,7 +146,7 @@ module.exports = {
     //--------------------------------------------------------  SYSTEM SETTINGS //
     viewSysSettings: async (req, res) => {
         if (req.isAuthenticated()) {
-          
+
             Settings.find({}, (err, foundItems) => {
                 if (err) {
                     res.json({ message: err.message });
@@ -502,7 +184,7 @@ module.exports = {
 
                                     alertSetVou = 0;
                                     alertSetInv = 0;
-                                    alertSetOther= 0;
+                                    alertSetOther = 0;
                                 })
                             })
                         })

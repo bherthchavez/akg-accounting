@@ -1,5 +1,3 @@
-
-const CostCenter = require('../models/CostCenter');
 const Company = require('../models/Company');
 const Voucher = require('../models/Voucher');
 const Invoice = require('../models/Invoice');
@@ -17,80 +15,53 @@ module.exports = {
           res.json({ message: err.message, type: 'danger' });
         } else {
 
-          CostCenter.aggregate([
-            {
-              "$lookup": {
-                "from": "bill_items",
-                "localField": "cost_center",
-                "foreignField": "cost_center",
-                "as": "bill_items"
-              }
-            },
-
-            {
-              "$project": {
-                "cost_center": 1,
-                "date": "$bill_items.inv_date",
-                "total": "$bill_items.sub_total",
-                "subTotal": {
-                  "$sum": "$bill_items.sub_total"
-                },
-              }
-            },
-            { "$sort": { "subTotal": -1 } }
-          ], function (errCc, foundcC) {
-            if (errCc) {
-              res.json({ message: errCc.message, type: 'danger' });
+          Vehicles.find((errbill, vehicleFound) => {
+            if (err) {
+              res.json({ message: errbill.message, type: 'danger' });
             } else {
 
-              Vehicles.find((errbill, vehicleFound) => {
+              Voucher.find((errbill, vouFound) => {
                 if (err) {
                   res.json({ message: errbill.message, type: 'danger' });
                 } else {
 
-                  Voucher.find((errbill, vouFound) => {
-                    if (err) {
-                      res.json({ message: errbill.message, type: 'danger' });
-                    } else {
+                  Notif.getINV((err, dataINV) => {
+                    Notif.getVehicle((err, dataVehicle) => {
+                    Notif.getVehicleIn((err, dataVehicleIn) => {
+                      Notif.getEmployee((err, dataEmployee) => {
 
-                      Notif.getINV((err, dataINV) => {
-                        Notif.getVehicle((err, dataVehicle) => {
-                        Notif.getVehicleIn((err, dataVehicleIn) => {
-                          Notif.getEmployee((err, dataEmployee) => {
+                        let nav = {
+                          title: "Dashboard",
+                          view: 2,
+                          notif: {
+                            exIstimara: dataVehicle,
+                            exInsurance: dataVehicleIn,
+                            expenPending: dataINV,
+                            exQID: dataEmployee
+                          }
+                        };
 
-                            let nav = {
-                              title: "Dashboard",
-                              view: 2,
-                              notif: {
-                                exIstimara: dataVehicle,
-                                exInsurance: dataVehicleIn,
-                                expenPending: dataINV,
-                                exQID: dataEmployee
-                              }
-                            };
-
-                            res.render('index', {
-                              title: "AL KATHIRI GROUPS ACCOUNTING",
-                              nav: nav,
-                              vehicleFound: vehicleFound,
-                              vouFound: vouFound,
-                              foundcC: foundcC,
-                              invItems: foundInv
-                            })
-
-                          })
-                          })
+                        res.render('index', {
+                          title: "AL KATHIRI GROUPS ACCOUNTING",
+                          nav: nav,
+                          vehicleFound: vehicleFound,
+                          vouFound: vouFound,
+                          invItems: foundInv
                         })
-                      })
-                    }
-                  })
 
+                      })
+                      })
+                    })
+                  })
                 }
-              });
+              })
+
             }
           });
+
+        
         }
-      });
+      })
 
 
 

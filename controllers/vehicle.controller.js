@@ -1,8 +1,6 @@
 const { s3Upload, s3Delete, s3Download } = require('../middleware/s3Service.middleware')
 const Vehicles = require('../models/Vehicles');
 const Voucher = require('../models/Voucher');
-const fs = require('fs');
-const path = require('path');
 
 const Notif = require('../middleware/notif.middleware');
 

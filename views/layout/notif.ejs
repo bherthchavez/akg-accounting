@@ -1,55 +1,74 @@
-
 <!-- View Voucher -->
 <% if (message && message.type==='viewVoucher' ) { %>
-<div class="modal modal-blur fade" id="modal-viewVoucher" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal modal-blur fade" id="modal-viewVoucher" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-body">
-              <div class="card-header">
-                <dt class="col-5">Voucher No:</dt>
-                <dd class="col-7 mt-2"><%= message.voucherNo %></dd>
-              </div>
-              <div class="card-body">
-                <dl class="row">
-                  <% if (message.for!='Others'){%>
-                  <dt class="col-5 mt-2">Vehicle No:</dt>
-                  <dd class="col-7 mt-2"><%= message.vehicleNo %></dd>
+          <div class="card-header">
+            <dt class="col-5">Voucher No:</dt>
+            <dd class="col-7 mt-2">
+              <%= message.voucherNo %>
+            </dd>
+          </div>
+          <div class="card-body">
+            <dl class="row">
+              <% if (message.for!='Others' ){%>
+                <dt class="col-5 mt-2">Vehicle No:</dt>
+                <dd class="col-7 mt-2">
+                  <%= message.vehicleNo %>
+                </dd>
 
-                  <dt class="col-5">Vehicle Status:</dt>
-                  <dd class="col-7 fw-bold <%-message.vehicleStatus === 1 ? 'text-green' : 'text-orange'%>">
-                   
-                    <% if (message.vehicleStatus===1){%>
-                      Returned 
-                       <%}else{%>
-                         Rented
-                         <%}%>
-                  </dd>
-                  <%}%>
+                <dt class="col-5">Vehicle Status:</dt>
+                <dd class="col-7 fw-bold <%-message.vehicleStatus === 1 ? 'text-green' : 'text-orange'%>">
+
+                  <% if (message.vehicleStatus===1){%>
+                    Returned
+                    <%}else{%>
+                      Rented
+                      <%}%>
+                </dd>
+                <%}%>
                   <dt class="col-5 mt-2">Date:</dt>
-                  <dd class="col-7 mt-2"><%= message.date %></dd>
+                  <dd class="col-7 mt-2">
+                    <%= message.date %>
+                  </dd>
                   <dt class="col-5">For the Month:</dt>
-                  <dd class="col-7"><%= message.month %></dd>
+                  <dd class="col-7">
+                    <%= message.month %>
+                  </dd>
                   <dt class="col-5">Particulars:</dt>
-                  <dd class="col-7"><%= message.particulars %></dd>
+                  <dd class="col-7">
+                    <%= message.particulars %>
+                  </dd>
                   <dt class="col-5 mt-2">Status:</dt>
-                  <dd class="col-7 mt-2 fw-bold <%-(message.status) === 1 && 'text-green'%> <%-(message.status) === 2 && 'text-red' %> <%-(message.status) === 3 && 'text-orange' %>">
+                  <dd
+                    class="col-7 mt-2 fw-bold <%-(message.status) === 1 && 'text-green'%> <%-(message.status) === 2 && 'text-red' %> <%-(message.status) === 3 && 'text-orange' %>">
                     <% if (message.status===1){%>
-                      Paid   
-                   <%}else if (message.status===2){%>
-                       Unpaid
-                       <%}else{%>
-                         Partial Paid
-                         <%}%>
+                      Paid
+                      <%}else if (message.status===2){%>
+                        Unpaid
+                        <%}else{%>
+                          Partial Paid
+                          <%}%>
                   </dd>
                   <dt class="col-5 mt-2">Total Rent:</dt>
-                  <dd class="col-7 text-danger mt-2"><div class="currency-formated">QAR</div><%= (message.rent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
+                  <dd class="col-7 text-danger mt-2">
+                    <div class="currency-formated">QAR</div>
+                    <%= (message.rent).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %>
+                  </dd>
                   <dt class="col-5">Total Bills:</dt>
-                  <dd class="col-7 text-danger"><div class="currency-formated">QAR</div><%= (message.bills).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
+                  <dd class="col-7 text-danger">
+                    <div class="currency-formated">QAR</div>
+                    <%= (message.bills).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %>
+                  </dd>
                   <dt class="col-5 mt-2">Cash Received:</dt>
-                  <dd class="col-7 text-danger mt-2 fw-bold"><div class="currency-formated fw-normal">QAR</div><%= (message.received).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
-                 
-                 </dl>
-              </div>
+                  <dd class="col-7 text-danger mt-2 fw-bold">
+                    <div class="currency-formated fw-normal">QAR</div>
+                    <%= (message.received).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %>
+                  </dd>
+
+            </dl>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">Cancel</button>
@@ -57,90 +76,122 @@
         </div>
       </div>
     </div>
-</div>
-<script>
+  </div>
+  <script>
     $(document).ready(function () {
-    '<% if (message &&  message.type ==="viewVoucher") { %>'
-    $("#modal-viewVoucher").modal('toggle');
-    
-    ' <% } %>'
+      '<% if (message &&  message.type ==="viewVoucher") { %>'
+      $("#modal-viewVoucher").modal('toggle');
+
+      ' <% } %>'
     });
   </script>
-<%}%>
+  <%}%>
 
 
 
-<!-- View Invoice -->
-<% if (message && message.type==='viewInvoice' ) { %>
-<div class="modal modal-blur fade" id="modal-viewInvoice" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-body">
+    <!-- View Invoice -->
+    <% if (message && message.type==='viewInvoice' ) { %>
+      <div class="modal modal-blur fade" id="modal-viewInvoice" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
               <div class="card-header">
                 <dt class="col-5">Invoice No:</dt>
-                <dd class="col-7 mt-2"><%= message.invNo %></dd>
+                <dd class="col-7 mt-2">
+                  <%= message.invNo %>
+                </dd>
               </div>
               <div class="card-body">
                 <dl class="row">
-                  <% if (message.for!='Others'){%>
-                  <dt class="col-5 mt-2">Vehicle No:</dt>
-                  <dd class="col-7 mt-2"><%= message.vehicleNo %></dd>
-                  <%}%>
-                  <dt class="col-5 mt-2">Date:</dt>
-                  <dd class="col-7 mt-2"><%= message.date %></dd>
-                  <dt class="col-5">Payee:</dt>
-                  <dd class="col-7"><%= message.payee %></dd>
-                  <dt class="col-5">Expenses Type:</dt>
-                  <dd class="col-7"><%= message.expensesType %></dd>
-                  <dt class="col-5">Description:</dt>
-                  <dd class="col-7"><%= message.description %></dd>
+                  <% if (message.for!='Others' ){%>
+                    <dt class="col-5 mt-2">Vehicle No:</dt>
+                    <dd class="col-7 mt-2">
+                      <%= message.vehicleNo %>
+                    </dd>
+                    <%}%>
+                      <dt class="col-5 mt-2">Date:</dt>
+                      <dd class="col-7 mt-2">
+                        <%= message.date %>
+                      </dd>
+                      <dt class="col-5">Payee:</dt>
+                      <dd class="col-7">
+                        <%= message.payee %>
+                      </dd>
+                      <dt class="col-5">Expenses Type:</dt>
+                      <dd class="col-7">
+                        <%= message.expensesType %>
+                      </dd>
+                      <dt class="col-5">Description:</dt>
+                      <dd class="col-7">
+                        <%= message.description %>
+                      </dd>
 
-                  <dt class="col-5 mt-2">Payment Type:</dt>
-                  <dd class="col-7 mt-2"><%= message.paymentType %></dd>
-                  <dt class="col-5">Month:</dt>
-                  <dd class="col-7"><%= message.month %></dd>
-                  <dt class="col-5">Remarks:</dt>
-                  <dd class="col-7"><%= message.remarks %></dd>
-                  <dt class="col-5">Created By:</dt>
-                  <dd class="col-7"><%= message.createdBy %></dd>
-                  <dt class="col-5 mt-2">Status:</dt>
-                  <dd class="col-7 mt-2 fw-bold <%-(message.status) === 1 && 'text-green'%> <%-(message.status) === 2 && 'text-red' %> <%-(message.status) === 3 && 'text-orange' %>">
-                    <% if (message.status===1){%>
-                      Approved
-                      <%}else if (message.status===2){%>
-                        Pending
-                       <%}else{%>
-                         Rejected
-                         <%}%>
-                  </dd>
-                  <dt class="col-5 mt-2">Amount:</dt>
-                  <dd class="col-7 text-danger mt-2"><div class="currency-formated">QAR</div><%= (message.amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></dd>
-                  
-                 </dl>
+                      <dt class="col-5 mt-2">Payment Type:</dt>
+                      <dd class="col-7 mt-2">
+                        <%= message.paymentType %>
+                      </dd>
+                      <dt class="col-5">Month:</dt>
+                      <dd class="col-7">
+                        <%= message.month %>
+                      </dd>
+                      <dt class="col-5">Remarks:</dt>
+                      <dd class="col-7">
+                        <%= message.remarks %>
+                      </dd>
+                      <dt class="col-5">Created By:</dt>
+                      <dd class="col-7">
+                        <%= message.createdBy %>
+                      </dd>
+                      <dt class="col-5 mt-2">Status:</dt>
+                      <dd
+                        class="col-7 mt-2 fw-bold <%-(message.status) === 1 && 'text-green'%> <%-(message.status) === 2 && 'text-red' %> <%-(message.status) === 3 && 'text-orange' %>">
+                        <% if (message.status===1){%>
+                          Approved
+                          <%}else if (message.status===2){%>
+                            Pending
+                            <%}else{%>
+                              Rejected
+                              <%}%>
+                      </dd>
+
+                      <% if (message.status===3){%>
+                        <dt class="col-5">Reason:</dt>
+                        <dd
+                          class="col-7">
+                          <%= message.reason %>
+                        </dd>
+                        <%}%>
+
+                          <dt class="col-5 mt-2">Amount:</dt>
+                          <dd class="col-7 text-danger mt-2">
+                            <div class="currency-formated">QAR</div>
+                            <%= (message.amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %>
+                          </dd>
+
+                </dl>
               </div>
-        </div>
-        <div class="modal-footer">
-          <% if (message.status===2){%>
-          <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">Cancel</button>
-          <a href="/update-invoice/<%= message.id %>" class="btn btn-success">Update Invoice</a>
+            </div>
+            <div class="modal-footer">
+              <% if (message.status===2){%>
+                <button type="button" class="btn btn-link link-secondary me-auto"
+                  data-bs-dismiss="modal">Cancel</button>
+                <a href="/update-invoice/<%= message.id %>" class="btn btn-success">Update Invoice</a>
 
-          <%}else{%>
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-          <%}%>
+                <%}else{%>
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                  <%}%>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-</div>
-<script>
-    $(document).ready(function () {
-    '<% if (message &&  message.type ==="viewInvoice") { %>'
-    $("#modal-viewInvoice").modal('toggle');
-    
-    ' <% } %>'
-    });
-  </script>
-<%}%>
 
 
+      <script>
+        $(document).ready(function () {
+          '<% if (message &&  message.type ==="viewInvoice") { %>'
+          $("#modal-viewInvoice").modal('toggle');
 
-
+          ' <% } %>'
+        });
+      </script>
+      <%}%>

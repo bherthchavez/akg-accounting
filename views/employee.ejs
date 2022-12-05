@@ -330,7 +330,7 @@
                       <div class="text-center  my-5">
                         <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
                         <h1 class="text-secondary">Ohh!</h1>
-                        <p class="text-secondary"> No vehicles found in the database!</p>
+                        <p class="text-secondary"> No Employee sponsorship found in the database!</p>
                       </div>
                       <% } %>
                 </div>
@@ -478,6 +478,23 @@
       });
     </script>
 
+<script src="../dist/libs/nouislider/dist/nouislider.min.js" defer></script>
+<script src="../dist/libs/litepicker/dist/litepicker.js" defer></script>
+<script src="../dist/libs/tom-select/dist/js/tom-select.base.min.js" defer></script>
 
-    <%- include('layout/modals') %>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    window.Litepicker && (new Litepicker({
+      element: document.getElementById('datepicker-qid'),
+      buttonText: {
+        previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>`,
+        nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>`,
+      }
+    }))
+  })
+$('#datepicker-qid').val(new Date().toISOString().split('T')[0])
+</script>
+
       <%- include('layout/footer') %>

@@ -99,21 +99,9 @@
                               <div class="form-label">Expense Type</div>
                               <select class="form-select" name="expenseType" required>
                                 <option selected>--</option>
-                                <option value="Battery">Battery</option>
-                                <option value="Petrol">Petrol</option>
-                                <option value="Tyre">Tyre</option>
-                                <option value="Wheel Alignment">Wheel Alignment</option>
-                                <option value="Office Expenses">Office Expenses</option>
-                                <option value="Car Wash">Car Wash</option>
-                                <option value="Spare Parts & Service">Spare Parts & Service</option>
-                                <option value="Oil Change">Oil Change</option>
-                                <option value="Ministry Payments">Ministry Payments</option>
-                                <option value="Traffic Penalty">Traffic Penalty</option>
-                                <option value="Salary">Salary</option>
-                                <option value="Insurance">Insurance</option>
-                                <option value="Istimara">Istimara</option>
-                                <option value="Vehicle Inspection">Vehicle Inspection</option>
-                                <option value="Bank Deposit">Bank Deposit</option>
+                                <% foundExpensesType.forEach(function(type) { %>
+                                  <option value="<%=type.name%>"><%=type.name%></option>
+                                  <% }) %>
                               </select>
                             </div>
                             <div class="mb-3">

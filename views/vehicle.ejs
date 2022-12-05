@@ -496,34 +496,73 @@
         </div>
       </div>
       <% } %>
-
-
-        <script>
-          $(document).ready(function () {
-            $("#searchSA").on("keyup", function () {
-              var value = $(this).val().toLowerCase();
-              $("#suppAcc tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-              });
+      
+      <script>
+        $(document).ready(function () {
+          $("#searchSA").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#suppAcc tr").filter(function () {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
-
-
-            '<% if (message && message.type ==="rentInfo") { %>'
-            $("#modal-rentInfo").modal('toggle');
-            ' <% } %>'
-
-            '<% if (message &&  message.type ==="viewVoucher") { %>'
-            $("#modal-viewVoucher").modal('toggle');
-
-            ' <% } %>'
           });
+          '<% if (message && message.type ==="rentInfo") { %>'
+          $("#modal-rentInfo").modal('toggle');
+          ' <% } %>'
 
+          '<% if (message &&  message.type ==="viewVoucher") { %>'
+          $("#modal-viewVoucher").modal('toggle');
 
-         
-            
-        </script>
+          ' <% } %>'
+        });
+      </script>
 
+      <script src="../dist/libs/nouislider/dist/nouislider.min.js" defer></script>
+      <script src="../dist/libs/litepicker/dist/litepicker.js" defer></script>
+      <script src="../dist/libs/tom-select/dist/js/tom-select.base.min.js" defer></script>
+      <script>
+        // @formatter:off
+        document.addEventListener("DOMContentLoaded", function () {
+          window.Litepicker && (new Litepicker({
+            element: document.getElementById('datepicker-registered'),
+            buttonText: {
+              previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>`,
+              nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>`,
+            },
+          }))
+        })
 
+        $('#datepicker-registered').val(new Date().toISOString().split('T')[0])
+      </script>
+      
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          window.Litepicker && (new Litepicker({
+            element: document.getElementById('datepicker-istimara'),
+            buttonText: {
+              previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>`,
+              nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>`,
+            },
+          }))
+        })
+      $('#datepicker-istimara').val(new Date().toISOString().split('T')[0])
+      </script>
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          window.Litepicker && (new Litepicker({
+            element: document.getElementById('datepicker-insurance'),
+            buttonText: {
+              previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>`,
+              nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>`,
+            },
+          }))
+        })
+      $('#datepicker-insurance').val(new Date().toISOString().split('T')[0])
+      </script>
 
-        <%- include('layout/modals') %>
           <%- include('layout/footer') %>

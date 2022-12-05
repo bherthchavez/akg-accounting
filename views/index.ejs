@@ -178,13 +178,23 @@
 
                   <div class="fw-bold fs-h2">
                     <span class="text-muted fs-h5 fw-light">QAR</span>
-                    <% if (vehicleFound !='' ) { %>
+               
+
+                    <% if (invItems !='' ) { %>
+
                       <% var sumOfExpenses=0 %>
-                        <% vehicleFound.forEach(function(vehicle){ %>
-                          <% sumOfExpenses +=+ vehicle.expenses %>
+
+                        <% invItems.forEach(function(item){ %>
+
+                          <% if (item.status != 3 ) { %>
+                              <% sumOfExpenses +=+ item.amount %>
+                              <% } %>
+                        
                             <% }) %>
+
                               <%= (sumOfExpenses).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %>
-                                <% } else { %>
+                              
+                              <% } else { %>
                                   0.0
                                   <% } %>
                   </div>
@@ -212,13 +222,17 @@
 
                   <div class="fw-bold fs-h2">
                     <span class="text-muted fs-h5 fw-light">QAR</span>
-                    <% if (vehicleFound !='' ) { %>
+                    <% if (vouFound !='' ) { %>
                       <% var sumOfIncome=0 %>
-                        <% vehicleFound.forEach(function(vehicle){ %>
-                          <% sumOfIncome +=+ vehicle.income %>
+                       
+                      <% vouFound.forEach(function(item){ %>
+                        
+                          <% sumOfIncome +=+ item.total_rent %>
                             <% }) %>
+
                               <%= (sumOfIncome).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %>
-                                <% } else { %>
+                             
+                              <% } else { %>
                                   0.0
                                   <% } %>
                   </div>
@@ -259,39 +273,11 @@
               <h3>EMPLOYEES UNDER SPONSORSHIP </h3>
             </div>
             <div class="table-responsive" style="max-height: 18rem">
-              <% if (foundcC !=0) { %>
-                <table class="table card-table table-vcenter">
-                  <thead>
-                    <tr>
-                      <th>Cost Center</th>
-                      <th class="text-end">Total</th>
-                      <!-- <th class="text-end"> <%-  new Date().toLocaleDateString("en-US", { month: 'long' }) %></th> -->
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <%foundcC.forEach(function(cc){%>
-                      <% if(cc.subTotal>0){%>
-                        <tr>
-                          <td>
-                            <%=cc.cost_center%>
-                          </td>
-                          <td class="text-end text-muted fs-h5 text-nowrap">
-                            QAR
-                            <div class="text-warning d-md-inline-flex fs-h3 ms-1">
-                              <%=(cc.subTotal).toFixed(2).replace( /\d(?=(\d{3})+\.)/g, '$&,' ) %>
-                            </div>
-                          </td>
-                        </tr>
-                        <%}%>
-                          <%})%>
-                  </tbody>
-                </table>
-                <% } else { %>
-                  <div class="text-center  my-5">
-                    <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
-                    <h3 class="text-secondary"> No employee found in the database!</h3>
-                  </div>
-                  <% } %>
+           
+              <div class="text-center  my-5">
+                <div class="fs--h1 text-muted"><i class="ti ti-mood-sad"></i></div>
+                <h3 class="text-secondary"> No employee found in the database!</h3>
+              </div>
             </div>
           </div>
         </div>

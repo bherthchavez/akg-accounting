@@ -2,6 +2,7 @@ const Voucher = require('../models/Voucher');
 const Invoice = require('../models/Invoice');
 const Vehicles = require('../models/Vehicles');
 const Settings = require('../models/Settings');
+const ExpensesType = require('../models/ExpensesType');
 
 const Notif = require('../middleware/notif.middleware');
 
@@ -24,71 +25,71 @@ module.exports = {
 
                             Notif.getINV((err, dataINV) => {
                                 Notif.getVehicle((err, dataVehicle) => {
-                                Notif.getVehicleIn((err, dataVehicleIn) => {
-                                    Notif.getEmployee((err, dataEmployee) => {
+                                    Notif.getVehicleIn((err, dataVehicleIn) => {
+                                        Notif.getEmployee((err, dataEmployee) => {
 
-                                        if (id != 'others') {
+                                            if (id != 'others') {
 
-                                            Vehicles.findById(id).exec((err, result) => {
-                                                if (err) {
-                                                    res.json({ message: err.message, type: 'danger' });
-                                                } else {
+                                                Vehicles.findById(id).exec((err, result) => {
+                                                    if (err) {
+                                                        res.json({ message: err.message, type: 'danger' });
+                                                    } else {
 
-                                                    let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
-
-
-
-                                                    let nav = {
-                                                        title: "Accounts",
-                                                        child: "Vehicle",
-                                                        view: 2,
-                                                        notif: {
-                                                            exIstimara: dataVehicle,
-                                                            exInsurance: dataVehicleIn,
-                                                            expenPending: dataINV,
-                                                            exQID: dataEmployee
-                                                        }
-                                                    };
-
-                                                    res.render('create-voucher', {
-                                                        title: "Create Voucher",
-                                                        nav: nav,
-                                                        vouNo: vouNo,
-                                                        foundVehicles: foundVehicles,
-                                                        vehicleNo: result.vehicle_no
-
-                                                    })
+                                                        let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
 
 
-                                                }
-                                            })
 
-                                        } else {
+                                                        let nav = {
+                                                            title: "Accounts",
+                                                            child: "Vehicle",
+                                                            view: 2,
+                                                            notif: {
+                                                                exIstimara: dataVehicle,
+                                                                exInsurance: dataVehicleIn,
+                                                                expenPending: dataINV,
+                                                                exQID: dataEmployee
+                                                            }
+                                                        };
 
-                                            let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
-                                            let nav = {
-                                                title: "Accounts",
-                                                child: "Vehicle",
-                                                view: 2,
-                                                notif: {
-                                                    exIstimara: dataVehicle,
-                                                    exInsurance: dataVehicleIn,
-                                                    expenPending: dataINV,
-                                                    exQID: dataEmployee
-                                                }
-                                            };
+                                                        res.render('create-voucher', {
+                                                            title: "Create Voucher",
+                                                            nav: nav,
+                                                            vouNo: vouNo,
+                                                            foundVehicles: foundVehicles,
+                                                            vehicleNo: result.vehicle_no
 
-                                            res.render('create-voucher', {
-                                                title: "Create Voucher",
-                                                nav: nav,
-                                                vouNo: vouNo,
-                                                foundVehicles: foundVehicles,
-                                                vehicleNo: 'others'
+                                                        })
 
-                                            });
-                                        }
 
-                                    })
+                                                    }
+                                                })
+
+                                            } else {
+
+                                                let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
+                                                let nav = {
+                                                    title: "Accounts",
+                                                    child: "Vehicle",
+                                                    view: 2,
+                                                    notif: {
+                                                        exIstimara: dataVehicle,
+                                                        exInsurance: dataVehicleIn,
+                                                        expenPending: dataINV,
+                                                        exQID: dataEmployee
+                                                    }
+                                                };
+
+                                                res.render('create-voucher', {
+                                                    title: "Create Voucher",
+                                                    nav: nav,
+                                                    vouNo: vouNo,
+                                                    foundVehicles: foundVehicles,
+                                                    vehicleNo: 'others'
+
+                                                });
+                                            }
+
+                                        })
                                     })
                                 })
                             })
@@ -403,27 +404,27 @@ module.exports = {
                 } else {
                     Notif.getINV((err, dataINV) => {
                         Notif.getVehicle((err, dataVehicle) => {
-                        Notif.getVehicleIn((err, dataVehicleIn) => {
-                            Notif.getEmployee((err, dataEmployee) => {
+                            Notif.getVehicleIn((err, dataVehicleIn) => {
+                                Notif.getEmployee((err, dataEmployee) => {
 
-                                let nav = {
-                                    title: "Accounts",
-                                    child: "Vehicle",
-                                    view: 2,
-                                    notif: {
-                                        exIstimara: dataVehicle,
-                                        exInsurance: dataVehicleIn,
-                                        expenPending: dataINV,
-                                        exQID: dataEmployee
-                                    }
-                                };
+                                    let nav = {
+                                        title: "Accounts",
+                                        child: "Vehicle",
+                                        view: 2,
+                                        notif: {
+                                            exIstimara: dataVehicle,
+                                            exInsurance: dataVehicleIn,
+                                            expenPending: dataINV,
+                                            exQID: dataEmployee
+                                        }
+                                    };
 
-                                res.render('update-voucher', {
-                                    title: "Update Voucher",
-                                    VoucherFound: foundVoucher,
-                                    nav: nav
+                                    res.render('update-voucher', {
+                                        title: "Update Voucher",
+                                        VoucherFound: foundVoucher,
+                                        nav: nav
+                                    })
                                 })
-                            })
                             })
                         })
                     })
@@ -447,80 +448,89 @@ module.exports = {
                     res.json({ message: err.message, type: 'danger' })
                 } else {
 
-                    Settings.findOne({ name: "invoice_settings" }, (err, voucherSetting) => {
+                    ExpensesType.find().exec((err, foundExpensesType) => {
                         if (err) {
                             res.json({ message: err.message, type: 'danger' })
                         } else {
 
-                            Notif.getINV((err, dataINV) => {
-                                Notif.getVehicle((err, dataVehicle) => {
-                                Notif.getVehicleIn((err, dataVehicleIn) => {
-                                    Notif.getEmployee((err, dataEmployee) => {
+                            Settings.findOne({ name: "invoice_settings" }, (err, voucherSetting) => {
+                                if (err) {
+                                    res.json({ message: err.message, type: 'danger' })
+                                } else {
 
-                                        if (id != 'others') {
+                                    Notif.getINV((err, dataINV) => {
+                                        Notif.getVehicle((err, dataVehicle) => {
+                                            Notif.getVehicleIn((err, dataVehicleIn) => {
+                                                Notif.getEmployee((err, dataEmployee) => {
 
-                                            Vehicles.findById(id).exec((err, result) => {
-                                                if (err) {
-                                                    res.json({ message: err.message, type: 'danger' });
-                                                } else {
+                                                    if (id != 'others') {
 
-                                                    let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
-                                                    let nav = {
-                                                        title: "Accounts",
-                                                        child: "Vehicle",
-                                                        view: 2,
-                                                        notif: {
-                                                            exIstimara: dataVehicle,
-                                                            exInsurance: dataVehicleIn,
-                                                            expenPending: dataINV,
-                                                            exQID: dataEmployee
-                                                        }
-                                                    };
+                                                        Vehicles.findById(id).exec((err, result) => {
+                                                            if (err) {
+                                                                res.json({ message: err.message, type: 'danger' });
+                                                            } else {
 
-                                                    res.render('create-invoice', {
-                                                        title: "Create Invoice",
-                                                        nav: nav,
-                                                        vouNo: vouNo,
-                                                        foundVehicles: foundVehicles,
-                                                        vehicleNo: result.vehicle_no
+                                                                let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
+                                                                let nav = {
+                                                                    title: "Accounts",
+                                                                    child: "Vehicle",
+                                                                    view: 2,
+                                                                    notif: {
+                                                                        exIstimara: dataVehicle,
+                                                                        exInsurance: dataVehicleIn,
+                                                                        expenPending: dataINV,
+                                                                        exQID: dataEmployee
+                                                                    }
+                                                                };
 
-                                                    });
+                                                                res.render('create-invoice', {
+                                                                    title: "Create Invoice",
+                                                                    nav: nav,
+                                                                    vouNo: vouNo,
+                                                                    foundVehicles: foundVehicles,
+                                                                    vehicleNo: result.vehicle_no,
+                                                                    foundExpensesType: foundExpensesType
+
+                                                                });
 
 
-                                                }
+                                                            }
+                                                        })
+
+                                                    } else {
+
+                                                        let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
+                                                        let nav = {
+                                                            title: "Accounts",
+                                                            child: "Vehicle",
+                                                            view: 2,
+                                                            notif: {
+                                                                exIstimara: dataVehicle,
+                                                                exInsurance: dataVehicleIn,
+                                                                expenPending: dataINV,
+                                                                exQID: dataEmployee
+                                                            }
+                                                        };
+
+                                                        res.render('create-invoice', {
+                                                            title: "Create Invoice",
+                                                            nav: nav,
+                                                            vouNo: vouNo,
+                                                            foundVehicles: foundVehicles,
+                                                            foundExpensesType:foundExpensesType,
+                                                            vehicleNo: 'others'
+
+                                                        });
+                                                    }
+
+                                                })
                                             })
-
-                                        } else {
-
-                                            let vouNo = voucherSetting.prefix + voucherSetting.starting_no;
-                                            let nav = {
-                                                title: "Accounts",
-                                                child: "Vehicle",
-                                                view: 2,
-                                                notif: {
-                                                    exIstimara: dataVehicle,
-                                                    exInsurance: dataVehicleIn,
-                                                    expenPending: dataINV,
-                                                    exQID: dataEmployee
-                                                }
-                                            };
-
-                                            res.render('create-invoice', {
-                                                title: "Create Invoice",
-                                                nav: nav,
-                                                vouNo: vouNo,
-                                                foundVehicles: foundVehicles,
-                                                vehicleNo: 'others'
-
-                                            });
-                                        }
-
+                                        })
                                     })
-                                    })
-                                })
+
+
+                                }
                             })
-
-
                         }
                     })
                 }
@@ -533,6 +543,9 @@ module.exports = {
 
     saveInvoice: async (req, res) => {
         if (req.isAuthenticated()) {
+
+
+
 
             Vehicles.findOne({ _id: req.body.vehicleID }, (err, foundVehicle) => {
                 if (err) {
@@ -553,80 +566,95 @@ module.exports = {
                         vNo = 'Others'
                     }
 
+
+
+
                     (req.body.paymentType) === 'card' ? cDetails = req.body.cardDetails : cDetails = 'cash';
-                    const invoice = new Invoice({
-                        inv_no: req.body.invNo,
-                        expenses_for: req.body.expensesFor,
-                        vehicle_id: vId,
-                        vehicle_no: vNo,
-                        inv_date: req.body.invDate,
-                        date: req.body.date,
-                        payee: req.body.payee,
-                        expenses_type: req.body.expenseType,
-                        description: req.body.description,
-                        payment_type: req.body.paymentType,
-                        card_details: cDetails,
-                        month: req.body.forMonth,
-                        remarks: req.body.remarks,
-                        amount: amount,
-                        status: 2,
-                        company_id: req.user.company_id,
-                        created_by: req.user.name
-                    });
 
-                    invoice.save((err, docs) => {
-
+                    Settings.findOne({ name: "expenses_settings" }, (err, expenSet) => {
                         if (err) {
-                            res.json({ message: err.message, type: 'danger' });
+                            res.json({ message: err.message, type: 'danger' })
                         } else {
+                            const setStatus = (amount) >= expenSet.value ? 2 : 1
 
 
+                            const invoice = new Invoice({
+                                inv_no: req.body.invNo,
+                                expenses_for: req.body.expensesFor,
+                                vehicle_id: vId,
+                                vehicle_no: vNo,
+                                inv_date: req.body.invDate,
+                                date: req.body.date,
+                                payee: req.body.payee,
+                                expenses_type: req.body.expenseType,
+                                description: req.body.description,
+                                payment_type: req.body.paymentType,
+                                card_details: cDetails,
+                                month: req.body.forMonth,
+                                remarks: req.body.remarks,
+                                amount: amount,
+                                status: setStatus,
+                                company_id: req.user.company_id,
+                                created_by: req.user.name
+                            })
 
-                            let totalExpenses = 0;
+                            invoice.save((err, docs) => {
 
-                            (req.body.expensesFor) === 'vehicle' ? totalExpenses = foundVehicle.expenses : totalExpenses = 0;
-                            totalExpenses += amount;
+                                if (err) {
+                                    res.json({ message: err.message, type: 'danger' });
+                                } else {
 
-                            Vehicles.findOneAndUpdate({ _id: req.body.vehicleID },
-                                {
-                                    $set: {
-                                        expenses: totalExpenses
+
+                                    let totalExpenses = 0;
+
+                                    (req.body.expensesFor) === 'vehicle' ? totalExpenses = foundVehicle.expenses : totalExpenses = 0;
+                                    totalExpenses += amount;
+
+                                    Vehicles.findOneAndUpdate({ _id: req.body.vehicleID },
+                                        {
+                                            $set: {
+                                                expenses: totalExpenses
+                                            }
+                                        }, (err) => {
+                                            if (err) {
+                                                res.json({ message: err.message, type: 'danger' });
+                                            }
+                                        })
+
+
+                                    Settings.findOne({ name: "invoice_settings" }, (err, invSetting) => {
+                                        let invNo = parseFloat(invSetting.starting_no) + 1;
+                                        Settings.findOneAndUpdate({ name: "invoice_settings" },
+                                            { $set: { starting_no: invNo } }, (err,) => {
+                                                if (err) {
+                                                    res.json({ message: err.message, type: 'danger' });
+                                                }
+                                            })
+                                    })
+
+                                    let notifMsg;
+                                    (req.body.expensesFor) === 'vehicle' ? notifMsg = 'Invoice for vehicle: ' + vNo : notifMsg = 'Invoice';
+
+                                    req.session.message = {
+                                        type: 'transac',
+                                        tType: 'invoice',
+                                        message: notifMsg + ' has been successfully created. Invoice No: ' + docs.inv_no + ' Total Amount: QAR ' + (amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
+                                        transID: docs._id,
                                     }
-                                }, (err) => {
-                                    if (err) {
-                                        res.json({ message: err.message, type: 'danger' });
-                                    }
-                                });
 
 
-                            Settings.findOne({ name: "invoice_settings" }, (err, invSetting) => {
-                                let invNo = parseFloat(invSetting.starting_no) + 1;
-                                Settings.findOneAndUpdate({ name: "invoice_settings" },
-                                    { $set: { starting_no: invNo } }, (err,) => {
-                                        if (err) {
-                                            res.json({ message: err.message, type: 'danger' });
-                                        }
-                                    });
-                            });
-
-                            let notifMsg;
-                            (req.body.expensesFor) === 'vehicle' ? notifMsg = 'Invoice for vehicle: ' + vNo : notifMsg = 'Invoice';
-
-                            req.session.message = {
-                                type: 'transac',
-                                tType: 'invoice',
-                                message: notifMsg + ' has been successfully created. Invoice No: ' + docs.inv_no + ' Total Amount: QAR ' + (amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
-                                transID: docs._id,
-                            };
+                                    const redirect = (req.body.expensesFor) === 'vehicle' ? res.redirect("/vehicle-list") : res.redirect("/");
+                                }
+                            })
 
 
-                            (req.body.expensesFor) === 'vehicle' ? res.redirect("/vehicle-list") : res.redirect("/");
+
+
                         }
-                    });
-
+                    })
 
                 }
-            });
+            })
 
 
         } else {
@@ -665,6 +693,7 @@ module.exports = {
                             remarks: result.remarks,
                             amount: result.amount,
                             status: result.status,
+                            reason: result.approval_rsn,
                             createdBy: result.created_by
                         };
 
@@ -693,27 +722,27 @@ module.exports = {
                 } else {
                     Notif.getINV((err, dataINV) => {
                         Notif.getVehicle((err, dataVehicle) => {
-                        Notif.getVehicleIn((err, dataVehicleIn) => {
-                            Notif.getEmployee((err, dataEmployee) => {
+                            Notif.getVehicleIn((err, dataVehicleIn) => {
+                                Notif.getEmployee((err, dataEmployee) => {
 
-                                let nav = {
-                                    title: "Accounts",
-                                    child: "Vehicle",
-                                    view: 2,
-                                    notif: {
-                                        exIstimara: dataVehicle,
-                                        exInsurance: dataVehicleIn,
-                                        expenPending: dataINV,
-                                        exQID: dataEmployee
-                                    }
-                                };
+                                    let nav = {
+                                        title: "Accounts",
+                                        child: "Vehicle",
+                                        view: 2,
+                                        notif: {
+                                            exIstimara: dataVehicle,
+                                            exInsurance: dataVehicleIn,
+                                            expenPending: dataINV,
+                                            exQID: dataEmployee
+                                        }
+                                    };
 
-                                res.render('update-invoice', {
-                                    title: "Update Voucher",
-                                    foundInv: foundInv,
-                                    nav: nav
+                                    res.render('update-invoice', {
+                                        title: "Update Voucher",
+                                        foundInv: foundInv,
+                                        nav: nav
+                                    })
                                 })
-                            })
                             })
                         })
                     })
@@ -737,93 +766,139 @@ module.exports = {
             const amount = + (req.body.amount).split(',').join('');
 
 
-            Invoice.findById(id, (err, resultInvoice) => {
-                if (err || !resultInvoice) {
-                    req.session.message = {
-                        type: 'danger',
-                        message: "Transaction cannot view. Error: " + err,
-                    };
-                    res.redirect("/");
+
+            Settings.findOne({ name: "expenses_settings" }, (err, expenSet) => {
+                if (err) {
+                    res.json({ message: err.message, type: 'danger' })
                 } else {
+                    const setStatus = (amount) >= expenSet.value ? 2 : 1
 
-                    if (resultInvoice.expenses_for != 'Others') {
 
-                        Invoice.findByIdAndUpdate(id, {
-                            inv_date: req.body.invDate,
-                            date: req.body.date,
-                            payee: req.body.payee,
-                            expenses_type: req.body.expenseType,
-                            description: req.body.description,
-                            payment_type: req.body.paymentType,
-                            card_details: cDetails,
-                            month: req.body.forMonth,
-                            remarks: req.body.remarks,
-                            amount: amount,
-                            updated_by: req.user.name
+                    Invoice.findById(id, (err, resultInvoice) => {
+                        if (err || !resultInvoice) {
+                            req.session.message = {
+                                type: 'danger',
+                                message: "Transaction cannot view. Error: " + err,
+                            };
+                            res.redirect("/");
+                        } else {
 
-                        }, (err, result) => {
-                            if (err) {
-                                req.session.message = {
-                                    type: 'danger',
-                                    message: "Transaction cannot save. Error: " + err,
-                                };
-                                res.redirect("/");
+                            if (resultInvoice.expenses_for != 'Others') {
+
+                                Invoice.findByIdAndUpdate(id, {
+                                    inv_date: req.body.invDate,
+                                    date: req.body.date,
+                                    payee: req.body.payee,
+                                    expenses_type: req.body.expenseType,
+                                    description: req.body.description,
+                                    payment_type: req.body.paymentType,
+                                    card_details: cDetails,
+                                    month: req.body.forMonth,
+                                    remarks: req.body.remarks,
+                                    status: setStatus,
+                                    amount: amount,
+                                    updated_by: req.user.name
+
+                                }, (err, result) => {
+                                    if (err) {
+                                        req.session.message = {
+                                            type: 'danger',
+                                            message: "Transaction cannot save. Error: " + err,
+                                        };
+                                        res.redirect("/");
+                                    } else {
+
+
+                                        Vehicles.findOne({ vehicle_no: req.body.vehicleID }, (err, resulVehicle) => {
+                                            if (err || !resulVehicle) {
+                                                req.session.message = {
+                                                    type: 'danger',
+                                                    message: "Transaction error. Error: " + err,
+                                                };
+                                                res.redirect("/");
+                                            } else {
+
+                                                let totalEx = resulVehicle.expenses - resultInvoice.amount
+
+                                                Vehicles.findOneAndUpdate({ vehicle_no: req.body.vehicleID },
+                                                    {
+                                                        $set: {
+                                                            expenses: totalEx + amount
+                                                        }
+                                                    }, (err) => {
+                                                        if (err) {
+                                                            res.json({ message: err.message, type: 'danger' });
+                                                        }
+                                                    })
+
+                                            }
+                                        })
+
+
+
+
+
+                                        req.session.message = {
+                                            type: 'transac',
+                                            tType: 'invUpdate',
+                                            message: 'Invoice for vehicle no. ' + result.vehicle_no + ' has been successfully updated. Invoice No: ' + result.inv_no + ' Total Amount: QAR ' + amount,
+                                            transID: result._id
+                                        };
+                                        res.redirect('/vehicle-list')
+
+                                    }
+                                });
+
+
                             } else {
 
+                                Invoice.findByIdAndUpdate(id, {
+                                    inv_date: req.body.invDate,
+                                    date: req.body.date,
+                                    payee: req.body.payee,
+                                    expenses_type: req.body.expenseType,
+                                    description: req.body.description,
+                                    payment_type: req.body.paymentType,
+                                    card_details: cDetails,
+                                    month: req.body.forMonth,
+                                    remarks: req.body.remarks,
+                                    status: setStatus,
+                                    amount: amount,
+                                    updated_by: req.user.name
+
+                                }, (err, result) => {
+                                    if (err) {
+                                        req.session.message = {
+                                            type: 'danger',
+                                            message: "Transaction cannot be save. Error: " + err,
+                                        };
+                                        res.redirect("/");
+                                    } else {
 
 
-                                req.session.message = {
-                                    type: 'transac',
-                                    tType: 'invUpdate',
-                                    message: 'Invoice for vehicle no. ' + result.vehicle_no + ' has been successfully updated. Invoice No: ' + result.inv_no + ' Total Amount: QAR ' + amount,
-                                    transID: result._id
-                                };
-                                res.redirect('/vehicle-list')
+
+                                        req.session.message = {
+                                            type: 'transac',
+                                            tType: 'invUpdate',
+                                            message: 'Invoice has been successfully updated. Invoice No: ' + result.inv_no + ' Total Amount: QAR ' + amount,
+                                            transID: result._id
+                                        };
+                                        res.redirect('/')
+
+                                    }
+                                });
+
 
                             }
-                        });
 
 
-                    } else {
-
-                        Invoice.findByIdAndUpdate(id, {
-                            inv_date: req.body.invDate,
-                            date: req.body.date,
-                            payee: req.body.payee,
-                            expenses_type: req.body.expenseType,
-                            description: req.body.description,
-                            payment_type: req.body.paymentType,
-                            card_details: cDetails,
-                            month: req.body.forMonth,
-                            remarks: req.body.remarks,
-                            amount: amount,
-                            updated_by: req.user.name
-
-                        }, (err, result) => {
-                            if (err) {
-                                req.session.message = {
-                                    type: 'danger',
-                                    message: "Transaction cannot be save. Error: " + err,
-                                };
-                                res.redirect("/");
-                            } else {
-                                req.session.message = {
-                                    type: 'transac',
-                                    tType: 'invUpdate',
-                                    message: 'Invoice has been successfully updated. Invoice No: ' + result.inv_no + ' Total Amount: QAR ' + amount,
-                                    transID: result._id
-                                };
-                                res.redirect('/')
-
-                            }
-                        });
-
-
-                    }
-
+                        }
+                    });
 
                 }
-            });
+            })
+
+
 
 
         } else {
@@ -849,39 +924,39 @@ module.exports = {
 
                         Notif.getINV((err, dataINV) => {
                             Notif.getVehicle((err, dataVehicle) => {
-                            Notif.getVehicleIn((err, dataVehicleIn) => {
-                                Notif.getEmployee((err, dataEmployee) => {
+                                Notif.getVehicleIn((err, dataVehicleIn) => {
+                                    Notif.getEmployee((err, dataEmployee) => {
 
-                                    let nav = {
-                                        title: "Notifications",
-                                        child: "Pending Expenses",
-                                        view: 2,
-                                        notif: {
-                                            exIstimara: dataVehicle,
-                                            exInsurance: dataVehicleIn,
-                                            expenPending: dataINV,
-                                            exQID: dataEmployee
-                                        }
-                                    };
+                                        let nav = {
+                                            title: "Notifications",
+                                            child: "Pending Expenses",
+                                            view: 2,
+                                            notif: {
+                                                exIstimara: dataVehicle,
+                                                exInsurance: dataVehicleIn,
+                                                expenPending: dataINV,
+                                                exQID: dataEmployee
+                                            }
+                                        };
 
-                                    res.render('pending-expenses', {
-                                        title: "Expenses Approval List",
-                                        nav: nav,
-                                        pendingINV: resultINV
+                                        res.render('pending-expenses', {
+                                            title: "Expenses Approval List",
+                                            nav: nav,
+                                            pendingINV: resultINV
 
+                                        })
                                     })
-                                })
                                 })
                             })
                         })
 
                     }
                 })
-            }else{
+            } else {
                 res.redirect("/");
             }
 
-           
+
 
         } else {
             res.redirect("/sign-in");
@@ -918,7 +993,7 @@ module.exports = {
 
                     }
                 });
-            }else{
+            } else {
                 res.redirect("/");
             }
 
@@ -927,7 +1002,5 @@ module.exports = {
             res.redirect("/sign-in");
         }
     },
-
-
 
 }

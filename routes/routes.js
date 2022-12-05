@@ -37,20 +37,10 @@ router.get('/delete-attachment/:filename', settings.deleteHima);
 router.get('/system-settings', settings.viewSysSettings);
 router.post('/update-system-settings', settings.updateSysSettings);
 
-router.get('/master', settings.viewChartAcc);
-router.post('/add/account-ledger', settings.addChartAcc );
-router.post('/update/ledger/:id', settings.updateChartAcc)
-router.get('/delete/ledger/:id', settings.deleteChartAcc);
-
-router.get('/cost-center', settings.viewCostCenter);
-router.post('/add/cost-center', settings.addCostCenter );
-router.post('/update/cost-center/:id', settings.updateCostCenter)
-router.get('/delete/cost-center/:id', settings.deleteCostCenter);
-
-router.get('/purpose-transfer', settings.viewPurpose);
-router.post('/add/purpose-transfer', settings.addPurpose );
-router.post('/update/purpose/:id', settings.updatePurpose)
-router.get('/delete/purpose/:id', settings.deletePurpose);
+router.get('/master', settings.viewExpensesType);
+router.post('/add/expenses-type', settings.addExpensesType);
+router.post('/update/expenses/:id', settings.updateExpensesType)
+router.get('/delete/expenses/:id', settings.deleteExpensesType);
 
 router.get('/vehicle-list', vehiclesController.viewVehicles);
 router.post('/add/vehicle',upload, vehiclesController.addVehicle );

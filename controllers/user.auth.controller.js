@@ -1,5 +1,4 @@
 const User = require('../models/User');
-const Vehicles = require('../models/Vehicles');
 const LoginHistory = require('../models/LoginHistory');
 const passport = require("passport");
 const ip = require('ip');
@@ -50,13 +49,14 @@ module.exports = {
               name: req.user.name,
               user_name: req.body.username,
               id_address: ip.address(),
-              id_address2: req.ip,
-              status: "Success",
-              updated_at: Date.now()
+              id_address2: req.connection.remoteAddress,
+              status: "Success"
             });
             logs.save((err) => {
               if (err) {
                 res.json({ message: err.message, type: 'danger' });
+              }else{
+                console.log("User Login and saved!",req.connection.remoteAddress )
               }
             });
           }
