@@ -55,11 +55,11 @@ module.exports = {
             logs.save((err) => {
               if (err) {
                 res.json({ message: err.message, type: 'danger' });
-              }else{
-                console.log("User Login and saved!",req.connection.remoteAddress )
               }
             });
           }
+
+          console.log(`User Login! Ip: ${req.connection.remoteAddress} Name: ${req.user.name} Date: ${new Date()}` )
 
           req.session.user = {
             userName: req.user.name,
