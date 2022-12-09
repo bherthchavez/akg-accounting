@@ -59,7 +59,7 @@ module.exports = {
             });
           }
 
-          console.log(`User Login! Ip: ${req.connection.remoteAddress} Name: ${req.user.name} Date: ${new Date()}` )
+          console.log(`User Login! Ip: ${req.connection.remoteAddress} Name: ${req.user.name}` )
 
           req.session.user = {
             userName: req.user.name,

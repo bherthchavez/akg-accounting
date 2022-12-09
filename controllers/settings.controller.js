@@ -83,7 +83,7 @@ module.exports = {
                         type: 'success',
                         message: 'Expenses Type added successfully!',
                     };
-                    res.redirect('/master');
+                   (req.body.val) ? res.redirect('/create-invoice/others')  :  res.redirect('/master');
                 }
             });
 
@@ -472,3 +472,5 @@ module.exports = {
 
 
 }
+
+

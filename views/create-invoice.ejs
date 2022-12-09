@@ -26,7 +26,8 @@
                   <div class="col">
                     <div class="mb-4">
                       <div class="form-selectgroup">
-                        <input type="text" name="expensesFor" class="form-control selectedExpenses" value="vehicle" hidden>
+                        <input type="text" name="expensesFor" class="form-control selectedExpenses" value="vehicle"
+                          hidden>
                         <label class="form-selectgroup-item">
                           <input type="radio" name="icons" value="vehicle" class="form-selectgroup-input" checked=""
                             onclick="selectExpenses(this)">
@@ -96,13 +97,28 @@
                               <input type="text" name="payee" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                              <div class="form-label">Expense Type</div>
-                              <select class="form-select" name="expenseType" required>
-                                <option selected>--</option>
-                                <% foundExpensesType.forEach(function(type) { %>
-                                  <option value="<%=type.name%>"><%=type.name%></option>
-                                  <% }) %>
-                              </select>
+                              <div class="form-label pe-2">Expense Type</div>
+                              <div class="row g-2">
+                                <div class="col">
+                                  <select class="form-select" name="expenseType" required>
+                                    <option selected>--</option>
+                                    <% foundExpensesType.forEach(function(type) { %>
+                                      <option value="<%=type.name%>">
+                                        <%=type.name%>
+                                      </option>
+                                      <% }) %>
+
+                                  </select>
+                                </div>
+                                <div class="col-auto">
+                                  <span data-bs-toggle="modal" data-bs-target="#modal-addExp">
+                                    <a href="#" class="btn btn-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                                      data-bs-custom-class="custom-tooltip" data-bs-title="Add New Expenses Type">
+                                      <i class="ti ti-plus icon"> </i>
+                                    </a>
+                                  </span>
+                                </div>
+                              </div>
                             </div>
                             <div class="mb-3">
                               <label class="form-label">Description</label>
@@ -191,6 +207,37 @@
 
     </form>
 
+    <div class="modal modal-blur fade" id="modal-addExp" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <form action="/add/expenses-type" method="post">
+            <div class="modal-header">
+              <h5 class="modal-title">Create Expenses Type</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col">
+                  <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" name="expName" class="form-control" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+    
+            <div class="modal-footer">
+              <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal"> Cancel </a>
+              <button type="submit" name="val" value="autoAdd" class="btn btn-secondary ms-auto">
+                <i class="ti ti-device-floppy icon"></i>
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <script src="../dist/libs/nouislider/dist/nouislider.min.js" defer></script>
     <script src="../dist/libs/litepicker/dist/litepicker.js" defer></script>
     <script src="../dist/libs/tom-select/dist/js/tom-select.base.min.js" defer></script>
@@ -246,9 +293,9 @@
           cardDetails += ' <label class="form-label">Card Details</label>'
           cardDetails += ' <textarea class="form-control" name="cardDetails" rows="1" required></textarea>'
           cardDetails += ' </div>'
-        
-             $("#paymentType").append(cardDetails);
-          
+
+          $("#paymentType").append(cardDetails);
+
 
         } else {
           $('#cardDetails').remove();
@@ -261,22 +308,22 @@
         $('.selectedExpenses').val(value)
         let vInput = '';
 
-          vInput += ' <div class="mb-3 vInput">'
-          vInput += '<div class="form-label">Vehicle Model / Number</div>'
-          vInput += ' <select class="form-select" name="vehicleID"><option> -- </option>'
-          vInput += ' <% foundVehicles.forEach(function(vehicle) { %>'
-          vInput += ' <option value="<%=vehicle._id%>" <%=vehicleNo===vehicle.vehicle_no ? "selected" : "" %>>'
-          vInput += '  <%=vehicle.make_model%> - <%=vehicle.vehicle_no%>'
-          vInput += ' </option>'
-          vInput += ' <% }) %>'
-          vInput += ' </select>'
-          vInput += '</div>'
+        vInput += ' <div class="mb-3 vInput">'
+        vInput += '<div class="form-label">Vehicle Model / Number</div>'
+        vInput += ' <select class="form-select" name="vehicleID"><option> -- </option>'
+        vInput += ' <% foundVehicles.forEach(function(vehicle) { %>'
+        vInput += ' <option value="<%=vehicle._id%>" <%=vehicleNo===vehicle.vehicle_no ? "selected" : "" %>>'
+        vInput += '  <%=vehicle.make_model%> - <%=vehicle.vehicle_no%>'
+        vInput += ' </option>'
+        vInput += ' <% }) %>'
+        vInput += ' </select>'
+        vInput += '</div>'
 
         if (value === 'Others') {
           $('.vInput').remove();
-        }else{
+        } else {
           if (!$('.vEx').find('.vInput').length) {
-          $(".vEx").append(vInput);
+            $(".vEx").append(vInput);
           }
         }
       }

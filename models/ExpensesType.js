@@ -6,8 +6,7 @@ const Expenses_TypeSchema = new mongoose.Schema({
         required: true,
     },
     code: {
-        type: String,
-        required: true,
+        type: String
     },
     created_by: {
         type: String,
