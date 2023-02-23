@@ -53,7 +53,7 @@
               <!-- <img src="../static/illustrations/EL.png" width="210" height="42" alt="Tabler" class="navbar-brand-image"> -->
               <!-- <h5 class="fw-bolder text-muted">مجـــــمـــــوعـــــة الــــــنــــــائــــــل الــــــقــــــابــــــضـــــة ذ.م.م</h5> 
                 <h4 class="fw-bolder text-muted">EL NAAEL GROUP HOLDING CO. W.L.L</h4>  -->
-              <h3 class="fw-bolder text-yellow "><%- (nav.view) === 2 ?  user.company : 'AL KATHIRI GROUPS' %></h3>
+              <h3 class="fw-bolder text-yellow "><%- (nav.view) === 2 ?  user.company : 'AL KATHIRI GROUP' %></h3>
                                                
             </a>
           </h1>
@@ -312,14 +312,25 @@
                           <span class="nav-link-title"> Dashboard </span>
                         </a>
                       </li>
-                      <li class="nav-item <%- (nav.title) === 'Setup' ? 'active' : ''  %> ">
-                        <a class="nav-link" href="/company-setup">
+
+                      <li class="nav-item dropdown <%- (nav.title) == 'Company' ? 'active' : ''  %> ">
+                        <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
+                          data-bs-auto-close="outside" role="button" aria-expanded="false">
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="ti ti-building-skyscraper fs-h2"></i>
                           </span>
-                          <span class="nav-link-title"> Company </span>
+                          <span class="nav-link-title">
+                            List of Companies
+                          </span>
                         </a>
+                        <div class="dropdown-menu ">
+                          <a class="dropdown-item <%- (nav.title) == 'Company' && (nav.subTtile) == 'Subsidiaries' ? 'active' : ''  %>"
+                            href="/company-setup">Subsidiaries </a>
+                          <a class="dropdown-item <%- (nav.title) == 'Company' && (nav.subTtile) == 'Sponsored' ?  'active' : ''  %>"
+                            href="/company-sponsored">Sponsored</a>
+                        </div>
                       </li>
+
                       <li class="nav-item <%- (nav.title) === 'User' ? 'active' : ''  %> ">
                         <a class="nav-link" href="/user-setup">
                           <span class="nav-link-icon d-md-none d-lg-inline-block">

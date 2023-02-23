@@ -1,4 +1,5 @@
 const Company = require('../models/Company');
+const CompanySponsored = require('../models/SponsoredCompany');
 const User = require('../models/User');
 const passport = require("passport");
 const Notif = require('../middleware/notif.middleware');
@@ -18,7 +19,6 @@ module.exports = {
   companySetup: async (req, res) => {
     if (req.isAuthenticated()) {
 
-
       Company.find().exec((err, foundList) => {
         if (err) {
           res.json({ message: err.message });
@@ -30,7 +30,8 @@ module.exports = {
                 Notif.getEmployee((err, dataEmployee) => {
 
                   let nav = {
-                    title: "Setup",
+                    title: "Company",
+                    subTtile: "Subsidiaries",
                     view: 1,
                     notif: {
                       exIstimara: dataVehicle,
@@ -40,7 +41,7 @@ module.exports = {
                     }
                   };
                   res.render('company', {
-                    title: "Company Setup",
+                    title: "Company Subsidiaries",
                     nav: nav,
                     companyList: foundList
                   })
@@ -142,6 +143,157 @@ module.exports = {
                   message: 'Company deleted successfully!',
                 };
                 res.redirect('/company-setup')
+              }
+
+            });
+
+          } else {
+
+            req.session.message = {
+              type: 'danger',
+              message: 'Thi Company cannot not be deleted since it has one or more users and still active!',
+            };
+            res.redirect('/company-setup')
+
+          }
+
+        }
+
+      });
+
+    } else {
+      res.redirect("/sign-in");
+    }
+  },
+
+
+  companySponsored: async (req, res) => {
+    if (req.isAuthenticated()) {
+
+      CompanySponsored.find().exec((err, foundList) => {
+        if (err) {
+          res.json({ message: err.message });
+        } else {
+
+          Notif.getINV((err, dataINV) => {
+            Notif.getVehicle((err, dataVehicle) => {
+              Notif.getVehicleIn((err, dataVehicleIn) => {
+                Notif.getEmployee((err, dataEmployee) => {
+
+                  let nav = {
+                    title: "Company",
+                    subTtile: "Sponsored",
+                    view: 1,
+                    notif: {
+                      exIstimara: dataVehicle,
+                      exInsurance: dataVehicleIn,
+                      expenPending: dataINV,
+                      exQID: dataEmployee
+                    }
+                  };
+                  res.render('sponsored-company', {
+                    title: "Company Sponsored",
+                    nav: nav,
+                    companyList: foundList
+                  })
+                })
+              })
+            })
+          })
+
+
+        }
+      })
+
+
+
+    } else {
+      res.redirect("/sign-in");
+    }
+
+  },
+
+  addCompanySponsored: async (req, res) => {
+    if (req.isAuthenticated()) {
+
+
+      const newCompany = new CompanySponsored({
+        legal_name: req.body.legalName,
+        commercial_name: req.body.commName,
+        email: req.body.email,
+        phone: req.body.phone,
+        address: req.body.address,
+        created_by: req.user.name
+      });
+      newCompany.save((err) => {
+        if (err) {
+          res.json({ message: err.message, type: 'danger' });
+        } else {
+          req.session.message = {
+            type: 'success',
+            message: 'New Company added successfully!',
+          };
+          res.redirect('/company-sponsored');
+        }
+      });
+
+    } else {
+      res.redirect("/sign-in");
+    }
+
+  },
+
+  updateCompanySponsored: async (req, res) => {
+    if (req.isAuthenticated()) {
+      let id = req.params.id;
+
+      CompanySponsored.findByIdAndUpdate(id, {
+        legal_name: req.body.legalName,
+        commercial_name: req.body.commName,
+        email: req.body.email,
+        phone: req.body.phone,
+        address: req.body.address
+      }, (err, result) => {
+        if (err) {
+          res.json({ message: err.message, type: 'danger' });
+        } else {
+
+          req.session.message = {
+            type: 'success',
+            message: 'Company updated successfully!'
+          };
+
+          res.redirect('/company-sponsored')
+        }
+      });
+
+    } else {
+      res.redirect("/sign-in");
+    }
+
+  },
+
+  deleteCompanySponsored: async (req, res) => {
+    if (req.isAuthenticated()) {
+
+      let id = req.params.id
+
+      User.find({ company_id: id }, (err, result) => {
+        if (err) {
+          res.json({ message: err.message });
+        } else {
+          if (result.length === 0) {
+
+            CompanySponsored.findByIdAndRemove(id, (err) => {
+
+              if (err) {
+                res.json({ message: err.message });
+              } else {
+                req.session.message = {
+                  type: 'info',
+                  message: 'Company deleted successfully!',
+                };
+                res.redirect('/company-sponsored')
               }
 
             });

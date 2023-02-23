@@ -8,10 +8,10 @@
           <div class="col">
             <!-- Page pre-title -->
             <div class="page-pretitle">
-              Company 
+              Company
             </div>
             <h2 class="page-title">
-              Subsidiaries List
+              Sponsored List
             </h2>
           </div>
           <!-- Page title actions -->
@@ -126,7 +126,7 @@
                                       Cancel
                                     </a></div>
                                   <div class="col">
-                                    <a href="/delete-company/<%=company._id%>" class="btn btn-danger w-100">Yes</a>
+                                    <a href="/delete-company-sponsored/<%=company._id%>" class="btn btn-danger w-100">Yes</a>
 
                                   </div>
                                 </div>
@@ -140,7 +140,7 @@
                       <div class="modal modal-blur fade" id="modal-updateCompany<%=company._id%>" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                           <div class="modal-content">
-                            <form action="/update-company/<%=company._id%>" method="post">
+                            <form action="/update-company-sponsored/<%=company._id%>" method="post">
                               <div class="modal-header">
                                 <h5 class="modal-title">Update Company</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -209,7 +209,7 @@
                   <div class="modal modal-blur fade" id="modal-addCompany" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                       <div class="modal-content">
-                        <form action="/add-company" method="post">
+                        <form action="/add-company-sponsored" method="post">
                           <div class="modal-header">
                             <h5 class="modal-title">New Company</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

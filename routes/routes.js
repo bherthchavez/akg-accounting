@@ -21,6 +21,11 @@ router.post('/add-company', setup.addCompany);
 router.post('/update-company/:id', setup.updateCompany);
 router.get('/delete-company/:id', setup.deleteCompany);
 
+router.get('/company-sponsored', setup.companySponsored);
+router.post('/add-company-sponsored', setup.addCompanySponsored);
+router.post('/update-company-sponsored/:id', setup.updateCompanySponsored);
+router.get('/delete-company-sponsored/:id', setup.deleteCompanySponsored);
+
 router.get('/register', setup.devRegister); //for development
 router.post('/register-unlock', setup.devRegisterUnlock); //for development
 router.post('/add-userDev', setup.addUserDev);  //for development
