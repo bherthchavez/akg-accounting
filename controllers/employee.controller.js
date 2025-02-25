@@ -5,9 +5,10 @@ const Notif = require('../middleware/notif.middleware');
 module.exports = {
 
     addEmployee: async (req, res) => {
-        if (req.isAuthenticated()) {
+        if (!req.isAuthenticated()) return res.redirect("/sign-in");
 
-            const salaryAmount = + (req.body.salary).split(',').join('');
+        try {
+            const salaryAmount = +(req.body.salary).split(',').join('');
 
             const newEmployee = new Employee({
                 fname: req.body.fName,
@@ -28,164 +29,174 @@ module.exports = {
                 updated_by: req.user.name,
                 created_by: req.user.name
             });
-            newEmployee.save(async(err) => {
-                if (err) {
-                    res.json({ message: err.message, type: 'danger' });
-                } else {
-                    const s3UpQID = await s3Upload(req.files['qidFile'][0], req.body.qid, 'employee');
-                    
-                    req.session.message = {
-                        type: 'success',
-                        message: 'New employee added successfully!',
-                    };
-                    res.redirect('/employee-list');
-                }
-            });
 
-        } else {
-            res.redirect("/sign-in");
+            await newEmployee.save();
+            await s3Upload(req.files['qidFile'][0], req.body.qid, 'employee');
+
+            req.session.message = {
+                type: 'success',
+                message: 'New employee added successfully!',
+            };
+
+            res.redirect('/employee-list');
+        } catch (err) {
+            res.json({ message: err.message, type: 'danger' });
         }
     },
+
 
     viewEmployee: async (req, res) => {
-        if (req.isAuthenticated()) {
+        if (!req.isAuthenticated()) return res.redirect("/sign-in");
 
-            Employee.find().exec((err, foundEmployee) => {
-                if (err) {
-                    res.json({ message: err.message })
-                } else {
+        try {
+            const [foundEmployee, dataINV, dataVehicle, dataVehicleIn, dataEmployee] = await Promise.all([
+                Employee.find(),
+                Notif.getINV(),
+                Notif.getVehicle(),
+                Notif.getVehicleIn(),
+                Notif.getEmployee()
+            ]);
 
-                    Notif.getINV((err, dataINV) => {
-                        Notif.getVehicle((err, dataVehicle) => {
-                            Notif.getVehicleIn((err, dataVehicleIn) => {
-                                Notif.getEmployee((err, dataEmployee) => {
-
-
-                                    let nav = {
-                                        title: "Accounts",
-                                        child: "Employee",
-                                        view: 2,
-                                        notif: {
-                                            exIstimara: dataVehicle,
-                                            exInsurance: dataVehicleIn,
-                                            expenPending: dataINV,
-                                            exQID: dataEmployee
-                                        }
-                                    }
-
-                                    res.render('employee', {
-                                        title: "Employee List",
-                                        employeeList: foundEmployee,
-                                        nav: nav
-                                    })
-                                })
-                            })
-                        })
-                    })
-
+            const nav = {
+                title: "Accounts",
+                child: "Employee",
+                view: 2,
+                notif: {
+                    exIstimara: dataVehicle,
+                    exInsurance: dataVehicleIn,
+                    expenPending: dataINV,
+                    exQID: dataEmployee
                 }
-            })
+            };
 
-        } else {
-            res.redirect("/sign-in");
+            res.render('employee', {
+                title: "Employee List",
+                employeeList: foundEmployee,
+                nav
+            });
+        } catch (err) {
+            res.json({ message: err.message, type: 'danger' });
         }
-
     },
+
 
     updateEmployee: async (req, res) => {
-        if (req.isAuthenticated()) {
+        if (!req.isAuthenticated()) return res.redirect("/sign-in");
 
+        try {
             let id = req.params.id;
-            const salaryAmount = + (req.body.salary).split(',').join('');
+            const salaryAmount = +req.body.salary.replace(/,/g, "");
 
-            Employee.findByIdAndUpdate(id, {
-                fname: req.body.fName,
-                mname: req.body.mName,
-                lname: req.body.lName,
-                gender: req.body.gender,
-                email: req.body.email,
-                contact_no: req.body.cNo,
-                address: req.body.address,
-                qid: req.body.qid,
-                ex_qid: req.body.exQID,
-                bank_name: req.body.bankName,
-                iban: req.body.iban,
-                salary: salaryAmount,
-                updated_by: req.user.name
-            },async (err, result) => {
-                if (err) {
-                    res.json({ message: err.message, type: 'danger' });
-                } else {
+            // Update employee details
+            const updatedEmployee = await Employee.findByIdAndUpdate(
+                id,
+                {
+                    fname: req.body.fName,
+                    mname: req.body.mName,
+                    lname: req.body.lName,
+                    gender: req.body.gender,
+                    email: req.body.email,
+                    contact_no: req.body.cNo,
+                    address: req.body.address,
+                    qid: req.body.qid,
+                    ex_qid: req.body.exQID,
+                    bank_name: req.body.bankName,
+                    iban: req.body.iban,
+                    salary: salaryAmount,
+                    updated_by: req.user.name
+                },
+                { new: true } // Return the updated document
+            );
 
-                    if (req.files['qidFile']) { // new istimara
+            if (!updatedEmployee) {
+                return res.status(404).json({ message: "Employee not found!", type: "danger" });
+            }
 
-                        const S3up = await s3Upload(req.files['qidFile'][0], req.body.qid,'employee');
-                       
-                        Employee.findByIdAndUpdate(id, {
-                            qid_file: `${req.files['qidFile'][0].fieldname}-${req.body.qid}-${req.files['qidFile'][0].originalname}`,
-                        }, async(err) => {
-                           if (err) {
-                             res.json({ message: err.message });
-                           }else{
-                            const S3del = await s3Delete(result.qid_file,'employee')
-                           }
-                        })
-                    }
+            // Handle QID file upload if provided
+            if (req.files?.qidFile) {
+                const qidFile = req.files.qidFile[0];
 
-                    req.session.message = {
-                        type: 'success',
-                        message: 'Employee updated successfully!'
-                    };
+                // Upload new file to S3
+                await s3Upload(qidFile, req.body.qid, "employee");
 
-                    res.redirect('/employee-list')
+                // Delete old QID file from S3
+                if (updatedEmployee.qid_file) {
+                    await s3Delete(updatedEmployee.qid_file, "employee");
                 }
-            });
 
+                // Update employee record with new file name
+                await Employee.findByIdAndUpdate(id, {
+                    qid_file: `${qidFile.fieldname}-${req.body.qid}-${qidFile.originalname}`
+                });
+            }
 
-        } else {
-            res.redirect("/sign-in");
+            req.session.message = {
+                type: "success",
+                message: "Employee updated successfully!"
+            };
+
+            res.redirect("/employee-list");
+        } catch (error) {
+            console.error("Error updating employee:", error);
+            res.status(500).json({ message: "Error updating employee", error: error.message });
         }
     },
+
 
     deleteEmployee: async (req, res) => {
-        if (req.isAuthenticated()) {
+        if (!req.isAuthenticated()) return res.redirect("/sign-in");
 
-            let id = req.params.id
+        try {
+            let id = req.params.id;
 
-            Employee.findByIdAndRemove(id, async(err, result) => {
+            // Find and delete employee
+            const deletedEmployee = await Employee.findByIdAndRemove(id);
 
-                if (err) {
-                    res.json({ message: err.message });
-                } else {
+            if (!deletedEmployee) {
+                return res.status(404).json({ message: "Employee not found!", type: "danger" });
+            }
 
-                                // delete file  QID FILE
-                                const s3Del1 = await s3Delete(result.qid_file,'employee')
+            // Delete QID file if it exists
+            if (deletedEmployee.qid_file) {
+                await s3Delete(deletedEmployee.qid_file, "employee");
+            }
 
-                    req.session.message = {
-                        type: 'info',
-                        message: 'Employee deleted successfully!',
-                    };
-                    res.redirect('/employee-list')
-                }
+            req.session.message = {
+                type: "info",
+                message: "Employee deleted successfully!"
+            };
 
-            });
-
-
-
-        } else {
-            res.redirect("/sign-in");
+            res.redirect("/employee-list");
+        } catch (error) {
+            console.error("Error deleting employee:", error);
+            res.status(500).json({ message: "Error deleting employee", error: error.message });
         }
     },
+
 
     dlQID: async (req, res) => {
-        if (req.isAuthenticated()) {
+        if (!req.isAuthenticated()) return res.redirect("/sign-in");
 
-            res.attachment(req.params.filename);
-            const fileStream = await s3Download(req.params.filename, 'employee');
+        try {
+            const { filename } = req.params;
+
+            // Set response headers for file download
+            res.attachment(filename);
+
+            // Attempt to download the file from S3
+            const fileStream = await s3Download(filename, "employee");
+
+            // If no file is found, handle the error
+            if (!fileStream) {
+                return res.status(404).json({ message: "File not found!", type: "danger" });
+            }
+
+            // Pipe the file stream to response
             fileStream.pipe(res);
-
-        } else {
-            res.redirect("/sign-in");
+        } catch (error) {
+            console.error("Error downloading QID file:", error);
+            res.status(500).json({ message: "Error downloading file", error: error.message });
         }
     },
+
 }

@@ -1,14 +1,23 @@
-const { S3 } =  require("aws-sdk")
-const s3 = new S3()
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 
-exports.s3Upload = async (file,no, options) =>{
-    const param = {
+const s3 = new S3Client({ region: 'us-east-1' });
+
+exports.s3Upload = async (file, no, options) => {
+    try {
+      const folder = options === 'vehicle' ? 'vehicle' : 'employee';
+      const params = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `akgFiles/nawras/${(options ==='vehicle' ? 'vehicle' : 'employee')}/${file.fieldname}-${no}-${file.originalname}`,
+        Key: `akgFiles/nawras/${folder}/${file.fieldname}-${no}-${file.originalname}`,
         Body: file.buffer
+      };
+  
+      return s3.upload(params).promise();
+    } catch (error) {
+      console.error("S3 Upload Error:", error);
+      throw new Error("Failed to upload file to S3");
     }
-   return await s3.upload(param).promise();
-}
+  };
+  
 
 
 exports.s3Delete = async (fileName, options) =>{

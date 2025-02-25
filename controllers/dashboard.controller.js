@@ -4,165 +4,106 @@ const Invoice = require('../models/Invoice');
 const Vehicles = require('../models/Vehicles');
 const Notif = require('../middleware/notif.middleware');
 
-
 module.exports = {
 
   viewDashboard: async (req, res) => {
-    if (req.isAuthenticated()) {
+    if (!req.isAuthenticated()) return res.redirect("/sign-in");
+    
+    try {
+      const foundInv = await Invoice.find().sort({ createdAt: -1 }).lean();
+      const vehicleFound = await Vehicles.find();
+      const vouFound = await Voucher.find();
+      
+      const [dataINV, dataVehicle, dataVehicleIn, dataEmployee] = await Promise.all([
+        Notif.getINV(),
+        Notif.getVehicle(),
+        Notif.getVehicleIn(),
+        Notif.getEmployee()
+      ]);
 
-      Invoice.find().sort({ createdAt: -1 }).lean().exec((err, foundInv) => {
-        if (err) {
-          res.json({ message: err.message, type: 'danger' });
-        } else {
-
-          Vehicles.find((errbill, vehicleFound) => {
-            if (err) {
-              res.json({ message: errbill.message, type: 'danger' });
-            } else {
-
-              Voucher.find((errbill, vouFound) => {
-                if (err) {
-                  res.json({ message: errbill.message, type: 'danger' });
-                } else {
-
-                  Notif.getINV((err, dataINV) => {
-                    Notif.getVehicle((err, dataVehicle) => {
-                    Notif.getVehicleIn((err, dataVehicleIn) => {
-                      Notif.getEmployee((err, dataEmployee) => {
-
-                        let nav = {
-                          title: "Dashboard",
-                          view: 2,
-                          notif: {
-                            exIstimara: dataVehicle,
-                            exInsurance: dataVehicleIn,
-                            expenPending: dataINV,
-                            exQID: dataEmployee
-                          }
-                        };
-
-                        res.render('index', {
-                          title: "AL KATHIRI GROUPS ACCOUNTING",
-                          nav: nav,
-                          vehicleFound: vehicleFound,
-                          vouFound: vouFound,
-                          invItems: foundInv
-                        })
-
-                      })
-                      })
-                    })
-                  })
-                }
-              })
-
-            }
-          });
-
-        
+      let nav = {
+        title: "Dashboard",
+        view: 2,
+        notif: {
+          exIstimara: dataVehicle,
+          exInsurance: dataVehicleIn,
+          expenPending: dataINV,
+          exQID: dataEmployee
         }
-      })
-
-
-
-    } else {
-      res.redirect("/sign-in");
+      };
+      
+      res.render('index', {
+        title: "AL KATHIRI GROUPS ACCOUNTING",
+        nav,
+        vehicleFound,
+        vouFound,
+        invItems: foundInv
+      });
+    } catch (err) {
+      res.json({ message: err.message, type: 'danger' });
     }
-
   },
 
   ownerDashboard: async (req, res) => {
-    if (req.isAuthenticated()) {
+    if (!req.isAuthenticated()) return res.redirect("/sign-in");
+    
+    try {
+      const foundInv = await Invoice.find().sort({ createdAt: -1 }).lean();
+      const vehicleFound = await Vehicles.find();
+      const CompanyFound = await Company.find();
+      const vouFound = await Voucher.find();
+      
+      const [dataINV, dataVehicle, dataVehicleIn, dataEmployee] = await Promise.all([
+        Notif.getINV(),
+        Notif.getVehicle(),
+        Notif.getVehicleIn(),
+        Notif.getEmployee()
+      ]);
 
-      Invoice.find().sort({ createdAt: -1 }).lean().exec((err, foundInv) => {
-        if (err) {
-          res.json({ message: err.message, type: 'danger' });
-        } else {
-
-          Vehicles.find((errbill, vehicleFound) => {
-            if (err) {
-              res.json({ message: errbill.message, type: 'danger' });
-            } else {
-              Company.find((errbill, CompanyFound) => {
-                if (err) {
-                  res.json({ message: errbill.message, type: 'danger' });
-                } else {
-
-                  Voucher.find((errbill, vouFound) => {
-                    if (err) {
-                      res.json({ message: errbill.message, type: 'danger' });
-                    } else {
-                      Notif.getINV((err, dataINV) => {
-                        Notif.getVehicle((err, dataVehicle) => {
-                        Notif.getVehicleIn((err, dataVehicleIn) => {
-                          Notif.getEmployee((err, dataEmployee) => {
-                            let nav = {
-                              title: "Dashboard",
-                              view: 1,
-                              notif: {
-                                exIstimara: dataVehicle,
-                                exInsurance: dataVehicleIn,
-                                expenPending: dataINV,
-                                exQID: dataEmployee
-                              }
-                            };
-
-                            res.render('owner-dashboard', {
-                              title: "AL KATHIRI GROUPS ACCOUNTING",
-                              nav: nav,
-                              CompanyFound: CompanyFound,
-                              vehicleFound: vehicleFound,
-                              vouFound: vouFound,
-                              invItems: foundInv
-                            });
-
-                          });
-                        });
-                      });
-                      });
-
-                    }
-                  });
-                }
-              });
-            }
-          });
-
+      let nav = {
+        title: "Dashboard",
+        view: 1,
+        notif: {
+          exIstimara: dataVehicle,
+          exInsurance: dataVehicleIn,
+          expenPending: dataINV,
+          exQID: dataEmployee
         }
+      };
 
+      res.render('owner-dashboard', {
+        title: "Datu Trading & Facility Management",
+        nav,
+        CompanyFound,
+        vehicleFound,
+        vouFound,
+        invItems: foundInv
       });
-
-    } else {
-      res.redirect("/sign-in");
+    } catch (err) {
+      res.json({ message: err.message, type: 'danger' });
     }
-
   },
+  
   companyDashboard: async (req, res) => {
-    if (req.isAuthenticated()) {
+    if (!req.isAuthenticated()) return res.redirect("/sign-in");
+    
+    try {
+      const companyId = req.params.id;
+      const foundCompany = await Company.findById(companyId);
+      
+      if (!foundCompany) throw new Error("Company not found");
+      
+      req.session.user = {
+        userName: req.user.name,
+        userPosition: req.user.position,
+        role: req.user.role,
+        company: foundCompany.legal_name,
+        companyID: foundCompany._id
+      };
 
-      let companyId = req.params.id;
-
-      Company.findById(companyId, (err, foundCompany) => {
-        if (err) {
-          res.json({ message: err.message, type: 'danger' });
-        } else {
-
-          req.session.user = {
-            userName: req.user.name,
-            userPosition: req.user.position,
-            role: req.user.role,
-            company: foundCompany.legal_name,
-            companyID: foundCompany._id
-          };
-
-
-          res.redirect('/');
-        }
-      });
-
-    } else {
-      res.redirect("/sign-in");
+      res.redirect('/');
+    } catch (err) {
+      res.json({ message: err.message, type: 'danger' });
     }
-
   }
-}
+};

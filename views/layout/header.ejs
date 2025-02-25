@@ -10,13 +10,11 @@
 <html lang="en">
 
 <head>
-  <link rel="icon" href="../static/favicon.ico" />
+  <link rel="icon" href="../static/illustrations/DTFM-Logo.png" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>
-    <%= title %>
-  </title>
+  <title>Datu Trading & Facility Management </title>
   <!-- CSS files -->
   <link href="../dist/css/custom.css" rel="stylesheet" />
   <link href="../dist/css/tabler.min.css" rel="stylesheet" />
@@ -53,167 +51,208 @@
               <!-- <img src="../static/illustrations/EL.png" width="210" height="42" alt="Tabler" class="navbar-brand-image"> -->
               <!-- <h5 class="fw-bolder text-muted">مجـــــمـــــوعـــــة الــــــنــــــائــــــل الــــــقــــــابــــــضـــــة ذ.م.م</h5> 
                 <h4 class="fw-bolder text-muted">EL NAAEL GROUP HOLDING CO. W.L.L</h4>  -->
-              <h3 class="fw-bolder text-yellow "><%- (nav.view) === 2 ?  user.company : 'AL KATHIRI GROUP' %></h3>
-                                               
+              <!-- <h3 class="fw-bolder text-yellow "><%- (nav.view) === 2 ?  user.company : 'AL KATHIRI GROUP' %></h3> -->
+              <img src="../static/illustrations/DTFM-Logo.png" height="45" class="d-block" alt="">
+
             </a>
           </h1>
           <div class="navbar-nav flex-row order-md-last">
-            <% if (user.role === 1  ) { %>
-            <div class="nav-item d-none d-md-flex me-3">
-              <div class="btn-list">
-                <a href="/owner-dashboard" class="btn">
-                  <i class="ti ti-server-cog fs-h3 me-1"></i>
-                  Setup
-                </a>
+            <% if (user.role===1 ) { %>
+              <div class="nav-item d-none d-md-flex me-3">
+                <div class="btn-list">
+                  <a href="/owner-dashboard" class="btn">
+                    <i class="ti ti-server-cog fs-h3 me-1"></i>
+                    Setup
+                  </a>
+                </div>
               </div>
-            </div>
-            <%}%>
+              <%}%>
 
-            <div class="d-none d-md-flex">
+                <div class="d-none d-md-flex">
 
-              <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode"
-                data-bs-toggle="tooltip" data-bs-placement="bottom">
-                <i class="ti ti-moon fs-h2"></i>
-              </a>
-              <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode"
-                data-bs-toggle="tooltip" data-bs-placement="bottom">
-                <i class="ti ti-sun-high fs-h2"></i>
-              </a>
+                  <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode"
+                    data-bs-toggle="tooltip" data-bs-placement="bottom">
+                    <i class="ti ti-moon fs-h2"></i>
+                  </a>
+                  <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode"
+                    data-bs-toggle="tooltip" data-bs-placement="bottom">
+                    <i class="ti ti-sun-high fs-h2"></i>
+                  </a>
 
-              <div class="nav-item dropdown d-none d-md-flex me-3">
-                <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1"
-                  aria-label="Show notifications">
-                  <i class="ti ti-bell icon"></i>
-                  
-                  <%if (nav.notif.expenPending.length && user.role === 1) {%>
-                    <span class="badge badge-pill bg-red"><%= nav.notif.expenPending.length + nav.notif.exIstimara.length + nav.notif.exInsurance.length + nav.notif.exQID.length %></span>
-                  <%}else if(nav.notif.exIstimara.length || nav.notif.exInsurance.length || nav.notif.exQID.length) {%>
-                    <span class="badge badge-pill bg-red"><%= nav.notif.exIstimara.length + nav.notif.exQID.length + nav.notif.exInsurance.length %></span>
-                    <!-- <span class="badge badge-pill bg-red">6</span> -->
-                    <%}%>
-                </a>
-                <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-                  <div class="card " style="height: 25rem; width: 25rem">
-                    <div class="card-header">
-                      <h3 class="card-title">Notifications</h3>
-                    </div>
-                   
-                    <div class="list-group list-group-flush list-group-hoverable card-body-scrollable card-body-scrollable-shadow">
-                      <%if (nav.notif.expenPending && user.role === 1) {%>
-                        <% nav.notif.expenPending.forEach(function(notif){ %> 
-                      <div class="list-group-item">
-                        <div class="row align-items-center">
-                          <div class="col-auto"><span class="status-dot status-dot-animated bg-orange d-block"></span>
-                          </div>
-                          <div class="col text-truncate">
-                            <a href="/pending-expenses" class="text-body d-block fw-bold">Expenses For Approvals </a>
-                            <div class="d-block text-muted text-truncate mt-n1 fs-h5">
-                              Created by: <strong><%=notif.created_by%>,</strong>  Amount:  <strong><%= (notif.amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %></strong> QAR
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <!-- <a href="#" class="list-group-item-actions">View -->
-                            <!-- </a> -->
-                          </div>
+                  <div class="nav-item dropdown d-none d-md-flex me-3">
+                    <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1"
+                      aria-label="Show notifications">
+                      <i class="ti ti-bell icon"></i>
+                      <% console.log("error: nav.notif.expenPending.length") %>
+
+                        <%if (nav.notif.expenPending.length && user.role===1) {%>
+                          <span class="badge badge-pill bg-red">
+                            <%= nav.notif.expenPending.length + nav.notif.exIstimara.length +
+                              nav.notif.exInsurance.length + nav.notif.exQID.length %>
+                          </span>
+                          <%}else if(nav.notif.exIstimara.length || nav.notif.exInsurance.length ||
+                            nav.notif.exQID.length) {%>
+                            <span class="badge badge-pill bg-red">
+                              <%= nav.notif.exIstimara.length + nav.notif.exQID.length + nav.notif.exInsurance.length %>
+                            </span>
+                            <!-- <span class="badge badge-pill bg-red">6</span> -->
+                            <%}%>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
+                      <div class="card " style="height: 25rem; width: 25rem">
+                        <div class="card-header">
+                          <h3 class="card-title">Notifications</h3>
+                        </div>
+
+                        <div
+                          class="list-group list-group-flush list-group-hoverable card-body-scrollable card-body-scrollable-shadow">
+                          <%if (nav.notif.expenPending && user.role===1) {%>
+                            <% nav.notif.expenPending.forEach(function(notif){ %>
+                              <div class="list-group-item">
+                                <div class="row align-items-center">
+                                  <div class="col-auto"><span
+                                      class="status-dot status-dot-animated bg-orange d-block"></span>
+                                  </div>
+                                  <div class="col text-truncate">
+                                    <a href="/pending-expenses" class="text-body d-block fw-bold">Expenses For Approvals
+                                    </a>
+                                    <div class="d-block text-muted text-truncate mt-n1 fs-h5">
+                                      Created by: <strong>
+                                        <%=notif.created_by%>,
+                                      </strong> Amount: <strong>
+                                        <%= (notif.amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,' ) %>
+                                      </strong> QAR
+                                    </div>
+                                  </div>
+                                  <div class="col-auto">
+                                    <!-- <a href="#" class="list-group-item-actions">View -->
+                                    <!-- </a> -->
+                                  </div>
+                                </div>
+                              </div>
+                              <% }) %>
+                                <%}%>
+
+
+                                  <%if (nav.notif.exIstimara) {%>
+                                    <% nav.notif.exIstimara.forEach(function(notif){ %>
+                                      <div class="list-group-item">
+                                        <div class="row align-items-center">
+                                          <div class="col-auto"><span
+                                              class="status-dot status-dot-animated bg-red d-block"></span>
+                                          </div>
+                                          <div class="col text-truncate">
+                                            <a href="/vehicle-list" class="text-body d-block fw-bold">Vehicle Istimara
+                                              Expired </a>
+                                            <div class="d-block text-muted text-truncate mt-n1 fs-h5">
+                                              Vehicle No: <strong>
+                                                <%=notif.vehicle_no%>,
+                                              </strong> Expiry Date: <strong>
+                                                <%=(new Date(notif.istimara_exdate).toLocaleDateString("en-US",
+                                                  {year: 'numeric' , day: 'numeric' ,month: 'short' })) %>
+                                              </strong>
+                                            </div>
+                                          </div>
+                                          <div class="col-auto">
+                                            <!-- <a href="#" class="list-group-item-actions">View -->
+                                            <!-- </a> -->
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <% }) %>
+                                        <%}%>
+
+                                          <%if (nav.notif.exInsurance) {%>
+                                            <% nav.notif.exInsurance.forEach(function(notif){ %>
+                                              <div class="list-group-item">
+                                                <div class="row align-items-center">
+                                                  <div class="col-auto"><span
+                                                      class="status-dot status-dot-animated bg-red d-block"></span>
+                                                  </div>
+                                                  <div class="col text-truncate">
+                                                    <a href="/vehicle-list" class="text-body d-block fw-bold">Vehicle
+                                                      Insurance Expired </a>
+                                                    <div class="d-block text-muted text-truncate mt-n1 fs-h5">
+                                                      Vehicle No: <strong>
+                                                        <%=notif.vehicle_no%>,
+                                                      </strong> Expiry Date: <strong>
+                                                        <%=(new Date(notif.insurance_exdate).toLocaleDateString("en-US",
+                                                          {year: 'numeric' , day: 'numeric' ,month: 'short' })) %>
+                                                      </strong>
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-auto">
+                                                    <!-- <a href="#" class="list-group-item-actions">View -->
+                                                    <!-- </a> -->
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <% }) %>
+                                                <%}%>
+
+                                                  <%if (nav.notif.exQID) {%>
+                                                    <% nav.notif.exQID.forEach(function(notif){ %>
+
+                                                      <div class="list-group-item">
+                                                        <div class="row align-items-center">
+                                                          <div class="col-auto"><span
+                                                              class="status-dot status-dot-animated bg-red d-block"></span>
+                                                          </div>
+                                                          <div class="col text-truncate">
+                                                            <a href="/employee-list"
+                                                              class="text-body d-block fw-bold">Employee QID Expired
+                                                            </a>
+                                                            <div class="d-block text-muted text-truncate mt-n1 fs-h5">
+                                                              Name: <strong>
+                                                                <%=notif.fname%>
+                                                                  <%=notif.lname%>,
+                                                              </strong> Expiry Date: <strong>
+                                                                <%=(new Date(notif.ex_qid).toLocaleDateString("en-US",
+                                                                  {year: 'numeric' , day: 'numeric' ,month: 'short' }))
+                                                                  %>
+                                                              </strong>
+                                                            </div>
+                                                          </div>
+                                                          <div class="col-auto">
+                                                            <!-- <a href="#" class="list-group-item-actions">View -->
+                                                            <!-- </a> -->
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                      <% }) %>
+                                                        <%}%>
                         </div>
                       </div>
-                      <% }) %>
-                      <%}%>
-                      
-                      
-                      <%if (nav.notif.exIstimara) {%>
-                        <% nav.notif.exIstimara.forEach(function(notif){ %>
-                      <div class="list-group-item">
-                        <div class="row align-items-center">
-                          <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span>
-                          </div>
-                          <div class="col text-truncate">
-                            <a href="/vehicle-list" class="text-body d-block fw-bold">Vehicle Istimara Expired </a>
-                            <div class="d-block text-muted text-truncate mt-n1 fs-h5">
-                              Vehicle No: <strong><%=notif.vehicle_no%>, </strong> Expiry Date: <strong><%=(new Date(notif.istimara_exdate).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' ,month: 'short' })) %></strong>  
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <!-- <a href="#" class="list-group-item-actions">View -->
-                            <!-- </a> -->
-                          </div>
-                        </div>
-                      </div>
-                      <% }) %>
-                      <%}%>
-
-                      <%if (nav.notif.exInsurance) {%>
-                        <% nav.notif.exInsurance.forEach(function(notif){ %>
-                      <div class="list-group-item">
-                        <div class="row align-items-center">
-                          <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span>
-                          </div>
-                          <div class="col text-truncate">
-                            <a href="/vehicle-list" class="text-body d-block fw-bold">Vehicle Insurance Expired </a>
-                            <div class="d-block text-muted text-truncate mt-n1 fs-h5">
-                              Vehicle No: <strong><%=notif.vehicle_no%>, </strong> Expiry Date: <strong><%=(new Date(notif.insurance_exdate).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' ,month: 'short' })) %></strong>  
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <!-- <a href="#" class="list-group-item-actions">View -->
-                            <!-- </a> -->
-                          </div>
-                        </div>
-                      </div>
-                      <% }) %>
-                      <%}%>
-
-                      <%if (nav.notif.exQID) {%>
-                        <% nav.notif.exQID.forEach(function(notif){ %>
-                         
-                      <div class="list-group-item">
-                        <div class="row align-items-center">
-                          <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span>
-                          </div>
-                          <div class="col text-truncate">
-                            <a href="/employee-list" class="text-body d-block fw-bold">Employee QID Expired </a>
-                            <div class="d-block text-muted text-truncate mt-n1 fs-h5">
-                              Name: <strong><%=notif.fname%> <%=notif.lname%>, </strong> Expiry Date: <strong><%=(new Date(notif.ex_qid).toLocaleDateString("en-US", {year: 'numeric' , day: 'numeric' ,month: 'short' })) %></strong>  
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <!-- <a href="#" class="list-group-item-actions">View -->
-                            <!-- </a> -->
-                          </div>
-                        </div>
-                      </div>
-                      <% }) %>
-                      <%}%>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
 
 
-            <div class="nav-item dropdown">
-              <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
-                aria-label="Open user menu">
-                <span class="avatar avatar-sm" style="background-image: url(../static/avatars/user-avatar.png)"></span>
-                <div class="d-none d-xl-block ps-2">
-                  <div>
-                    <%= user.userName %>
-                  </div>
-                  <div class="mt-1 small text-muted">
-                    <%= user.userPosition %>
+                <div class="nav-item dropdown">
+                  <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
+                    aria-label="Open user menu">
+                    <span class="avatar avatar-sm"
+                      style="background-image: url(../static/avatars/user-avatar.png)"></span>
+                    <div class="d-none d-xl-block ps-2">
+                      <div>
+                        <%= user.userName %>
+                      </div>
+                      <div class="mt-1 small text-muted">
+                        <%= user.userPosition %>
+                      </div>
+                    </div>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <%- (user.role)==1 ? '<a href="/hima-the-hokage" class="dropdown-item">Settings</a>' : '' %>
+                      <a href="/logout" class="dropdown-item">Logout</a>
                   </div>
                 </div>
-              </a>
-              <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <%- (user.role)==1 ? '<a href="/hima-the-hokage" class="dropdown-item">Settings</a>' : '' %>
-                  <a href="/logout" class="dropdown-item">Logout</a>
-              </div>
-            </div>
 
           </div>
       </header>
 
-      <% if (message && message.type !='transac' && message.type !='rentInfo' && message.type !='viewVoucher' && message.type !='viewInvoice' ) { %>
+      <% if (message && message.type !='transac' && message.type !='rentInfo' && message.type !='viewVoucher' &&
+        message.type !='viewInvoice' ) { %>
         <div class="alert-notif2">
           <div class="alert alert-important alert-<%= message.type %> alert-dismissible alertNotif2" role="alert">
             <div class="d-flex">
@@ -229,132 +268,133 @@
             <a class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="close"></a>
           </div>
         </div>
-        
-        <% } %>
-        
-        <% if (nav.view === 2) { %>
-         
-          <div class="navbar-expand-md">
-            <div class="collapse navbar-collapse" id="navbar-menu">
-              <div class="navbar navbar-light">
-                <div class="container-xl">
-                  <ul class="navbar-nav">
-                    <li class="nav-item <%- (nav.title) === 'Dashboard' ? 'active' : ''  %> ">
-                      <a class="nav-link" href="/">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                          <i class="ti ti-home-stats fs-h2"></i>
-                        </span>
-                        <span class="nav-link-title"> Dashboard </span>
-                      </a>
-                    </li>
-                    <li class="nav-item dropdown <%- (nav.title) == 'Accounts' ? 'active' : ''  %> ">
-                      <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
-                        data-bs-auto-close="outside" role="button" aria-expanded="false">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                          <i class="ti ti-presentation-analytics fs-h2"></i>
-                        </span>
-                        <span class="nav-link-title">
-                          Accounts
-                        </span>
-                      </a>
-                      <div class="dropdown-menu ">
-                        <!-- <a class="dropdown-item <%- (nav.title) == 'Accounts' && (nav.child) == 'Bank' ?  'active' : ''  %>" href="/bank-accounts">Bank </a> -->
-                        <a class="dropdown-item <%- (nav.title) == 'Accounts' && (nav.child) == 'Vehicle' ?  'active' : ''  %>"
-                          href="/vehicle-list">Vehicles</a>
-                        <a class="dropdown-item <%- (nav.title) == 'Accounts' && (nav.child) == 'Employee' ?  'active' : ''  %>"
-                          href="/employee-list">Employees</a>
-                      </div>
-                    </li>
-                    <li class="nav-item dropdown <%- (nav.title) == 'Settings' ? 'active' : ''  %>">
-                      <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
-                        data-bs-auto-close="outside" role="button" aria-expanded="false">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                          <i class="ti ti-adjustments-horizontal fs-h2"></i>
-                        </span>
-                        <span class="nav-link-title">Settings</span>
-                      </a>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item <%- (nav.title) == 'Settings' && (nav.child) == 'Master' ?  'active' : ''  %>"
-                          href="/master">Master </a>
-                        <a class="dropdown-item <%- (nav.title) == 'Settings' && (nav.child) == 'System Settings' ?  'active' : ''  %>"
-                          href="/system-settings">System Setup</a>
-                      </div>
-                    </li>
-                  </ul>
-                  <% if (nav.title === 'Dashboard') { %>
-                    <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
-                      <form action="../" method="get" autocomplete="off" novalidate>
-                        <div class="input-icon">
-                          <span class="input-icon-addon">
-                            <i class="ti ti-search"></i>
-                           </span>
-                          <input type="text" id="searchTrans" class="form-control" placeholder="Search transaction…" aria-label="Search transaction">
-                        </div>
-                      </form>
-                    </div>
-                    <%}%>
 
-                </div>
-              </div>
-            </div>
-          </div>
-          <% }else{ %>
+        <% } %>
+
+          <% if (nav.view===2) { %>
+
             <div class="navbar-expand-md">
               <div class="collapse navbar-collapse" id="navbar-menu">
                 <div class="navbar navbar-light">
                   <div class="container-xl">
                     <ul class="navbar-nav">
                       <li class="nav-item <%- (nav.title) === 'Dashboard' ? 'active' : ''  %> ">
-                        <a class="nav-link" href="/owner-dashboard">
+                        <a class="nav-link" href="/">
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="ti ti-home-stats fs-h2"></i>
                           </span>
                           <span class="nav-link-title"> Dashboard </span>
                         </a>
                       </li>
-
-                      <li class="nav-item dropdown <%- (nav.title) == 'Company' ? 'active' : ''  %> ">
+                      <li class="nav-item dropdown <%- (nav.title) == 'Accounts' ? 'active' : ''  %> ">
                         <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                           data-bs-auto-close="outside" role="button" aria-expanded="false">
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="ti ti-building-skyscraper fs-h2"></i>
+                            <i class="ti ti-presentation-analytics fs-h2"></i>
                           </span>
                           <span class="nav-link-title">
-                            List of Companies
+                            Accounts
                           </span>
                         </a>
                         <div class="dropdown-menu ">
-                          <a class="dropdown-item <%- (nav.title) == 'Company' && (nav.subTtile) == 'Subsidiaries' ? 'active' : ''  %>"
-                            href="/company-setup">Subsidiaries </a>
-                          <a class="dropdown-item <%- (nav.title) == 'Company' && (nav.subTtile) == 'Sponsored' ?  'active' : ''  %>"
-                            href="/company-sponsored">Sponsored</a>
+                          <!-- <a class="dropdown-item <%- (nav.title) == 'Accounts' && (nav.child) == 'Bank' ?  'active' : ''  %>" href="/bank-accounts">Bank </a> -->
+                          <a class="dropdown-item <%- (nav.title) == 'Accounts' && (nav.child) == 'Vehicle' ?  'active' : ''  %>"
+                            href="/vehicle-list">Vehicles</a>
+                          <a class="dropdown-item <%- (nav.title) == 'Accounts' && (nav.child) == 'Employee' ?  'active' : ''  %>"
+                            href="/employee-list">Employees</a>
                         </div>
                       </li>
-
-                      <li class="nav-item <%- (nav.title) === 'User' ? 'active' : ''  %> ">
-                        <a class="nav-link" href="/user-setup">
+                      <li class="nav-item dropdown <%- (nav.title) == 'Settings' ? 'active' : ''  %>">
+                        <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
+                          data-bs-auto-close="outside" role="button" aria-expanded="false">
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="ti ti-users fs-h2"></i>
+                            <i class="ti ti-adjustments-horizontal fs-h2"></i>
                           </span>
-                          <span class="nav-link-title"> User Management</span>
+                          <span class="nav-link-title">Settings</span>
                         </a>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item <%- (nav.title) == 'Settings' && (nav.child) == 'Master' ?  'active' : ''  %>"
+                            href="/master">Master </a>
+                          <a class="dropdown-item <%- (nav.title) == 'Settings' && (nav.child) == 'System Settings' ?  'active' : ''  %>"
+                            href="/system-settings">System Setup</a>
+                        </div>
                       </li>
                     </ul>
+                    <% if (nav.title==='Dashboard' ) { %>
+                      <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+                        <form action="../" method="get" autocomplete="off" novalidate>
+                          <div class="input-icon">
+                            <span class="input-icon-addon">
+                              <i class="ti ti-search"></i>
+                            </span>
+                            <input type="text" id="searchTrans" class="form-control" placeholder="Search transaction…"
+                              aria-label="Search transaction">
+                          </div>
+                        </form>
+                      </div>
+                      <%}%>
+
                   </div>
                 </div>
               </div>
             </div>
-          
+            <% }else{ %>
+              <div class="navbar-expand-md">
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                  <div class="navbar navbar-light">
+                    <div class="container-xl">
+                      <ul class="navbar-nav">
+                        <li class="nav-item <%- (nav.title) === 'Dashboard' ? 'active' : ''  %> ">
+                          <a class="nav-link" href="/owner-dashboard">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <i class="ti ti-home-stats fs-h2"></i>
+                            </span>
+                            <span class="nav-link-title"> Dashboard </span>
+                          </a>
+                        </li>
 
-          <% } %>
+                        <li class="nav-item dropdown <%- (nav.title) == 'Company' ? 'active' : ''  %> ">
+                          <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
+                            data-bs-auto-close="outside" role="button" aria-expanded="false">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <i class="ti ti-building-skyscraper fs-h2"></i>
+                            </span>
+                            <span class="nav-link-title">
+                              List of Companies
+                            </span>
+                          </a>
+                          <div class="dropdown-menu ">
+                            <a class="dropdown-item <%- (nav.title) == 'Company' && (nav.subTtile) == 'Subsidiaries' ? 'active' : ''  %>"
+                              href="/company-setup">Subsidiaries </a>
+                            <a class="dropdown-item <%- (nav.title) == 'Company' && (nav.subTtile) == 'Sponsored' ?  'active' : ''  %>"
+                              href="/company-sponsored">Sponsored</a>
+                          </div>
+                        </li>
 
-          
+                        <li class="nav-item <%- (nav.title) === 'User' ? 'active' : ''  %> ">
+                          <a class="nav-link" href="/user-setup">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <i class="ti ti-users fs-h2"></i>
+                            </span>
+                            <span class="nav-link-title"> User Management</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <% } %>
+
+
     </div>
 
 
 
     <!-- Transaction Notification -->
-      <% if (message && message.type==='transac' ) { %>
+    <% if (message && message.type==='transac' ) { %>
       <div class="modal modal-blur fade" id="modal-success-trans" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
           <div class="modal-content">
@@ -366,16 +406,16 @@
                 <h3 mt-2>Voucher Created</h3>
                 <% }else if(message.tType==='voucherU' ){ %>
                   <h3 mt-2>Voucher Updated</h3>
-                <% }else if(message.tType==='invoice' ){ %>
-                  <h3 mt-2>Invoice Created</h3>
-                  <% }else if(message.tType==='invUpdate' ){ %>
-                    <h3 mt-2>Invoice Updated</h3>
-                  <% }else{ %>
-                    <h3 mt-2>Voucher Updated</h3>
-                    <% } %>
-                      <div class="text-muted">
-                        <%= message.message %>
-                      </div>
+                  <% }else if(message.tType==='invoice' ){ %>
+                    <h3 mt-2>Invoice Created</h3>
+                    <% }else if(message.tType==='invUpdate' ){ %>
+                      <h3 mt-2>Invoice Updated</h3>
+                      <% }else{ %>
+                        <h3 mt-2>Voucher Updated</h3>
+                        <% } %>
+                          <div class="text-muted">
+                            <%= message.message %>
+                          </div>
             </div>
             <div class="modal-footer">
               <div class="w-100">
@@ -393,7 +433,7 @@
                       </a>
 
                     </div>
-                    <% }else if(message.tType==='voucher' || message.tType==='voucherU'){ %>
+                    <% }else if(message.tType==='voucher' || message.tType==='voucherU' ){ %>
                       <div class="col">
                         <a href="/view-voucher/<%= message.transID %>" class="btn btn-success w-100">
                           View voucher
@@ -405,7 +445,7 @@
                             View invoice
                           </a>
                         </div>
-                      <% } %>
+                        <% } %>
                 </div>
               </div>
             </div>

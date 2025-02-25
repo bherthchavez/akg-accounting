@@ -3,107 +3,58 @@ const Invoice = require('../models/Invoice');
 const Vehicles = require('../models/Vehicles');
 const Settings = require('../models/Settings');
 
-Settings.find({}, (err, foundSettings) => {
-   if (foundSettings.length === 0) {
+(async function initializeSettings() {
+    try {
+        const foundSettings = await Settings.find().exec();
+        if (foundSettings.length === 0) {
+            const defaultSettings = [
+                { name: "voucher_settings", prefix: "#VOU/2022/", starting_no: 100, created_by: "Admin" },
+                { name: "invoice_settings", prefix: "#INV/2022/", starting_no: 100, created_by: "Admin" },
+                { name: "expenses_settings", value: 0, created_by: "Admin" },
+                { name: "documents_settings", value: 0, created_by: "Admin" }
+            ];
 
-      const settings1 = new Settings({
-         name: "voucher_settings",
-         prefix: "#VOU/2022/",
-         starting_no: 100,
-         created_by: "Admin"
-      });
-
-      const settings2 = new Settings({
-         name: "invoice_settings",
-         prefix: "#INV/2022/",
-         starting_no: 100,
-         created_by: "Admin"
-      });
-      const settings3 = new Settings({
-         name: "expenses_settings",
-         value: 0,
-         created_by: "Admin"
-      });
-      const settings4 = new Settings({
-         name: "documents_settings",
-         value: 0,
-         created_by: "Admin"
-      });
-
-      const defaultSettings = [settings1, settings2, settings3, settings4];
-
-      Settings.insertMany(defaultSettings, err => {
-         if (err) {
-            res.json({ message: err.message });
-         } else {
+            await Settings.insertMany(defaultSettings);
             console.log("Successfully saved default settings to DB.");
-
-         }
-      })
-   }
-})
-
+        }
+    } catch (err) {
+        console.error("Error initializing settings:", err.message);
+    }
+})();
 
 module.exports = {
-   getINV: (callback) => {
-      Invoice.find({ status: 2 }, (err, data) => {
-         if (!err && data) {
-            return callback(null, data);
-         } else {
-            return callback(err, null);
-         }
-      });
-   },
-   getVehicle: (callback) => {
-      Settings.find({}, (err, foundSettings) => {
-         if (err) {
-            res.json({ message: err.message });
-         } else {
+    getINV: async () => {
+        try {
+            return await Invoice.find({ status: 2 }).exec();
+        } catch (err) {
+            throw new Error(err.message);
+        }
+    },
 
-            Vehicles.find({ istimara_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + foundSettings[3].value)) } }, (err, data) => {
-               if (!err && data) {
-                  return callback(null, data);
-               } else {
-                  return callback(err, null);
-               }
-            })
+    getVehicle: async () => {
+        try {
+            const settings = await Settings.findOne({ name: "documents_settings" }).exec();
+            return await Vehicles.find({ istimara_exdate: { $lte: new Date(Date.now() + settings.value * 24 * 60 * 60 * 1000) } }).exec();
+        } catch (err) {
+            throw new Error(err.message);
+        }
+    },
 
-         }
-      })
+    getVehicleIn: async () => {
+        try {
+            const settings = await Settings.findOne({ name: "documents_settings" }).exec();
+            return await Vehicles.find({ insurance_exdate: { $lte: new Date(Date.now() + settings.value * 24 * 60 * 60 * 1000) } }).exec();
+        } catch (err) {
+            throw new Error(err.message);
+        }
+    },
 
-
-   },
-   getVehicleIn: (callback) => {
-
-      Settings.find({}, (err, foundSettings) => {
-         if (err) {
-            res.json({ message: err.message });
-         } else {
-
-            Vehicles.find({ insurance_exdate: { $lte: new Date(new Date().setDate(new Date().getDate() + foundSettings[3].value)) } }, (err, data) => {
-               if (!err && data) {
-                  return callback(null, data);
-               } else {
-                  return callback(err, null);
-               }
-            })
-         }
-      })
-   },
-   getEmployee: (callback) => {
-
-      Settings.find({}, (err, foundSettings) => {
-         if (err) {
-            res.json({ message: err.message });
-         } else {
-            Employee.find({ ex_qid: { $lte: new Date(new Date().setDate(new Date().getDate() + foundSettings[3].value)) } }, (err, data) => {
-               if (!err && data) {
-                  return callback(null, data);
-               } else {
-                  return callback(err, null);
-               }
-            })
-         }
-      })
-   }
-}
+    getEmployee: async () => {
+        try {
+            const settings = await Settings.findOne({ name: "documents_settings" }).exec();
+            return await Employee.find({ ex_qid: { $lte: new Date(Date.now() + settings.value * 24 * 60 * 60 * 1000) } }).exec();
+        } catch (err) {
+            throw new Error(err.message);
+        }
+    }
+};

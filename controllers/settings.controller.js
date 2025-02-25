@@ -17,55 +17,39 @@ module.exports = {
 
     //--------------------------------------------------------ACCOUNT LEDGER SETTINGS //
     viewExpensesType: async (req, res) => {
-        if (req.isAuthenticated()) {
-
-            ExpensesType.find().exec((err, ExpensesTypeItems) => {
-
-                if (err) {
-
-                    res.json({ message: err.message });
-
-                } else {
-
-                    Notif.getINV((err, dataINV) => {
-                        Notif.getVehicle((err, dataVehicle) => {
-                            Notif.getVehicleIn((err, dataVehicleIn) => {
-                                Notif.getEmployee((err, dataEmployee) => {
-
-
-                                    let nav = {
-                                        title: "Settings",
-                                        child: "Master",
-                                        view: 2,
-                                        notif: {
-                                            exIstimara: dataVehicle,
-                                            exInsurance: dataVehicleIn,
-                                            expenPending: dataINV,
-                                            exQID: dataEmployee
-                                        }
-                                    };
-
-                                    res.render('expenses-type', {
-                                        title: "Settings - Expenses Type",
-                                        nav: nav,
-                                        ExpensesTypeItems: ExpensesTypeItems
-                                        
-                                    })
-                                })
-                            })
-                        })
-                    })
-
-
-                }
-            })
-
-
-
-        } else {
-            res.redirect("/sign-in");
+        if (!req.isAuthenticated()) return res.redirect("/sign-in");
+      
+        try {
+          const [ExpensesTypeItems, dataINV, dataVehicle, dataVehicleIn, dataEmployee] = await Promise.all([
+            ExpensesType.find(),
+            Notif.getINV(),
+            Notif.getVehicle(),
+            Notif.getVehicleIn(),
+            Notif.getEmployee()
+          ]);
+      
+          const nav = {
+            title: "Settings",
+            child: "Master",
+            view: 2,
+            notif: {
+              exIstimara: dataVehicle,
+              exInsurance: dataVehicleIn,
+              expenPending: dataINV,
+              exQID: dataEmployee
+            }
+          };
+      
+          res.render('expenses-type', {
+            title: "Settings - Expenses Type",
+            nav,
+            ExpensesTypeItems
+          });
+        } catch (err) {
+          res.json({ message: err.message, type: 'danger' });
         }
-    },
+      },
+      
 
     addExpensesType: async (req, res) => {
         if (req.isAuthenticated()) {
@@ -145,64 +129,52 @@ module.exports = {
     },
     //--------------------------------------------------------  SYSTEM SETTINGS //
     viewSysSettings: async (req, res) => {
-        if (req.isAuthenticated()) {
-
-            Settings.find({}, (err, foundItems) => {
-                if (err) {
-                    res.json({ message: err.message });
-                } else {
-                    Notif.getINV((err, dataINV) => {
-                        Notif.getVehicle((err, dataVehicle) => {
-                            Notif.getVehicleIn((err, dataVehicleIn) => {
-                                Notif.getEmployee((err, dataEmployee) => {
-
-                                    let nav = {
-                                        title: "Settings",
-                                        child: "System Settings",
-                                        view: 2,
-                                        notif: {
-                                            exIstimara: dataVehicle,
-                                            expenPending: dataINV,
-                                            exInsurance: dataVehicleIn,
-                                            exQID: dataEmployee
-                                        }
-                                    };
-
-                                    let settingsAlert = {
-                                        alertSetVou: alertSetVou,
-                                        alertSetInv: alertSetInv,
-                                        alertSetOther: alertSetOther
-                                    }
-
-
-                                    res.render('system-settings', {
-                                        title: "Settings - System Settings",
-                                        nav: nav,
-                                        settingsAlert: settingsAlert,
-                                        foundSettings: foundItems
-                                    })
-
-                                    alertSetVou = 0;
-                                    alertSetInv = 0;
-                                    alertSetOther = 0;
-                                })
-                            })
-                        })
-                    })
-
-
-
-
-                }
-            })
-
-
-
-
-        } else {
-            res.redirect("/sign-in")
+        if (!req.isAuthenticated()) return res.redirect("/sign-in");
+      
+        try {
+          const [foundItems, dataINV, dataVehicle, dataVehicleIn, dataEmployee] = await Promise.all([
+            Settings.find(),
+            Notif.getINV(),
+            Notif.getVehicle(),
+            Notif.getVehicleIn(),
+            Notif.getEmployee()
+          ]);
+      
+          const nav = {
+            title: "Settings",
+            child: "System Settings",
+            view: 2,
+            notif: {
+              exIstimara: dataVehicle,
+              expenPending: dataINV,
+              exInsurance: dataVehicleIn,
+              exQID: dataEmployee
+            }
+          };
+      
+          const settingsAlert = {
+            alertSetVou,
+            alertSetInv,
+            alertSetOther
+          };
+      
+          res.render('system-settings', {
+            title: "Settings - System Settings",
+            nav,
+            settingsAlert,
+            foundSettings: foundItems
+          });
+      
+          // Reset alert values after rendering
+          alertSetVou = 0;
+          alertSetInv = 0;
+          alertSetOther = 0;
+      
+        } catch (err) {
+          res.json({ message: err.message, type: 'danger' });
         }
-    },
+      },
+      
 
     updateSysSettings: async (req, res) => {
         if (req.isAuthenticated()) {
